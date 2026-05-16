@@ -7,6 +7,7 @@ function App() {
   });
 
   const [selectedCategory, setSelectedCategory] = createSignal("all");
+  const [formSubmitted, setFormSubmitted] = createSignal(false);
 
   const menuItems = [
     { id: 1, title: "Margherita", category: "pizza", price: "£10.50", desc: "Tomato, mozzarella, and fresh basil. A classic Italian pizza done properly.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg" },
@@ -24,6 +25,29 @@ function App() {
     if (selectedCategory() === "all") return menuItems;
     return menuItems.filter(item => item.category === selectedCategory());
   });
+
+  // Funzione per gestire l'invio asincrono del modulo senza ricaricare la pagina
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    
+    try {
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (response.ok) {
+        setFormSubmitted(true);
+        form.reset();
+      } else {
+        alert("Ops! C'è stato un problema con l'invio. Riprova più tardi.");
+      }
+    } catch (error) {
+      alert("Errore di connessione. Riprova più tardi.");
+    }
+  };
 
   return (
     <>
@@ -161,16 +185,24 @@ function App() {
         .testimonial { background: #fdfcf9; padding: 2rem; border-radius: var(--border-radius); border-left: 4px solid var(--secondary); box-shadow: 0 3px 10px rgba(0,0,0,0.02); }
         .testimonial-author { font-weight: 700; color: var(--primary); margin-top: 1rem; margin-bottom: 0.2rem; }
         .testimonial-rating { color: #FFB81C; font-size: 0.9rem; }
-        .reservation-box { max-width: 700px; margin: 0 auto; padding: 3.5rem 2rem; border: 1px solid rgba(201, 169, 97, 0.2); border-radius: var(--border-radius); box-shadow: 0 10px 35px rgba(0,0,0,0.08); background: #ffffff; text-align: center; }
-        .reservation-box h3 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--primary); margin-bottom: 1.2rem; font-weight: 700; }
-        .reservation-box p { font-size: 1.05rem; margin-bottom: 2rem; color: #444; line-height: 1.7; }
+
+        /* NUOVO LAYOUT DEL MODULO DI PRENOTAZIONE INTEGRATO */
+        .reservation-box { max-width: 800px; margin: 0 auto; padding: 3.5rem 2.5rem; border: 1px solid rgba(201, 169, 97, 0.2); border-radius: var(--border-radius); box-shadow: 0 15px 40px rgba(0,0,0,0.1); background: #ffffff; text-align: center; }
+        .reservation-box h3 { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--primary); margin-bottom: 0.8rem; font-weight: 700; }
+        .reservation-box p { font-size: 1.05rem; margin-bottom: 2.5rem; color: #555; line-height: 1.7; }
+        .booking-form { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; text-align: left; }
+        .form-group-full { grid-column: span 2; }
+        .booking-form label { display: block; font-weight: 600; color: var(--dark); margin-bottom: 0.5rem; font-size: 0.95rem; }
+        .booking-form input, .booking-form select, .booking-form textarea { width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: var(--border-radius); font-family: 'Lato', sans-serif; font-size: 1rem; transition: var(--transition); background-color: #faf8f5; color: #333; }
+        .booking-form input:focus, .booking-form select:focus, .booking-form textarea:focus { outline: none; border-color: var(--primary); background-color: #ffffff; box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1); }
+        .success-message { padding: 3rem 1rem; text-align: center; }
+        .success-icon { font-size: 4rem; color: #34A853; margin-bottom: 1.5rem; }
         
         .contact-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem; text-align: center; align-items: start; }
         .contact-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
         .contact-info h3 { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); margin-bottom: 0.8rem; }
         .contact-info p { color: #444; font-weight: 400; }
         
-        /* PULSANTI DEL TUO PROGETTO ORIGINALE RIPRISTINATI CORRETTAMENTE */
         .btn-action {
             display: inline-flex;
             align-items: center;
@@ -211,6 +243,8 @@ function App() {
             .hero-title { font-size: 3rem; } 
             .gallery-grid { grid-template-columns: repeat(2, 1fr); }
             .custom-testimonials { grid-template-columns: 1fr; }
+            .booking-form { grid-template-columns: 1fr; }
+            .form-group-full { grid-column: span 1; }
         }
       `}</style>
 
@@ -241,7 +275,7 @@ function App() {
           <h1 class="hero-title">DOLCE VITA</h1>
           <p class="hero-subtitle">Authentic Italian dining in the heart of Wooburn Green</p>
           <div class="hero-buttons">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfjK-hwMDBoQNIr92nkHziV2qp-UF5DaURpQcUbPx8pQcL_qA/viewform?usp=dialog&hl=en_GB" target="_blank" class="btn-primary-custom">Book Now</a>
+            <a href="#reservation" class="btn-primary-custom">Book Now</a>
             <a href="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/menu.pdf" target="_blank" class="btn-secondary-custom">Full Menu</a>
           </div>
         </div>
@@ -355,13 +389,79 @@ function App() {
         </div>
       </section>
 
-      {/* RESERVATION */}
+      {/* RESERVATION - MODULO INTERATTIVO INTEGRATO INVECE DEL TASTO ESTERNO */}
       <section class="section-padding" id="reservation">
         <div class="container-custom">
           <div class="reservation-box" data-aos="zoom-in">
-            <h3>Online Bookings</h3>
-            <p>To secure your table at Dolce Vita, please fill out our digital booking request. It takes less than a minute and helps us prepare your perfect dining experience.</p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfjK-hwMDBoQNIr92nkHziV2qp-UF5DaURpQcUbPx8pQcL_qA/viewform?usp=dialog&hl=en_GB" target="_blank" class="btn-primary-custom" style="padding: 16px 45px; font-size: 1.1rem;">Book a Table Online</a>
+            {!formSubmitted() ? (
+              <>
+                <h3>Book a Table</h3>
+                <p>Please fill out the form below to request your reservation. We will review it and confirm your table shortly.</p>
+                
+                {/* ATTENZIONE: Sostituisci l'URL qui sotto nel campo 'action' 
+                  con il link esatto che ti dà Formspree (passo 1)
+                */}
+                <form 
+                  action="https://formspree.io/f/xgoqwvrk" 
+                  method="POST" 
+                  onSubmit={handleSubmit}
+                  class="booking-form"
+                >
+                  <div>
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required placeholder="e.g. John Doe" />
+                  </div>
+                  <div>
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="e.g. 07123 456789" />
+                  </div>
+                  <div>
+                    <label for="guests">Number of Guests *</label>
+                    <select id="guests" name="guests" required>
+                      <option value="1">1 Person</option>
+                      <option value="2" selected>2 People</option>
+                      <option value="3">3 People</option>
+                      <option value="4">4 People</option>
+                      <option value="5">5 People</option>
+                      <option value="6">6 People</option>
+                      <option value="7">7 People</option>
+                      <option value="8+">8+ People (Large Party)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="date">Date *</label>
+                    <input type="date" id="date" name="date" required />
+                  </div>
+                  <div>
+                    <label for="time">Preferred Time *</label>
+                    <input type="time" id="time" name="time" required />
+                  </div>
+                  <div>
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="name@example.com" />
+                  </div>
+                  <div class="form-group-full">
+                    <label for="notes">Special Requests / Allergies</label>
+                    <textarea id="notes" name="notes" rows="3" placeholder="Let us know if you have any food allergies or specific seating preferences..."></textarea>
+                  </div>
+                  <div class="form-group-full text-center mt-3">
+                    <button type="submit" class="btn-primary-custom" style="width: 100%; padding: 16px 0; font-size: 1.1rem;">
+                      Submit Reservation Request
+                    </button>
+                  </div>
+                </form>
+              </>
+            ) : (
+              <div class="success-message" data-aos="fade-up">
+                <i class="fas fa-check-circle success-icon"></i>
+                <h3>Thank You!</h3>
+                <p style="font-size: 1.2rem; color: #333; margin-bottom: 1rem;">Your booking request has been sent successfully.</p>
+                <p style="color: #666; max-width: 500px; margin: 0 auto 2rem;">We are processing your request and you will receive a confirmation email or call very shortly. We look forward to welcoming you to Dolce Vita!</p>
+                <button class="btn-secondary-custom" onClick={() => setFormSubmitted(false)} style={{ color: "var(--primary)", "border-color": "var(--primary)", "margin-left": "0" }}>
+                  Book Another Table
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
