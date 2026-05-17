@@ -25,17 +25,16 @@ function App() {
     return () => clearInterval(timer);
   });
 
-  // --- LOGICA RESTRITTIVA PRENOTAZIONI (Lunedì chiuso e Slot Orari fissi) ---
+  // --- LOGICA RESTRITTIVA PRENOTAZIONI ---
   const [bookingDate, setBookingDate] = createSignal("");
   const [bookingTime, setBookingTime] = createSignal("");
 
-  // Gestisce la selezione della data e blocca i Lunedì con messaggio in English UK
   const handleDateChange = (e) => {
     const dateVal = e.target.value;
     if (!dateVal) return;
     
     const day = new Date(dateVal).getDay();
-    if (day === 1) { // 1 = Lunedì
+    if (day === 1) { 
       alert("Dolce Vita is closed on Mondays. Please select another day.");
       setBookingDate("");
       return;
@@ -43,7 +42,6 @@ function App() {
     setBookingDate(dateVal);
   };
 
-  // Ottieni la data minima selezionabile (Oggi) in formato YYYY-MM-DD
   const getTodayDateString = () => {
     const today = new Date();
     const yyyy = today.getFullYear();
@@ -74,19 +72,8 @@ function App() {
     setIsSending(true);
 
     try {
-      const restaurantMail = await emailjs.sendForm(
-        "service_4mzmr8s",
-        "template_5sf632c",
-        e.target,
-        "zRfkntw9T_O_C4S43"
-      );
-
-      const customerMail = await emailjs.sendForm(
-        "service_4mzmr8s",
-        "template_lec527l",
-        e.target,
-        "zRfkntw9T_O_C4S43"
-      );
+      const restaurantMail = await emailjs.sendForm("service_4mzmr8s", "template_5sf632c", e.target, "zRfkntw9T_O_C4S43");
+      const customerMail = await emailjs.sendForm("service_4mzmr8s", "template_lec527l", e.target, "zRfkntw9T_O_C4S43");
 
       if (restaurantMail.text === "OK" && customerMail.text === "OK") {
         setFormSubmitted(true);
@@ -199,6 +186,7 @@ function App() {
         .about-text p { font-size: 1.05rem; line-height: 1.9; margin-bottom: 1.3rem; font-weight: 400; color: #444; }
         .about-image { height: 420px; border-radius: var(--border-radius); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
         .about-image img { width: 100%; height: 100%; object-fit: cover; }
+        
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
         .menu-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden; transition: var(--transition); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column; }
         .menu-card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); }
@@ -221,10 +209,6 @@ function App() {
         .stars { color: #FFB81C; font-size: 1.1rem; margin-bottom: 0.4rem; }
         .review-author { font-weight: 700; color: var(--primary); margin-bottom: 0.4rem; font-size: 1.1rem; }
         .review-text { color: #555; font-size: 1rem; line-height: 1.7; font-style: italic; }
-        .custom-testimonials { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem; }
-        .testimonial { background: #fdfcf9; padding: 2rem; border-radius: var(--border-radius); border-left: 4px solid var(--secondary); box-shadow: 0 3px 10px rgba(0,0,0,0.02); }
-        .testimonial-author { font-weight: 700; color: var(--primary); margin-top: 1rem; margin-bottom: 0.2rem; }
-        .testimonial-rating { color: #FFB81C; font-size: 0.9rem; }
 
         .reservation-box { max-width: 800px; margin: 0 auto; padding: 3.5rem 2.5rem; border: 1px solid rgba(201, 169, 97, 0.2); border-radius: var(--border-radius); box-shadow: 0 15px 40px rgba(0,0,0,0.1); background: #ffffff; text-align: center; }
         .reservation-box h3 { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--primary); margin-bottom: 0.8rem; font-weight: 700; }
@@ -238,6 +222,7 @@ function App() {
         .success-message { padding: 3rem 1rem; text-align: center; }
         .success-icon { font-size: 4rem; color: #34A853; margin-bottom: 1.5rem; }
         
+        /* FIX STILE BOTTONI CONTATTI */
         .contact-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem; text-align: center; align-items: start; }
         .contact-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
         .contact-info h3 { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); margin-bottom: 0.8rem; }
@@ -250,6 +235,7 @@ function App() {
         .btn-action.maps i { color: #4285F4; }
         .btn-action.phone i { color: #34A853; }
         .btn-action.email i { color: #EA4335; }
+        .btn-action:hover i { color: #ffffff !important; }
 
         footer { background: var(--dark); color: white; padding: 3rem 0; text-align: center; border-top: 3px solid var(--secondary); }
         .social-links { display: flex; justify-content: center; gap: 1.8rem; margin-bottom: 2rem; }
@@ -263,7 +249,6 @@ function App() {
             .btn-secondary-custom { margin-left: 0; } 
             .hero-title { font-size: 3rem; } 
             .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-            .custom-testimonials { grid-template-columns: 1fr; }
             .booking-form { grid-template-columns: 1fr; }
             .form-group-full { grid-column: span 1; }
         }
@@ -321,7 +306,6 @@ function App() {
                 <p><strong>Our commitment:</strong> Outstanding quality, a warm atmosphere, and impeccable service. We invite you to discover why we are the preferred choice for those who cherish authentic Italian cuisine.</p>
               </div>
               <div class="about-image">
-                {/* Immagine puntata correttamente al file capi.jpeg */}
                 <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/capi.jpeg" alt="Dolce Vita Story Image" />
               </div>
             </div>
@@ -515,7 +499,7 @@ function App() {
         </div>
       </section>
 
-      {/* CONTACT */}
+      {/* SEZIONE CONTATTI RIPRISTINATA CON ICONE CORRETTE */}
       <section class="section-padding" id="contact">
         <div class="container-custom">
           <div class="content-card-panel" data-aos="fade-up">
@@ -525,8 +509,8 @@ function App() {
                 <i class="fas fa-map-marker-alt contact-icon"></i>
                 <h3>Address</h3>
                 <p>53 The Green<br />Wooburn Green, HP10 0EU</p>
-                <a href="https://www.google.com/maps/place/Dolce+Vita/@51.5996025,-0.6953931,17z/data=!3m1!4b1!4m6!3m5!1s0x487663e64d9a6275:0x77f3cf0c57ba8ccd!8m2!3d51.5995992!4d-0.6928182!16s%2Fg%2F11fzbz9z9v" target="_blank" class="btn-action maps">
-                  Get Directions
+                <a href="https://maps.google.com/?q=Dolce+Vita+Wooburn+Green" target="_blank" class="btn-action maps">
+                  <i class="fas fa-map-marked-alt"></i> Get Directions
                 </a>
               </div>
               <div>
@@ -534,7 +518,7 @@ function App() {
                 <h3>Phone</h3>
                 <p>01628 527942<br />Tue-Sun: Lunch & Dinner</p>
                 <a href="tel:01628527942" class="btn-action phone">
-                  Call Us
+                  <i class="fas fa-phone"></i> Call Us
                 </a>
               </div>
               <div>
@@ -542,7 +526,7 @@ function App() {
                 <h3>Email</h3>
                 <p>info@dolcevitawooburn.co.uk</p>
                 <a href="mailto:info@dolcevitawooburn.co.uk?subject=Inquiry%20from%20Website" class="btn-action email">
-                  Write Us
+                  <i class="fas fa-paper-plane"></i> Write Us
                 </a>
               </div>
             </div>
@@ -550,11 +534,12 @@ function App() {
         </div>
       </section>
 
+      {/* FOOTER RIPRISTINATO CON SOCIAL ICON */}
       <footer>
         <div class="container-custom">
           <div class="social-links">
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
           </div>
           <p>© 2026 <strong>Dolce Vita by Alfredo Forte</strong> - Authentic Italian Cuisine</p>
         </div>
