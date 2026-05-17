@@ -1,6 +1,6 @@
 import { createSignal, createMemo, onMount } from "solid-js";
 import AOS from "aos";
-import emailjs from "@emailjs/browser"; // Libreria ufficiale EmailJS
+import emailjs from "@emailjs/browser"; 
 
 function App() {
   onMount(() => {
@@ -10,6 +10,47 @@ function App() {
   const [selectedCategory, setSelectedCategory] = createSignal("all");
   const [formSubmitted, setFormSubmitted] = createSignal(false);
   const [isSending, setIsSending] = createSignal(false);
+
+  // --- LOGICA CAROUSEL HERO (In attesa delle tue foto) ---
+  const heroImages = [
+    "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/hero_bg.jpg",
+    "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg", 
+    "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg"    
+  ];
+  const [currentHeroIndex, setCurrentHeroIndex] = createSignal(0);
+  onMount(() => {
+    const timer = setInterval(() => {
+      setCurrentHeroIndex((prev) => (prev + 1) % heroImages.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  });
+
+  // --- LOGICA RESTRITTIVA PRENOTAZIONI (Lunedì chiuso e Slot Orari fissi) ---
+  const [bookingDate, setBookingDate] = createSignal("");
+  const [bookingTime, setBookingTime] = createSignal("");
+
+  // Gestisce la selezione della data e blocca i Lunedì
+  const handleDateChange = (e) => {
+    const dateVal = e.target.value;
+    if (!dateVal) return;
+    
+    const day = new Date(dateVal).getDay();
+    if (day === 1) { // 1 = Lunedì
+      alert("Dolce Vita is closed on Mondays. Please select another day! (Il lunedì il ristorante è chiuso).");
+      setBookingDate("");
+      return;
+    }
+    setBookingDate(dateVal);
+  };
+
+  // Ottieni la data minima selezionabile (Oggi) in formato YYYY-MM-DD
+  const getTodayDateString = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
 
   const menuItems = [
     { id: 1, title: "Margherita", category: "pizza", price: "£10.50", desc: "Tomato, mozzarella, and fresh basil. A classic Italian pizza done properly.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg" },
@@ -28,13 +69,11 @@ function App() {
     return menuItems.filter(item => item.category === selectedCategory());
   });
 
-  // GESTIONE INVIO DOPPIO (NOTIFICA RISTORANTE + RICEVUTA CLIENTE)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
 
     try {
-      // 1. Invia l'email con i dettagli a te (Ristorante)
       const restaurantMail = await emailjs.sendForm(
         "service_4mzmr8s",
         "template_5sf632c",
@@ -42,7 +81,6 @@ function App() {
         "zRfkntw9T_O_C4S43"
       );
 
-      // 2. Invia in automatico la ricevuta di cortesia al cliente
       const customerMail = await emailjs.sendForm(
         "service_4mzmr8s",
         "template_lec527l",
@@ -50,9 +88,10 @@ function App() {
         "zRfkntw9T_O_C4S43"
       );
 
-      // Se entrambi gli invii vanno a buon fine
       if (restaurantMail.text === "OK" && customerMail.text === "OK") {
         setFormSubmitted(true);
+        setBookingDate("");
+        setBookingTime("");
         e.target.reset();
       } else {
         alert("Ops! Something went wrong. Please try again or call us directly.");
@@ -104,6 +143,7 @@ function App() {
         .navbar-brand span { color: var(--secondary); }
         .nav-link { color: #ffffff !important; font-weight: 500; margin: 0 12px; transition: color 0.3s ease; }
         .nav-link:hover { color: var(--secondary) !important; }
+        
         .hero {
             min-height: 100vh;
             position: relative;
@@ -111,19 +151,23 @@ function App() {
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            background: rgba(0,0,0,0.2);
+            background: #000000;
         }
-        .hero::before {
-            content: '';
+        .hero-bg-image {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/hero_bg.jpg');
             background-size: cover;
             background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            z-index: 1;
+        }
+        .hero-bg-image.active {
             opacity: 0.3;
             animation: subtle-zoom 20s ease-in-out infinite;
         }
         @keyframes subtle-zoom { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        
         .hero-content { position: relative; z-index: 10; text-align: center; color: white; }
         .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 700; letter-spacing: 2px; text-shadow: 2px 2px 15px rgba(0,0,0,0.6); }
         .hero-subtitle { font-size: 1.2rem; color: var(--secondary); margin-bottom: 2.5rem; font-style: italic; text-shadow: 1px 1px 5px rgba(0,0,0,0.6); }
@@ -146,22 +190,9 @@ function App() {
         .section-subtitle-custom { text-align: center; font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primary); font-style: italic; margin-bottom: 3rem; font-weight: 600; }
         
         .btn-filter {
-            background: #ffffff;
-            color: var(--dark);
-            border: 1px solid var(--border-color);
-            padding: 8px 22px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            border-radius: 30px;
-            transition: var(--transition);
-            cursor: pointer;
+            background: #ffffff; color: var(--dark); border: 1px solid var(--border-color); padding: 8px 22px; font-size: 0.95rem; font-weight: 600; border-radius: 30px; transition: var(--transition); cursor: pointer;
         }
-        .btn-filter:hover, .btn-filter.active {
-            background: var(--primary);
-            color: #ffffff;
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(139, 0, 0, 0.2);
-        }
+        .btn-filter:hover, .btn-filter.active { background: var(--primary); color: #ffffff; border-color: var(--primary); box-shadow: 0 4px 12px rgba(139, 0, 0, 0.2); }
 
         .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
         .about-text h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primary); margin-bottom: 1.5rem; font-weight: 700; }
@@ -169,22 +200,14 @@ function App() {
         .about-image { height: 420px; border-radius: var(--border-radius); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
         .about-image img { width: 100%; height: 100%; object-fit: cover; }
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
-        .menu-card { 
-            background: #ffffff; 
-            border: 1px solid var(--border-color); 
-            border-radius: var(--border-radius); 
-            overflow: hidden; 
-            transition: var(--transition); 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); 
-            display: flex;
-            flex-direction: column;
-        }
+        .menu-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden; transition: var(--transition); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column; }
         .menu-card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); }
         .menu-card-image { width: 100%; height: 220px; object-fit: cover; display: block; }
         .menu-card-content { padding: 1.5rem; text-align: center; flex-grow: 1; }
         .menu-card-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; }
         .menu-card-price { color: var(--secondary); font-family: 'Lato', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.8rem; }
         .menu-card-description { color: #666666; font-family: 'Lato', sans-serif; font-size: 0.95rem; line-height: 1.6; text-align: center; margin: 0 auto; max-width: 90%; }
+        
         .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
         .gallery-item { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: var(--border-radius); cursor: pointer; }
         .gallery-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
@@ -206,6 +229,7 @@ function App() {
         .reservation-box { max-width: 800px; margin: 0 auto; padding: 3.5rem 2.5rem; border: 1px solid rgba(201, 169, 97, 0.2); border-radius: var(--border-radius); box-shadow: 0 15px 40px rgba(0,0,0,0.1); background: #ffffff; text-align: center; }
         .reservation-box h3 { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--primary); margin-bottom: 0.8rem; font-weight: 700; }
         .reservation-box p { font-size: 1.05rem; margin-bottom: 2.5rem; color: #555; line-height: 1.7; }
+        
         .booking-form { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; text-align: left; }
         .form-group-full { grid-column: span 2; }
         .booking-form label { display: block; font-weight: 600; color: var(--dark); margin-bottom: 0.5rem; font-size: 0.95rem; }
@@ -220,37 +244,18 @@ function App() {
         .contact-info p { color: #444; font-weight: 400; }
         
         .btn-action {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: #ffffff;
-            color: #2a2a2a;
-            border: 1px solid #ced4da;
-            padding: 9px 18px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border-radius: 6px;
-            text-decoration: none;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #ffffff; color: #2a2a2a; border: 1px solid #ced4da; padding: 9px 18px; font-size: 0.9rem; font-weight: 600; border-radius: 6px; text-decoration: none; margin-top: 15px; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .btn-action:hover {
-            background: var(--dark);
-            color: #ffffff;
-            border-color: var(--dark);
-            transform: translateY(-2px);
-        }
+        .btn-action:hover { background: var(--dark); color: #ffffff; border-color: var(--dark); transform: translateY(-2px); }
         .btn-action.maps i { color: #4285F4; }
         .btn-action.phone i { color: #34A853; }
         .btn-action.email i { color: #EA4335; }
-        .btn-action:hover i { color: #ffffff; }
 
         footer { background: var(--dark); color: white; padding: 3rem 0; text-align: center; border-top: 3px solid var(--secondary); }
         .social-links { display: flex; justify-content: center; gap: 1.8rem; margin-bottom: 2rem; }
         .social-links a { color: var(--secondary); font-size: 1.4rem; transition: var(--transition); }
         .social-links a:hover { color: white; transform: translateY(-3px); }
+        
         @media (max-width: 768px) { 
             .about-content { grid-template-columns: 1fr; gap: 30px; } 
             .content-card-panel { padding: 2rem 1.5rem; }
@@ -285,9 +290,16 @@ function App() {
         </div>
       </nav>
 
-      {/* HERO */}
+      {/* HERO CON CAROUSEL */}
       <section class="hero" id="home">
-        <div class="hero-content" data-aos="fade-up">
+        {heroImages.map((img, index) => (
+          <div 
+            class={`hero-bg-image ${index === currentHeroIndex() ? 'active' : ''}`}
+            style={{ "background-image": `url('${img}')`, "z-index": index === currentHeroIndex() ? 2 : 1 }}
+          />
+        ))}
+
+        <div class="hero-content" data-aos="fade-up" style={{ "z-index": 10 }}>
           <h1 class="hero-title">DOLCE VITA</h1>
           <p class="hero-subtitle">Authentic Italian dining in the heart of Wooburn Green</p>
           <div class="hero-buttons">
@@ -309,7 +321,7 @@ function App() {
                 <p><strong>Our commitment:</strong> Outstanding quality, a warm atmosphere, and impeccable service. We invite you to discover why we are the preferred choice for those who cherish authentic Italian cuisine.</p>
               </div>
               <div class="about-image">
-                <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/capi.jpeg" alt="Dolce Vita Interior" />
+                <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg" alt="Dolce Vita Interior" />
               </div>
             </div>
           </div>
@@ -346,7 +358,7 @@ function App() {
         </div>
       </section>
 
-      {/* GALLERY */}
+      {/* ATMOSPHERE GALLERY */}
       <section class="section-padding" id="gallery">
         <div class="container-custom">
           <h2 class="section-title" data-aos="fade-down" style={{ color: "#ffffff", "text-shadow": "1px 1px 10px rgba(0,0,0,0.5)" }}>Our Atmosphere</h2>
@@ -389,30 +401,18 @@ function App() {
               <div class="review-author">Marco Rossi</div>
               <p class="review-text">"Finally found authentic Italian food in the UK! The attention to detail is impressive and you can taste the quality of every ingredient. Bravo!"</p>
             </div>
-            <div class="custom-testimonials">
-              <div class="testimonial">
-                <p class="review-text">"The ambiance is perfect for celebrating special moments. Every plate is a work of art."</p>
-                <div class="testimonial-author">Victoria Chen</div>
-                <div class="testimonial-rating">★★★★★</div>
-              </div>
-              <div class="testimonial">
-                <p class="review-text">"Best Italian restaurant in the area by far. The service is impeccable and the food is incredible."</p>
-                <div class="testimonial-author">Robert Fletcher</div>
-                <div class="testimonial-rating">★★★★★</div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* RESERVATION */}
+      {/* RESERVATION SYSTEM RIGIDO */}
       <section class="section-padding" id="reservation">
         <div class="container-custom">
           <div class="reservation-box" data-aos="zoom-in">
             {!formSubmitted() ? (
               <>
                 <h3>Book a Table</h3>
-                <p>Please fill out the form below to request your reservation. We will review it and confirm your table shortly.</p>
+                <p>Please select your preferred date and time slot. Please note we are closed on Mondays.</p>
                 
                 <form onSubmit={handleSubmit} class="booking-form">
                   <div>
@@ -436,22 +436,64 @@ function App() {
                       <option value="8+">8+ People (Large Party)</option>
                     </select>
                   </div>
+                  
+                  {/* Campo data con controllo nativo sul passato e blocco Lunedì via JS */}
                   <div>
                     <label for="date">Date *</label>
-                    <input type="date" id="date" name="date" required />
+                    <input 
+                      type="date" 
+                      id="date" 
+                      name="date" 
+                      required 
+                      min={getTodayDateString()} 
+                      value={bookingDate()} 
+                      onChange={handleDateChange} 
+                    />
                   </div>
-                  <div>
-                    <label for="time">Preferred Time *</label>
-                    <input type="time" id="time" name="time" required />
+
+                  {/* Menu a tendina strutturato esattamente con i tuoi vecchi slot */}
+                  <div class="form-group-full">
+                    <label for="time">Preferred Time Slot *</label>
+                    <select 
+                      id="time" 
+                      name="time" 
+                      required 
+                      value={bookingTime()} 
+                      onChange={(e) => setBookingTime(e.target.value)}
+                    >
+                      <option value="" disabled selected>-- Select an available slot --</option>
+                      
+                      <optgroup label="Lunch Service">
+                        <option value="12:00">12:00</option>
+                        <option value="12:30">12:30</option>
+                        <option value="13:00">13:00</option>
+                        <option value="13:30">13:30</option>
+                        <option value="14:00">14:00</option>
+                        <option value="14:30">14:30</option>
+                      </optgroup>
+
+                      <optgroup label="Dinner Service">
+                        <option value="19:00">19:00</option>
+                        <option value="19:30">19:30</option>
+                        <option value="20:00">20:00</option>
+                        <option value="20:30">20:30</option>
+                        <option value="21:00">21:00</option>
+                        <option value="21:30">21:30</option>
+                        <option value="22:00">22:00</option>
+                      </optgroup>
+                    </select>
                   </div>
+
                   <div>
                     <label for="email">Email Address *</label>
                     <input type="email" id="email" name="email" required placeholder="name@example.com" />
                   </div>
+                  
                   <div class="form-group-full">
                     <label for="notes">Special Requests / Allergies</label>
-                    <textarea id="notes" name="notes" rows="3" placeholder="Let us know if you have any food allergies or specific seating preferences..."></textarea>
+                    <textarea id="notes" name="notes" rows="3" placeholder="Let us know if you have any food allergies or seating preferences..."></textarea>
                   </div>
+
                   <div class="form-group-full text-center mt-3">
                     <button type="submit" disabled={isSending()} class="btn-primary-custom" style="width: 100%; padding: 16px 0; font-size: 1.1rem;">
                       {isSending() ? "Sending Request..." : "Submit Reservation Request"}
@@ -485,15 +527,15 @@ function App() {
                 <h3>Address</h3>
                 <p>53 The Green<br />Wooburn Green, HP10 0EU</p>
                 <a href="https://www.google.com/maps/place/Dolce+Vita/@51.5996025,-0.6953931,17z/data=!3m1!4b1!4m6!3m5!1s0x487663e64d9a6275:0x77f3cf0c57ba8ccd!8m2!3d51.5995992!4d-0.6928182!16s%2Fg%2F11fzbz9z9v" target="_blank" class="btn-action maps">
-                  <i class="fab fa-google"></i> Get Directions
+                  Get Directions
                 </a>
               </div>
               <div>
                 <i class="fas fa-phone-alt contact-icon"></i>
                 <h3>Phone</h3>
-                <p>01628 527942<br />Mon-Sun: 11:30-23:00</p>
+                <p>01628 527942<br />Tue-Sun: Lunch & Dinner</p>
                 <a href="tel:01628527942" class="btn-action phone">
-                  <i class="fas fa-phone"></i> Call Us
+                  Call Us
                 </a>
               </div>
               <div>
@@ -501,7 +543,7 @@ function App() {
                 <h3>Email</h3>
                 <p>info@dolcevitawooburn.co.uk</p>
                 <a href="mailto:info@dolcevitawooburn.co.uk?subject=Inquiry%20from%20Website" class="btn-action email">
-                  <i class="fas fa-paper-plane"></i> Write Us
+                  Write Us
                 </a>
               </div>
             </div>
