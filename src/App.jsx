@@ -29,14 +29,14 @@ function App() {
   const [bookingDate, setBookingDate] = createSignal("");
   const [bookingTime, setBookingTime] = createSignal("");
 
-  // Gestisce la selezione della data e blocca i Lunedì
+  // Gestisce la selezione della data e blocca i Lunedì con messaggio in English UK
   const handleDateChange = (e) => {
     const dateVal = e.target.value;
     if (!dateVal) return;
     
     const day = new Date(dateVal).getDay();
     if (day === 1) { // 1 = Lunedì
-      alert("Dolce Vita is closed on Mondays. Please select another day! (Il lunedì il ristorante è chiuso).");
+      alert("Dolce Vita is closed on Mondays. Please select another day.");
       setBookingDate("");
       return;
     }
@@ -321,7 +321,8 @@ function App() {
                 <p><strong>Our commitment:</strong> Outstanding quality, a warm atmosphere, and impeccable service. We invite you to discover why we are the preferred choice for those who cherish authentic Italian cuisine.</p>
               </div>
               <div class="about-image">
-                <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg" alt="Dolce Vita Interior" />
+                {/* Immagine puntata correttamente al file capi.jpeg */}
+                <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/capi.jpeg" alt="Dolce Vita Story Image" />
               </div>
             </div>
           </div>
@@ -405,7 +406,7 @@ function App() {
         </div>
       </section>
 
-      {/* RESERVATION SYSTEM RIGIDO */}
+      {/* RESERVATION SYSTEM */}
       <section class="section-padding" id="reservation">
         <div class="container-custom">
           <div class="reservation-box" data-aos="zoom-in">
@@ -437,7 +438,6 @@ function App() {
                     </select>
                   </div>
                   
-                  {/* Campo data con controllo nativo sul passato e blocco Lunedì via JS */}
                   <div>
                     <label for="date">Date *</label>
                     <input 
@@ -451,7 +451,6 @@ function App() {
                     />
                   </div>
 
-                  {/* Menu a tendina strutturato esattamente con i tuoi vecchi slot */}
                   <div class="form-group-full">
                     <label for="time">Preferred Time Slot *</label>
                     <select 
