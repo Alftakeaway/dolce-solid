@@ -1,4 +1,3 @@
-// /src/components/SpecialDish.jsx
 import { createSignal, onMount, Show } from "solid-js";
 
 export default function SpecialDish() {
@@ -12,6 +11,7 @@ export default function SpecialDish() {
   const [showAdmin, setShowAdmin] = createSignal(false);
   const [adminPassword, setAdminPassword] = createSignal("");
   const [isLoggedIn, setIsLoggedIn] = createSignal(false);
+  const [showAdminPanel, setShowAdminPanel] = createSignal(false);
 
   // ===== LOAD DATA =====
   onMount(() => {
@@ -58,10 +58,10 @@ export default function SpecialDish() {
     window.location.hash = "#reservation";
   };
 
-  // ===== RETURN =====
+  // ===== RENDER =====
   return (
     <>
-      {/* CARD - Mostra se attivo */}
+      {/* CARD - Mostra se isActive() */}
       <Show when={isActive()}>
         <section style={{ padding: "100px 0", background: "#ffffff" }}>
           <div class="container-custom">
@@ -175,254 +175,229 @@ export default function SpecialDish() {
         </section>
       </Show>
 
-      {/* ADMIN PANEL - Bottom right */}
-      <div style={{
-        "text-align": "center",
-        "padding": "1rem 0",
-        "border-top": "1px solid #555",
-        "margin-top": "2rem"
-      }}>
-        {!isLoggedIn() ? (
-          <button
-            onClick={() => setShowAdmin(!showAdmin())}
-            style={{
-              "background": "transparent",
-              "color": "#C9A961",
-              "border": "none",
-              "cursor": "pointer",
-              "font-size": "0.8rem",
-              "text-decoration": "underline"
-            }}
-          >
-            Admin Panel
-          </button>
-        ) : (
-          <button
-            onClick={handleLogout}
-            style={{
-              "background": "transparent",
-              "color": "#C9A961",
-              "border": "none",
-              "cursor": "pointer",
-              "font-size": "0.8rem",
-              "text-decoration": "underline"
-            }}
-          >
-            Logout
-          </button>
-        )}
-      </div>
-
-      {/* Login Modal */}
-      <Show when={showAdmin() && !isLoggedIn()}>
-        <div style={{
-          "position": "fixed",
-          "bottom": "20px",
-          "right": "20px",
-          "background": "#2a2a2a",
-          "padding": "1.5rem",
-          "border-radius": "8px",
-          "box-shadow": "0 4px 20px rgba(0,0,0,0.3)",
-          "z-index": "2000",
-          "width": "280px"
-        }}>
-          <h4 style={{ color: "#C9A961", "margin-bottom": "1rem" }}>Admin Login</h4>
-          <input
-            type="password"
-            placeholder="Password"
-            value={adminPassword()}
-            onInput={(e) => setAdminPassword(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && handleLogin()}
-            style={{
-              "width": "100%",
-              "padding": "0.75rem",
-              "border": "1px solid #444",
-              "border-radius": "4px",
-              "background": "#333",
-              "color": "white",
-              "margin-bottom": "0.5rem"
-            }}
-          />
-          <button
-            onClick={handleLogin}
-            style={{
-              "width": "100%",
-              "padding": "0.75rem",
-              "background": "#8B0000",
-              "color": "white",
-              "border": "none",
-              "border-radius": "4px",
-              "cursor": "pointer",
-              "font-weight": "600"
-            }}
-          >
-            Login
-          </button>
-        </div>
-      </Show>
-
-      {/* Admin Panel */}
-      <Show when={isLoggedIn()}>
-        <div style={{
-          "position": "fixed",
-          "bottom": "20px",
-          "right": "20px",
-          "background": "#2a2a2a",
-          "padding": "2rem",
-          "border-radius": "8px",
-          "box-shadow": "0 4px 30px rgba(0,0,0,0.5)",
-          "z-index": "2000",
-          "width": "320px",
-          "max-height": "90vh",
-          "overflow-y": "auto",
-          "border": "2px solid #C9A961"
-        }}>
-          <div style={{ "display": "flex", "justify-content": "space-between", "align-items": "center", "margin-bottom": "1.5rem" }}>
-            <h4 style={{ color: "#C9A961", margin: "0" }}>Today's Special</h4>
-            <button
-              onClick={handleLogout}
+      {/* ADMIN PANEL - Mostra solo se showAdminPanel è true */}
+      <Show when={showAdminPanel()}>
+        
+        {/* Login Modal */}
+        <Show when={showAdmin() && !isLoggedIn()}>
+          <div style={{
+            "position": "fixed",
+            "bottom": "20px",
+            "right": "20px",
+            "background": "#2a2a2a",
+            "padding": "1.5rem",
+            "border-radius": "8px",
+            "box-shadow": "0 4px 20px rgba(0,0,0,0.3)",
+            "z-index": "2000",
+            "width": "280px"
+          }}>
+            <h4 style={{ color: "#C9A961", "margin-bottom": "1rem" }}>Admin Login</h4>
+            <input
+              type="password"
+              placeholder="Password"
+              value={adminPassword()}
+              onInput={(e) => setAdminPassword(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleLogin()}
               style={{
-                "background": "transparent",
-                "color": "#C9A961",
+                "width": "100%",
+                "padding": "0.75rem",
+                "border": "1px solid #444",
+                "border-radius": "4px",
+                "background": "#333",
+                "color": "white",
+                "margin-bottom": "0.5rem"
+              }}
+            />
+            <button
+              onClick={handleLogin}
+              style={{
+                "width": "100%",
+                "padding": "0.75rem",
+                "background": "#8B0000",
+                "color": "white",
                 "border": "none",
+                "border-radius": "4px",
                 "cursor": "pointer",
-                "font-size": "1.2rem"
+                "font-weight": "600"
               }}
             >
-              ✕
+              Login
             </button>
           </div>
+        </Show>
 
-          {/* Toggle */}
-          <div style={{ "margin-bottom": "1.5rem" }}>
-            <label style={{ "display": "flex", "align-items": "center", "gap": "0.5rem", "cursor": "pointer", "color": "white" }}>
-              <input
-                type="checkbox"
-                checked={isActive()}
-                onChange={(e) => setIsActive(e.target.checked)}
-                style={{ "width": "18px", "height": "18px" }}
-              />
-              <span style={{ "font-weight": "600" }}>Active Today</span>
-            </label>
-          </div>
-
-          {/* Inputs */}
-          <div style={{ "margin-bottom": "1rem" }}>
-            <label style={{ "display": "block", "color": "#C9A961", "font-size": "0.85rem", "margin-bottom": "0.3rem" }}>
-              Dish Name
-            </label>
-            <input
-              type="text"
-              value={dishName()}
-              onInput={(e) => setDishName(e.target.value)}
-              placeholder="e.g. Osso Buco"
-              style={{
-                "width": "100%",
-                "padding": "0.6rem",
-                "border": "1px solid #444",
-                "border-radius": "4px",
-                "background": "#333",
-                "color": "white",
-                "font-size": "0.9rem"
-              }}
-            />
-          </div>
-
-          <div style={{ "margin-bottom": "1rem" }}>
-            <label style={{ "display": "block", "color": "#C9A961", "font-size": "0.85rem", "margin-bottom": "0.3rem" }}>
-              Description
-            </label>
-            <textarea
-              value={description()}
-              onInput={(e) => setDescription(e.target.value)}
-              placeholder="Braised veal shanks with saffron risotto"
-              style={{
-                "width": "100%",
-                "padding": "0.6rem",
-                "border": "1px solid #444",
-                "border-radius": "4px",
-                "background": "#333",
-                "color": "white",
-                "font-size": "0.9rem",
-                "min-height": "70px"
-              }}
-            />
-          </div>
-
-          <div style={{ "margin-bottom": "1rem" }}>
-            <label style={{ "display": "block", "color": "#C9A961", "font-size": "0.85rem", "margin-bottom": "0.3rem" }}>
-              Price (£)
-            </label>
-            <input
-              type="number"
-              value={price()}
-              onInput={(e) => setPrice(e.target.value)}
-              placeholder="16.50"
-              step="0.01"
-              style={{
-                "width": "100%",
-                "padding": "0.6rem",
-                "border": "1px solid #444",
-                "border-radius": "4px",
-                "background": "#333",
-                "color": "white",
-                "font-size": "0.9rem"
-              }}
-            />
-          </div>
-
-          <div style={{ "margin-bottom": "1.5rem" }}>
-            <label style={{ "display": "block", "color": "#C9A961", "font-size": "0.85rem", "margin-bottom": "0.3rem" }}>
-              Photo URL (jsdelivr)
-            </label>
-            <input
-              type="text"
-              value={photoUrl()}
-              onInput={(e) => setPhotoUrl(e.target.value)}
-              placeholder="https://cdn.jsdelivr.net/gh/..."
-              style={{
-                "width": "100%",
-                "padding": "0.6rem",
-                "border": "1px solid #444",
-                "border-radius": "4px",
-                "background": "#333",
-                "color": "white",
-                "font-size": "0.75rem"
-              }}
-            />
-          </div>
-
-          {/* Save Button */}
-          <button
-            onClick={handleSave}
-            style={{
-              "width": "100%",
-              "padding": "0.8rem",
-              "background": "#8B0000",
-              "color": "white",
-              "border": "none",
-              "border-radius": "4px",
-              "font-weight": "600",
-              "cursor": "pointer",
-              "margin-bottom": "0.5rem"
-            }}
-          >
-            Save
-          </button>
-
-          <Show when={saved()}>
-            <div style={{
-              "padding": "0.6rem",
-              "background": "#2e7d32",
-              "color": "white",
-              "border-radius": "4px",
-              "text-align": "center",
-              "font-size": "0.85rem"
-            }}>
-              ✓ Saved!
+        {/* Admin Panel */}
+        <Show when={isLoggedIn()}>
+          <div style={{
+            "position": "fixed",
+            "bottom": "20px",
+            "right": "20px",
+            "background": "#2a2a2a",
+            "padding": "2rem",
+            "border-radius": "8px",
+            "box-shadow": "0 4px 30px rgba(0,0,0,0.5)",
+            "z-index": "2000",
+            "width": "320px",
+            "max-height": "90vh",
+            "overflow-y": "auto",
+            "border": "2px solid #C9A961"
+          }}>
+            <div style={{ "display": "flex", "justify-content": "space-between", "align-items": "center", "margin-bottom": "1.5rem" }}>
+              <h4 style={{ color: "#C9A961", margin: "0" }}>Today's Special</h4>
+              <button
+                onClick={handleLogout}
+                style={{
+                  "background": "transparent",
+                  "color": "#C9A961",
+                  "border": "none",
+                  "cursor": "pointer",
+                  "font-size": "1.2rem"
+                }}
+              >
+                ✕
+              </button>
             </div>
-          </Show>
-        </div>
+
+            {/* Toggle Active */}
+            <div style={{ "margin-bottom": "1.5rem" }}>
+              <label style={{ "display": "flex", "align-items": "center", "gap": "0.5rem", "cursor": "pointer", "color": "white" }}>
+                <input
+                  type="checkbox"
+                  checked={isActive()}
+                  onChange={(e) => setIsActive(e.target.checked)}
+                  style={{ "width": "18px", "height": "18px" }}
+                />
+                <span style={{ "font-weight": "600" }}>Active Today</span>
+              </label>
+            </div>
+
+            {/* Dish Name */}
+            <div style={{ "margin-bottom": "1rem" }}>
+              <label style={{ "display": "block", "color": "#C9A961", "font-size": "0.85rem", "margin-bottom": "0.3rem", "font-weight": "600" }}>
+                Dish Name
+              </label>
+              <input
+                type="text"
+                value={dishName()}
+                onInput={(e) => setDishName(e.target.value)}
+                placeholder="e.g. Osso Buco"
+                style={{
+                  "width": "100%",
+                  "padding": "0.6rem",
+                  "border": "1px solid #444",
+                  "border-radius": "4px",
+                  "background": "#333",
+                  "color": "white",
+                  "font-size": "0.9rem"
+                }}
+              />
+            </div>
+
+            {/* Description */}
+            <div style={{ "margin-bottom": "1rem" }}>
+              <label style={{ "display": "block", "color": "#C9A961", "font-size": "0.85rem", "margin-bottom": "0.3rem", "font-weight": "600" }}>
+                Description
+              </label>
+              <textarea
+                value={description()}
+                onInput={(e) => setDescription(e.target.value)}
+                placeholder="e.g. Braised veal shanks with saffron risotto"
+                style={{
+                  "width": "100%",
+                  "padding": "0.6rem",
+                  "border": "1px solid #444",
+                  "border-radius": "4px",
+                  "background": "#333",
+                  "color": "white",
+                  "font-size": "0.9rem",
+                  "min-height": "70px",
+                  "resize": "vertical"
+                }}
+              />
+            </div>
+
+            {/* Price */}
+            <div style={{ "margin-bottom": "1rem" }}>
+              <label style={{ "display": "block", "color": "#C9A961", "font-size": "0.85rem", "margin-bottom": "0.3rem", "font-weight": "600" }}>
+                Price (£)
+              </label>
+              <input
+                type="number"
+                value={price()}
+                onInput={(e) => setPrice(e.target.value)}
+                placeholder="16.50"
+                step="0.01"
+                style={{
+                  "width": "100%",
+                  "padding": "0.6rem",
+                  "border": "1px solid #444",
+                  "border-radius": "4px",
+                  "background": "#333",
+                  "color": "white",
+                  "font-size": "0.9rem"
+                }}
+              />
+            </div>
+
+            {/* Photo URL */}
+            <div style={{ "margin-bottom": "1.5rem" }}>
+              <label style={{ "display": "block", "color": "#C9A961", "font-size": "0.85rem", "margin-bottom": "0.3rem", "font-weight": "600" }}>
+                Photo URL (jsdelivr)
+              </label>
+              <input
+                type="text"
+                value={photoUrl()}
+                onInput={(e) => setPhotoUrl(e.target.value)}
+                placeholder="https://cdn.jsdelivr.net/gh/..."
+                style={{
+                  "width": "100%",
+                  "padding": "0.6rem",
+                  "border": "1px solid #444",
+                  "border-radius": "4px",
+                  "background": "#333",
+                  "color": "white",
+                  "font-size": "0.75rem"
+                }}
+              />
+              <p style={{ "font-size": "0.75rem", "color": "#999", "margin-top": "0.3rem" }}>
+                📸 Copy from jsdelivr CDN
+              </p>
+            </div>
+
+            {/* Save Button */}
+            <button
+              onClick={handleSave}
+              style={{
+                "width": "100%",
+                "padding": "0.8rem",
+                "background": "#8B0000",
+                "color": "white",
+                "border": "none",
+                "border-radius": "4px",
+                "font-weight": "600",
+                "cursor": "pointer",
+                "margin-bottom": "0.5rem"
+              }}
+            >
+              Save
+            </button>
+
+            {/* Success Message */}
+            <Show when={saved()}>
+              <div style={{
+                "padding": "0.6rem",
+                "background": "#2e7d32",
+                "color": "white",
+                "border-radius": "4px",
+                "text-align": "center",
+                "font-size": "0.85rem"
+              }}>
+                ✓ Saved!
+              </div>
+            </Show>
+          </div>
+        </Show>
+
       </Show>
     </>
   );
