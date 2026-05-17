@@ -11,7 +11,7 @@ export default function SpecialDish() {
   const [showAdmin, setShowAdmin] = createSignal(false);
   const [adminPassword, setAdminPassword] = createSignal("");
   const [isLoggedIn, setIsLoggedIn] = createSignal(false);
-  const [showAdminPanel, setShowAdminPanel] = createSignal(false);
+  const [showAdminPanel, setShowAdminPanel] = createSignal(true);
 
   // ===== LOAD DATA =====
   onMount(() => {
