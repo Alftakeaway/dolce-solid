@@ -1,5 +1,6 @@
 import { createSignal, createMemo, onMount } from "solid-js";
 import AOS from "aos";
+import emailjs from "@emailjs/browser"; // <--- Importiamo la nuova libreria ufficiale
 
 function App() {
   onMount(() => {
@@ -8,6 +9,7 @@ function App() {
 
   const [selectedCategory, setSelectedCategory] = createSignal("all");
   const [formSubmitted, setFormSubmitted] = createSignal(false);
+  const [isSending, setIsSending] = createSignal(false);
 
   const menuItems = [
     { id: 1, title: "Margherita", category: "pizza", price: "£10.50", desc: "Tomato, mozzarella, and fresh basil. A classic Italian pizza done properly.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg" },
@@ -26,26 +28,31 @@ function App() {
     return menuItems.filter(item => item.category === selectedCategory());
   });
 
-  // Funzione per gestire l'invio asincrono del modulo senza ricaricare la pagina
+  // NUOVA FUNZIONE DI INVIO INTEGRATA CON EMAILJS
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.target;
-    const data = new FormData(form);
-    
+    setIsSending(true);
+
     try {
-      const response = await fetch(form.action, {
-        method: form.method,
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      });
-      if (response.ok) {
+      // Inviamo i dati del form direttamente usando i tuoi codici personali
+      const result = await emailjs.sendForm(
+        "service_4mzmr8s",      // Il tuo Service ID SMTP
+        "template_5sf632c",     // Il tuo Template ID in inglese
+        e.target,               // Il form HTML con tutti i dati compilati
+        "zRfkntw9T_O_C4S43"     // La tua Public Key
+      );
+
+      if (result.text === "OK") {
         setFormSubmitted(true);
-        form.reset();
+        e.target.reset();
       } else {
-        alert("Ops! C'è stato un problema con l'invio. Riprova più tardi.");
+        alert("Ops! Something went wrong. Please try again or call us directly.");
       }
     } catch (error) {
-      alert("Errore di connessione. Riprova più tardi.");
+      console.error("EmailJS Error:", error);
+      alert("Connection error. Please try again or call us directly.");
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -113,7 +120,8 @@ function App() {
         .hero-subtitle { font-size: 1.2rem; color: var(--secondary); margin-bottom: 2.5rem; font-style: italic; text-shadow: 1px 1px 5px rgba(0,0,0,0.6); }
         .btn-primary-custom { display: inline-block; text-decoration: none; background: var(--primary); color: white; padding: 14px 38px; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; transition: var(--transition); border: none; }
         .btn-secondary-custom { display: inline-block; text-decoration: none; background: transparent; color: white; padding: 14px 38px; border: 2px solid white; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; margin-left: 1rem; transition: var(--transition); }
-        .btn-primary-custom:hover { background: #6b0000; transform: translateY(-2px); color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn-primary-custom:hover:not(:disabled) { background: #6b0000; transform: translateY(-2px); color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn-primary-custom:disabled { background: #cccccc; cursor: not-allowed; }
         .btn-secondary-custom:hover { border-color: var(--secondary); color: var(--secondary); background: rgba(255,255,255,0.05); }
         .section-padding { padding: 100px 0; }
         .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
@@ -186,7 +194,6 @@ function App() {
         .testimonial-author { font-weight: 700; color: var(--primary); margin-top: 1rem; margin-bottom: 0.2rem; }
         .testimonial-rating { color: #FFB81C; font-size: 0.9rem; }
 
-        /* NUOVO LAYOUT DEL MODULO DI PRENOTAZIONE INTEGRATO */
         .reservation-box { max-width: 800px; margin: 0 auto; padding: 3.5rem 2.5rem; border: 1px solid rgba(201, 169, 97, 0.2); border-radius: var(--border-radius); box-shadow: 0 15px 40px rgba(0,0,0,0.1); background: #ffffff; text-align: center; }
         .reservation-box h3 { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--primary); margin-bottom: 0.8rem; font-weight: 700; }
         .reservation-box p { font-size: 1.05rem; margin-bottom: 2.5rem; color: #555; line-height: 1.7; }
@@ -389,7 +396,7 @@ function App() {
         </div>
       </section>
 
-      {/* RESERVATION - MODULO INTERATTIVO INTEGRATO INVECE DEL TASTO ESTERNO */}
+      {/* RESERVATION - MODULO INTELLIGENTE CON EMAILJS */}
       <section class="section-padding" id="reservation">
         <div class="container-custom">
           <div class="reservation-box" data-aos="zoom-in">
@@ -398,15 +405,7 @@ function App() {
                 <h3>Book a Table</h3>
                 <p>Please fill out the form below to request your reservation. We will review it and confirm your table shortly.</p>
                 
-                {/* ATTENZIONE: Sostituisci l'URL qui sotto nel campo 'action' 
-                  con il link esatto che ti dà Formspree (passo 1)
-                */}
-                <form 
-                  action="https://formspree.io/f/xgoqwvrk" 
-                  method="POST" 
-                  onSubmit={handleSubmit}
-                  class="booking-form"
-                >
+                <form onSubmit={handleSubmit} class="booking-form">
                   <div>
                     <label for="name">Full Name *</label>
                     <input type="text" id="name" name="name" required placeholder="e.g. John Doe" />
@@ -445,8 +444,8 @@ function App() {
                     <textarea id="notes" name="notes" rows="3" placeholder="Let us know if you have any food allergies or specific seating preferences..."></textarea>
                   </div>
                   <div class="form-group-full text-center mt-3">
-                    <button type="submit" class="btn-primary-custom" style="width: 100%; padding: 16px 0; font-size: 1.1rem;">
-                      Submit Reservation Request
+                    <button type="submit" disabled={isSending()} class="btn-primary-custom" style="width: 100%; padding: 16px 0; font-size: 1.1rem;">
+                      {isSending() ? "Sending Request..." : "Submit Reservation Request"}
                     </button>
                   </div>
                 </form>
