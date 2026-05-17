@@ -1,6 +1,7 @@
 import { createSignal, createMemo, onMount } from "solid-js";
 import AOS from "aos";
 import emailjs from "@emailjs/browser"; 
+import SpecialDish from "./components/SpecialDish";
 
 function App() {
   onMount(() => {
@@ -361,6 +362,8 @@ function App() {
         </div>
       </section>
 
+      <SpecialDish />
+      
       {/* REVIEWS */}
       <section class="section-padding" id="reviews">
         <div class="container-custom">
