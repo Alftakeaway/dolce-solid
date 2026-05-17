@@ -1,6 +1,6 @@
 import { createSignal, createMemo, onMount } from "solid-js";
 import AOS from "aos";
-import emailjs from "@emailjs/browser"; // <--- Importiamo la nuova libreria ufficiale
+import emailjs from "@emailjs/browser"; // Libreria ufficiale EmailJS
 
 function App() {
   onMount(() => {
@@ -28,21 +28,30 @@ function App() {
     return menuItems.filter(item => item.category === selectedCategory());
   });
 
-  // NUOVA FUNZIONE DI INVIO INTEGRATA CON EMAILJS
+  // GESTIONE INVIO DOPPIO (NOTIFICA RISTORANTE + RICEVUTA CLIENTE)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
 
     try {
-      // Inviamo i dati del form direttamente usando i tuoi codici personali
-      const result = await emailjs.sendForm(
-        "service_4mzmr8s",      // Il tuo Service ID SMTP
-        "template_5sf632c",     // Il tuo Template ID in inglese
-        e.target,               // Il form HTML con tutti i dati compilati
-        "zRfkntw9T_O_C4S43"     // La tua Public Key
+      // 1. Invia l'email con i dettagli a te (Ristorante)
+      const restaurantMail = await emailjs.sendForm(
+        "service_4mzmr8s",
+        "template_5sf632c",
+        e.target,
+        "zRfkntw9T_O_C4S43"
       );
 
-      if (result.text === "OK") {
+      // 2. Invia in automatico la ricevuta di cortesia al cliente
+      const customerMail = await emailjs.sendForm(
+        "service_4mzmr8s",
+        "template_lec527l",
+        e.target,
+        "zRfkntw9T_O_C4S43"
+      );
+
+      // Se entrambi gli invii vanno a buon fine
+      if (restaurantMail.text === "OK" && customerMail.text === "OK") {
         setFormSubmitted(true);
         e.target.reset();
       } else {
@@ -300,7 +309,7 @@ function App() {
                 <p><strong>Our commitment:</strong> Outstanding quality, a warm atmosphere, and impeccable service. We invite you to discover why we are the preferred choice for those who cherish authentic Italian cuisine.</p>
               </div>
               <div class="about-image">
-                <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg" alt="Dolce Vita Interior" />
+                <img src="https://cdn.jsdelivr.net/gh/Alftaway/DolceVita@main/assets/interior.jpg" alt="Dolce Vita Interior" />
               </div>
             </div>
           </div>
@@ -396,7 +405,7 @@ function App() {
         </div>
       </section>
 
-      {/* RESERVATION - MODULO INTELLIGENTE CON EMAILJS */}
+      {/* RESERVATION */}
       <section class="section-padding" id="reservation">
         <div class="container-custom">
           <div class="reservation-box" data-aos="zoom-in">
