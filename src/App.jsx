@@ -230,9 +230,9 @@ function App() {
         .contact-info p { color: #444; font-weight: 400; }
         
         .btn-action {
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #ffffff; color: #2a2a2a; border: 2px solid var(--primary); padding: 9px 18px; font-size: 0.9rem; font-weight: 600; border-radius: 6px; text-decoration: none; margin-top: 15px; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #ffffff; color: white; border: 2px solid var(--primary); padding: 9px 18px; font-size: 0.9rem; font-weight: 600; border-radius: 6px; text-decoration: none; margin-top: 15px; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .btn-action:hover { background: var(--dark); color: #ffffff; border-color: var(--dark); transform: translateY(-2px); }
+        .btn-action:hover { background: var(--dark); color: var(--primary); border-color: var(--dark); transform: translateY(-2px); }
         .btn-action.maps i { color: #4285F4; }
         .btn-action.phone i { color: #34A853; }
         .btn-action.email i { color: #EA4335; }
