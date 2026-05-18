@@ -11,8 +11,10 @@ export default function SpecialDish() {
   const [showAdmin, setShowAdmin] = createSignal(false);
   const [adminPassword, setAdminPassword] = createSignal("");
   const [isLoggedIn, setIsLoggedIn] = createSignal(false);
-  const [showAdminPanel, setShowAdminPanel] = createSignal(true);
-
+  const [showAdminPanel, setShowAdminPanel] = createSignal(true); onMount(() => {
+  if (showAdminPanel()) setShowAdmin(true);
+});
+  
   // ===== LOAD DATA =====
   onMount(() => {
     const saved = localStorage.getItem("specialDish");
