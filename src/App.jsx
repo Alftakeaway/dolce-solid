@@ -8,7 +8,6 @@ function App() {
     AOS.init({ duration: 800, once: true });
   });
 
-  // Modificato lo stato iniziale per caricare subito "nibbles" invece di "all"
   const [selectedCategory, setSelectedCategory] = createSignal("nibbles");
   const [formSubmitted, setFormSubmitted] = createSignal(false);
   const [isSending, setIsSending] = createSignal(false);
@@ -81,7 +80,6 @@ function App() {
     { id: 20, title: "Funghi & Salsiccia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, mushrooms and crumbled Italian pork sausage.", img: "", isVegetarian: false, isVegan: false },
     { id: 21, title: "Prosciutto & Funghi", category: "pizza", price: "£17.00", desc: "Tomato, mozzarella, cotto ham and mushrooms.", img: "", isVegetarian: false, isVegan: false },
     { id: 22, title: "Vulcano", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, pepperoni, red onions, egg, nduja.", img: "", isVegetarian: false, isVegan: false },
-    // Rimossa la foto qui sotto, così mostra l'icona della pizza correttamente
     { id: 23, title: "Vegetariana", category: "pizza", price: "£17.00", desc: "Tomato, mozzarella, mixed peppers, mushrooms, black olives and red onion.", img: "", isVegetarian: true, isVegan: false },
     { id: 24, title: "Primavera", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, topped with rocket, cherry tomatoes, Parma ham and Parmesan.", img: "", isVegetarian: false, isVegan: false },
     { id: 25, title: "Sant'Elia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, salami chorizo, gorgonzola, mushrooms and red onion.", img: "", isVegetarian: false, isVegan: false },
@@ -469,7 +467,8 @@ function App() {
             <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery3.jpg" /><div class="gallery-overlay"><p class="gallery-text">Lasagna Casalinga</p></div></div>
             <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery4.jpg" /><div class="gallery-overlay"><p class="gallery-text">Antipasto Italiano</p></div></div>
             <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery5.jpg" /><div class="gallery-overlay"><p class="gallery-text">Pasta Fresca</p></div></div>
-            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftaway/DolceVita@main/assets/gallery6.jpg" /><div class="gallery-overlay"><p class="gallery-text">Fresh Ingredients</p></div></div>
+            {/* Sistemato il link qui sotto inserendo correttamente "Alftakeaway" */}
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery6.jpg" /><div class="gallery-overlay"><p class="gallery-text">Fresh Ingredients</p></div></div>
             <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery7.jpg" /><div class="gallery-overlay"><p class="gallery-text">Pizza Margherita</p></div></div>
             <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery8.jpg" /><div class="gallery-overlay"><p class="gallery-text">Italian Wine</p></div></div>
             <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery9.jpg" /><div class="gallery-overlay"><p class="gallery-text">Risotto Milanese</p></div></div>
