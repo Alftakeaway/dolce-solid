@@ -12,7 +12,7 @@ function App() {
   const [formSubmitted, setFormSubmitted] = createSignal(false);
   const [isSending, setIsSending] = createSignal(false);
 
-  // --- HERO CAROUSEL (Solo foto reali del tuo ristorante) ---
+  // --- HERO CAROUSEL ---
   const heroImages = [
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/hero_bg.jpg",
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg", 
@@ -26,16 +26,14 @@ function App() {
     return () => clearInterval(timer);
   });
 
-  // --- CAROUSEL CONTORNI (Solo cibo italiano, zero palestre o sushi!) ---
+  // --- CAROUSEL CONTORNI (Solo contorni italiani reali, zero errori!) ---
   const sidesImages = [
-    "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/hero_bg.jpg", // Patate e contorni rustici d'atmosfera
-    "https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=600&auto=format&fit=crop", // Patate al forno al rosmarino rustiche
-    "https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=600&auto=format&fit=crop", // Patatine fritte dorate classiche
-    "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=600&auto=format&fit=crop", // Funghi saltati trifolati
-    "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=600&auto=format&fit=crop"  // Insalata verde con scaglie di parmigiano
+    "https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=600&auto=format&fit=crop", // Rosemary roasted potatoes
+    "https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=600&auto=format&fit=crop", // Golden french fries
+    "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=600&auto=format&fit=crop", // Sautéed garlic mushrooms
+    "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=600&auto=format&fit=crop"  // Rocket & parmesan salad
   ];
   const [currentSideIndex, setCurrentSideIndex] = createSignal(0);
-  
   onMount(() => {
     const sidesTimer = setInterval(() => {
       setCurrentSideIndex((prev) => (prev + 1) % sidesImages.length);
@@ -68,17 +66,36 @@ function App() {
     return `${yyyy}-${mm}-${dd}`;
   };
 
+  // --- MENU COMPLETO CON TUTTI I NUOVI PIATTI ---
   const menuItems = [
-    { id: 1, title: "Margherita", category: "pizza", price: "£10.50", desc: "Tomato, mozzarella, and fresh basil. A classic Italian pizza done properly.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg" },
-    { id: 2, title: "Carbonara", category: "pasta", price: "£12.00", desc: "Fresh pasta with guanciale, egg, and pecorino cheese. An authentic Roman recipe.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg" },
-    { id: 3, title: "Spaghetti Gamberi", category: "pasta", price: "£14.50", desc: "Fresh prawns, garlic, white wine, and cherry tomatoes. A delicate taste of the sea.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gamberi.jpg" },
-    { id: 4, title: "Tagliatelle Funghi", category: "pasta", price: "£11.50", desc: "Porcini mushrooms, cream, and truffle. A rich and comforting flavour.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/funghi.jpg" },
-    { id: 5, title: "Branzino al Forno", category: "main", price: "£16.00", desc: "Whole sea bass, lemon, and aromatic herbs. Perfectly oven-baked.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/branzino.jpg" },
-    { id: 6, title: "Vino della Casa", category: "drinks", price: "£5.50", desc: "Selected Italian red wine. The perfect pairing for all our dishes.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/vino.jpg" },
-    { id: 7, title: "Tiramisù", category: "dessert", price: "£6.00", desc: "Traditional recipe with mascarpone, espresso, and cocoa. Pure indulgence.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/tiramisu.jpg" },
-    { id: 8, title: "Gelato Artigianale", category: "dessert", price: "£4.50", desc: "Pistachio, hazelnut, or chocolate. Freshly prepared with love every day.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gelato.jpg" },
-    { id: 9, title: "Espresso & Caffè", category: "drinks", price: "£2.00", desc: "Double espresso, lungo, or macchiato. The perfect way to finish your meal.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/espresso.jpg" },
-    { id: 10, title: "Contorni (Sides)", category: "main", price: "£5.00", desc: "Selection of Italian sides: Rosemary roasted potatoes, french fries, sautéed mushrooms or rocket salad.", isSidesCarousel: true }
+    // STARTERS
+    { id: 1, title: "Antipasto Misto", category: "starters", price: "£9.50", desc: "Selection of finest Italian cured meats, mozzarella, and marinated vegetables.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery4.jpg" },
+    { id: 2, title: "Bruschetta Classica", category: "starters", price: "£6.50", desc: "Toasted artisan bread topped with diced tomatoes, garlic, fresh basil, and extra virgin olive oil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery6.jpg" },
+    
+    // PIZZE
+    { id: 3, title: "Margherita", category: "pizza", price: "£10.50", desc: "Tomato sauce, mozzarella, and fresh basil. A timeless Italian classic.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg" },
+    { id: 4, title: "Piccante", category: "pizza", price: "£13.00", desc: "Tomato sauce, mozzarella, spicy Italian salami, and fresh chillies.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery7.jpg" },
+    
+    // PRIMI (PASTA)
+    { id: 5, title: "Carbonara", category: "pasta", price: "£12.00", desc: "Fresh pasta tossed with crispy guanciale, egg yolk, and rich Pecorino Romano.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg" },
+    { id: 6, title: "Spaghetti Gamberi", category: "pasta", price: "£14.50", desc: "Fresh prawns, garlic, white wine, and cherry tomatoes with a touch of chilli.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gamberi.jpg" },
+    { id: 7, title: "Tagliatelle Funghi", category: "pasta", price: "£11.50", desc: "Egg tagliatelle with wild porcini mushrooms, light cream, and truffle oil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/funghi.jpg" },
+    { id: 8, title: "Lasagna Casalinga", category: "pasta", price: "£12.50", desc: "Traditional slow-cooked beef ragù layered with béchamel and fresh pasta sheets.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery3.jpg" },
+    
+    // SECONDI (MAINS)
+    { id: 9, title: "Branzino al Forno", category: "main", price: "£16.00", desc: "Whole sea bass fillets baked with lemon, garlic, white wine, and aromatic herbs.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/branzino.jpg" },
+    { id: 10, title: "Tagliata di Manzo", category: "main", price: "£19.50", desc: "Sliced grilled sirloin steak served over a bed of wild rocket, topped with parmesan shavings.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery9.jpg" },
+    
+    // DESSERTS
+    { id: 11, title: "Tiramisù", category: "dessert", price: "£6.00", desc: "Traditional home-made recipe with savoiardi, mascarpone cream, espresso, and cocoa.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/tiramisu.jpg" },
+    { id: 12, title: "Gelato Artigianale", category: "dessert", price: "£4.50", desc: "Premium Italian gelato. Choose from pistachio, Piedmont hazelnut, or dark chocolate.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gelato.jpg" },
+    
+    // DRINKS
+    { id: 13, title: "Vino della Casa", category: "drinks", price: "£5.50", desc: "Our hand-picked house Italian red or white wine, perfectly matched for dining.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/vino.jpg" },
+    { id: 14, title: "Espresso & Caffè", category: "drinks", price: "£2.00", desc: "Authentic Neapolitan double espresso, lungo, or macchiato.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/espresso.jpg" },
+    
+    // CONTORNI (SIDES WITH CLEAN CAROUSEL)
+    { id: 15, title: "Contorni (Sides)", category: "main", price: "£5.00", desc: "Selection of classic Italian sides: Rosemary roasted potatoes, golden french fries, sautéed mushrooms or rocket salad.", isSidesCarousel: true }
   ];
 
   const filteredMenu = createMemo(() => {
@@ -211,7 +228,7 @@ function App() {
         .menu-card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); }
         .menu-card-image { width: 100%; height: 220px; object-fit: cover; display: block; }
         
-        /* CONTORNI CAROUSEL CLEAN STYLES */
+        /* CAROUSEL CONTORNI */
         .sides-carousel-container { position: relative; width: 100%; height: 220px; overflow: hidden; background: #000; }
         .sides-carousel-img { position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover; opacity:0; transition: opacity 0.5s ease-in-out; }
         .sides-carousel-img.active { opacity: 1; }
@@ -346,6 +363,7 @@ function App() {
           
           <div class="filter-container d-flex justify-content-center flex-wrap gap-2 mb-5" data-aos="fade-down">
             <button class={`btn-filter ${selectedCategory() === 'all' ? 'active' : ''}`} onClick={() => setSelectedCategory('all')}>All Items</button>
+            <button class={`btn-filter ${selectedCategory() === 'starters' ? 'active' : ''}`} onClick={() => setSelectedCategory('starters')}>Starters</button>
             <button class={`btn-filter ${selectedCategory() === 'pizza' ? 'active' : ''}`} onClick={() => setSelectedCategory('pizza')}>Pizze</button>
             <button class={`btn-filter ${selectedCategory() === 'pasta' ? 'active' : ''}`} onClick={() => setSelectedCategory('pasta')}>Primi (Pasta)</button>
             <button class={`btn-filter ${selectedCategory() === 'main' ? 'active' : ''}`} onClick={() => setSelectedCategory('main')}>Secondi (Mains)</button>
@@ -362,11 +380,11 @@ function App() {
                       <img 
                         src={img} 
                         class={`sides-carousel-img ${idx() === currentSideIndex() ? 'active' : ''}`} 
-                        alt="Authentic Italian side"
+                        alt="Authentic Italian side dish"
                       />
                     )}</For>
                     <div class="sides-badge">
-                      Sides {currentSideIndex() + 1} / 5
+                      Sides {currentSideIndex() + 1} / 4
                     </div>
                   </div>
                 ) : (
