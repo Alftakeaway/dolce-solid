@@ -12,7 +12,7 @@ function App() {
   const [formSubmitted, setFormSubmitted] = createSignal(false);
   const [isSending, setIsSending] = createSignal(false);
 
-  // --- LOGICA CAROUSEL HERO (In attesa delle tue foto) ---
+  // --- LOGICA CAROUSEL HERO ---
   const heroImages = [
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/hero_bg.jpg",
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg", 
@@ -51,16 +51,74 @@ function App() {
     return `${yyyy}-${mm}-${dd}`;
   };
 
+  // --- DATABASE MENU DIGITALE DINAMICO REALE (Dal PDF) ---
   const menuItems = [
-    { id: 1, title: "Margherita", category: "pizza", price: "£10.50", desc: "Tomato, mozzarella, and fresh basil. A classic Italian pizza done properly.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg" },
-    { id: 2, title: "Carbonara", category: "pasta", price: "£12.00", desc: "Fresh pasta with guanciale, egg, and pecorino cheese. An authentic Roman recipe.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg" },
-    { id: 3, title: "Spaghetti Gamberi", category: "pasta", price: "£14.50", desc: "Fresh prawns, garlic, white wine, and cherry tomatoes. A delicate taste of the sea.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gamberi.jpg" },
-    { id: 4, title: "Tagliatelle Funghi", category: "pasta", price: "£11.50", desc: "Porcini mushrooms, cream, and truffle. A rich and comforting flavour.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/funghi.jpg" },
-    { id: 5, title: "Branzino al Forno", category: "main", price: "£16.00", desc: "Whole sea bass, lemon, and aromatic herbs. Perfectly oven-baked.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/branzino.jpg" },
-    { id: 6, title: "Vino della Casa", category: "drinks", price: "£5.50", desc: "Selected Italian red wine. The perfect pairing for all our dishes.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/vino.jpg" },
-    { id: 7, title: "Tiramisù", category: "dessert", price: "£6.00", desc: "Traditional recipe with mascarpone, espresso, and cocoa. Pure indulgence.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/tiramisu.jpg" },
-    { id: 8, title: "Gelato Artigianale", category: "dessert", price: "£4.50", desc: "Pistachio, hazelnut, or chocolate. Freshly prepared with love every day.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gelato.jpg" },
-    { id: 9, title: "Espresso & Caffè", category: "drinks", price: "£2.00", desc: "Double espresso, lungo, or macchiato. The perfect way to finish your meal.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/espresso.jpg" }
+    // --- PIZZE ---
+    { id: 1, title: "Margherita", category: "pizza", price: "£12.00", desc: "Tomato, mozzarella and fresh basil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg" },
+    { id: 2, title: "Diavola", category: "pizza", price: "£15.00", desc: "Tomato, mozzarella, pepperoni and fresh chilli.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/diavola.jpg" },
+    { id: 3, title: "Roma", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, spicy pepperoni, mushrooms and red onion.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/roma.jpg" },
+    { id: 4, title: "Napoli", category: "pizza", price: "£16.50", desc: "Tomato, mozzarella, anchovies, capers, black olives, oregano, parsley and garlic oil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/napoli.jpg" },
+    { id: 5, title: "Quattro Gusti", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, chicken, cotto ham and pepperoni.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/quattrogusti.jpg" },
+    { id: 6, title: "Capricciosa", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, artichokes, cotto ham, black olives and mushrooms.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/capricciosa.jpg" },
+    { id: 7, title: "Funghi & Salsiccia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, mushrooms and crumbled Italian pork sausage.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/funghisalsiccia.jpg" },
+    { id: 8, title: "Prosciutto & Funghi", category: "pizza", price: "£17.00", desc: "Tomato, mozzarella, cotto ham and mushrooms.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/prosciuttofunghi.jpg" },
+    { id: 9, title: "Vulcano", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, pepperoni, red onions, egg and nduja.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/vulcano.jpg" },
+    { id: 10, title: "Vegetariana", category: "pizza", price: "£17.00", desc: "Tomato, mozzarella, mixed peppers, mushrooms, black olives and red onion.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/vegetariana.jpg" },
+    { id: 11, title: "Primavera", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, topped with rocket, cherry tomatoes, Parma ham and Parmesan.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/primavera.jpg" },
+    { id: 12, title: "Sant'Elia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, salami chorizo, gorgonzola, mushrooms and red onion.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/santelia.jpg" },
+    { id: 13, title: "Ferrandina", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, crumbled Italian pork sausage, cherry tomatoes, black olives and basil pesto.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/ferrandina.jpg" },
+    
+    // --- CALZONI & RUSTICHE ---
+    { id: 14, title: "Calzone di Carne", category: "pizza", price: "£19.00", desc: "Folded pizza with tomato, mozzarella, pepperoni, crumbled Italian pork sausage and chicken, brushed with garlic butter.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/calzonecarne.jpg" },
+    { id: 15, title: "Calzone Piccante", category: "pizza", price: "£18.00", desc: "Folded pizza with tomato, mozzarella, chicken, chilli, nduja and mushrooms, brushed with garlic butter.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/calzonepiccante.jpg" },
+    { id: 16, title: "Rustica Dolce Vita", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, salami chorizo, roasted peppers, black olives and rocket.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/rusticadolce.jpg" },
+    { id: 17, title: "Rustica Assassina", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, spicy chicken, fresh chilli, nduja and salame piccante.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/rusticaassassina.jpg" },
+
+    // --- STARTERS & NIBBLES ---
+    { id: 18, title: "Focaccia all'aglio", category: "starters", price: "£7.00", desc: "Homemade pizza bread with garlic butter, oregano and rosemary.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/focaccia.jpg" },
+    { id: 19, title: "Bruschetta", category: "starters", price: "£8.50", desc: "Toasted bread topped with fresh chopped tomatoes, oregano, garlic, basil, balsamic glaze and extra virgin olive oil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/bruschetta.jpg" },
+    { id: 20, title: "Arancini", category: "starters", price: "£10.00", desc: "Crispy rice balls filled with peas, tomato sauce and mozzarella. Served with tomato sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/arancini.jpg" },
+    { id: 21, title: "Calamari", category: "starters", price: "£10.00", desc: "Deep-fried squid rings, served with tartare sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/calamari.jpg" },
+    { id: 22, title: "Bianchetti", category: "starters", price: "£11.00", desc: "Deep-fried whitebait, served with tartare sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/bianchetti.jpg" },
+    { id: 23, title: "Polpette dello Chef", category: "starters", price: "£12.00", desc: "Homemade meatballs in a rich, spicy tomato sauce with mixed peppers. Served with toasted bread.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/polpette.jpg" },
+    { id: 24, title: "Parma Ham & Burrata", category: "starters", price: "£14.00", desc: "Fresh burrata from Puglia served with Parma ham, cherry tomato concassé and basil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/parmaburrata.jpg" },
+    { id: 25, title: "Gamberoni Dolce Vita", category: "starters", price: "£12.00", desc: "King prawns cooked in a cherry tomato, white wine, garlic and parsley sauce, topped with rocket and served with toasted bread.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gamberoni.jpg" },
+    { id: 26, title: "Funghi al Bosco", category: "starters", price: "£11.00", desc: "Baked Portobello mushrooms stuffed with gorgonzola and mozzarella, dressed with garlic, parsley, balsamic glaze and extra virgin olive oil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/funghibosco.jpg" },
+    { id: 27, title: "Antipasto Italiano", category: "starters", price: "£30.00", desc: "Selection of Parma ham, Milano salami, spicy salami, arancini, fresh mozzarella, cherry tomatoes, mixed olives, roasted peppers, Italian cheeses and artichokes. Served with toasted bread.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/antipasto.jpg" },
+    { id: 28, title: "Classic Salad", category: "starters", price: "£14.00", desc: "Baby leaf and rocket salad with avocado, mixed peppers, red onion, cucumber, cherry tomatoes and olives, dressed with balsamic vinegar and extra virgin olive oil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/classicsalad.jpg" },
+
+    // --- PASTA & RISOTTO ---
+    { id: 29, title: "Penne Arrabbiata", category: "pasta", price: "£16.00", desc: "Penne in a spicy tomato sauce with chilli, basil, onion and garlic.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/arrabbiata.jpg" },
+    { id: 30, title: "Linguine Bolognese", category: "pasta", price: "£18.00", desc: "Linguine with a traditional homemade beef Bolognese sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/bolognese.jpg" },
+    { id: 31, title: "Spaghetti Carbonara", category: "pasta", price: "£18.00", desc: "Spaghetti with Italian guanciale, Parmesan, black pepper and egg.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg" },
+    { id: 32, title: "Penne alla Boscaiola", category: "pasta", price: "£20.00", desc: "Penne in a rich creamy tomato sauce with crumbled Italian pork sausage, mushrooms and Calabrian nduja.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/boscaiola.jpg" },
+    { id: 33, title: "Spaghetti Gamberi & Acciughe", category: "pasta", price: "£20.00", desc: "Spaghetti with prawns and anchovies in a garlic, cherry tomato and white wine sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gamberiacciughe.jpg" },
+    { id: 34, title: "Linguine al Granchio", category: "pasta", price: "£22.00", desc: "Linguine with crab meat, cherry tomato sauce, chilli, garlic, parsley, white wine and extra virgin olive oil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/granchio.jpg" },
+    { id: 35, title: "Linguine Salmone", category: "pasta", price: "£17.50", desc: "Linguine with smoked salmon, onion, cherry tomatoes, cream, parsley and a touch of tomato sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/salmone.jpg" },
+    { id: 36, title: "Spaghetti Pescatore", category: "pasta", price: "£21.00", desc: "Spaghetti with mixed seafood, prawns, squid, mussels and octopus in a garlic, white wine and tomato sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/pescatore.jpg" },
+    { id: 37, title: "Linguine ai Gamberi & Pesto", category: "pasta", price: "£19.00", desc: "Linguine with homemade basil pesto, tiger prawns, cherry tomatoes and a touch of cream.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gamberipesto.jpg" },
+    { id: 38, title: "Penne al Forno", category: "pasta", price: "£19.00", desc: "Penne with mushrooms, crispy guanciale, spinach, garlic and parsley, baked with breadcrumbs and Parmigiano Reggiano.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/penneforno.jpg" },
+    { id: 39, title: "Risotto Gorgonzola & Salsiccia", category: "pasta", price: "£19.00", desc: "Carnaroli rice with crumbled Italian pork sausage and spinach, creamed with gorgonzola and Parmigiano Reggiano.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/risottogorgonzola.jpg" },
+    { id: 40, title: "Risotto Asparagi & Funghi", category: "pasta", price: "£18.00", desc: "Carnaroli rice with mushrooms, asparagus, onion and parsley, creamed with Parmigiano Reggiano.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/risottoasparagi.jpg" },
+    { id: 41, title: "Risotto Frutti di Mare", category: "pasta", price: "£21.00", desc: "Carnaroli rice with mixed seafood, prawns, squid, mussels and octopus cooked in a white wine, garlic and tomato sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/risottofruttidimare.jpg" },
+
+    // --- RAVIOLI ---
+    { id: 42, title: "Ravioli ai Porcini", category: "ravioli", price: "£23.00", desc: "Porcini mushroom-filled ravioli, sautéed in a fragrant butter and sage sauce, finished with Parmigiano Reggiano.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/ravioliporcini.jpg" },
+    { id: 43, title: "Ravioli Astice & Granchio", category: "ravioli", price: "£26.00", desc: "Lobster filled-ravioli tossed in a rich velvety crab sauce, with cherry tomatoes, citrus hints and aromatic herbs.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/ravioliciastice.jpg" },
+    { id: 44, title: "Ravioli Ricotta & Spinaci", category: "ravioli", price: "£20.00", desc: "Spinach and ricotta-filled ravioli cooked with crumbled Italian pork sausage and finished with shaved Parmigiano Reggiano.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/ravioliricotta.jpg" },
+
+    // --- MAIN COURSES (SECONDI) ---
+    { id: 45, title: "Pollo Sambuca", category: "main", price: "£25.00", desc: "Chicken breast cooked in a creamy sambuca sauce with red onions. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/pollosambuca.jpg" },
+    { id: 46, title: "Vitello ai Funghi", category: "main", price: "£30.00", desc: "Thinly sliced veal cooked with onions and wild mushrooms in a rich white wine, parsley and cream sauce. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/vitellofunghi.jpg" },
+    { id: 47, title: "Pollo Cacciatore", category: "main", price: "£25.00", desc: "Chicken breast cooked in a spicy tomato sauce with onions, mixed peppers, mushrooms, black olives and white wine. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/pollocacciatore.jpg" },
+    { id: 48, title: "Spigola al Limone", category: "main", price: "£26.00", desc: "Pan-fried sea bass fillets cooked in a rich lemon butter and white wine sauce. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/spigolalimone.jpg" },
+    { id: 49, title: "Zuppa di Pesce", category: "main", price: "£28.00", desc: "Seafood selection, including prawns, squid, octopus and mussels, cooked in a spicy tomato sauce with white wine, garlic and parsley. Served with toasted bread.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/zuppadipesce.jpg" },
+    { id: 50, title: "Baccalà in Umido", category: "main", price: "£29.00", desc: "Cod loin cooked in a Mediterranean tomato sauce with red onions, black olives, capers, garlic and parsley. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/baccala.jpg" },
+    { id: 51, title: "Bistecca Ribeye", category: "main", price: "£34.00", desc: "28 days ribeye, freshly cut and cooked to your preference. Served with Tuscan potatoes, side salad and homemade peppercorn sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/bistecca.jpg" },
+    { id: 52, title: "Tagliata di Manzo", category: "main", price: "£32.00", desc: "28 days aged sliced ribeye served on a bed of rocket, topped with shaved Parmigiano Reggiano and a drizzle of balsamic glaze, extra virgin olive oil and Maldon sea salt.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/tagliata.jpg" },
+
+    // --- SIDES ---
+    { id: 53, title: "Contorni (Sides Selection)", category: "sides", price: "£5.00", desc: "Choose from: French fries, Tuscan potatoes, Rocket & Parmesan salad, Garlic spinach, Sautéed mushrooms, Mixed vegetables, Side salad, or Tomatoes & red onions.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/sides.jpg" }
   ];
 
   const filteredMenu = createMemo(() => {
@@ -223,7 +281,7 @@ function App() {
         .success-message { padding: 3rem 1rem; text-align: center; }
         .success-icon { font-size: 4rem; color: #34A853; margin-bottom: 1.5rem; }
         
-        /* FIX STILE BOTTONI CONTATTI */
+        /* FIX STILE BOTTONI CONTATTI (IL TUO DESIGN DI IERI) */
         .contact-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem; text-align: center; align-items: start; }
         .contact-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
         .contact-info h3 { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); margin-bottom: 0.8rem; }
@@ -314,19 +372,20 @@ function App() {
         </div>
       </section>
 
-      {/* MENU HIGHLIGHTS */}
+      {/* MENU HIGHLIGHTS (DINAMICO CON I TUOI BOTTONI) */}
       <section class="section-padding" id="menu">
         <div class="container-custom">
-          <h2 class="section-title" data-aos="fade-down">Menu Highlights</h2>
-          <p class="section-subtitle-custom" data-aos="fade-down">A selection of our most beloved dishes</p>
+          <h2 class="section-title" data-aos="fade-down">Our Menu</h2>
+          <p class="section-subtitle-custom" data-aos="fade-down">Stone-baked pizzas, homemade fresh pasta and fine Italian specialities</p>
           
           <div class="filter-container d-flex justify-content-center flex-wrap gap-2 mb-5" data-aos="fade-down">
-            <button class={`btn-filter ${selectedCategory() === 'all' ? 'active' : ''}`} onClick={() => setSelectedCategory('all')}>All Items</button>
-            <button class={`btn-filter ${selectedCategory() === 'pizza' ? 'active' : ''}`} onClick={() => setSelectedCategory('pizza')}>Pizze</button>
-            <button class={`btn-filter ${selectedCategory() === 'pasta' ? 'active' : ''}`} onClick={() => setSelectedCategory('pasta')}>Primi (Pasta)</button>
+            <button class={`btn-filter ${selectedCategory() === 'all' ? 'active' : ''}`} onClick={() => setSelectedCategory('all')}>All Menu</button>
+            <button class={`btn-filter ${selectedCategory() === 'pizza' ? 'active' : ''}`} onClick={() => setSelectedCategory('pizza')}>Pizze & Calzoni</button>
+            <button class={`btn-filter ${selectedCategory() === 'starters' ? 'active' : ''}`} onClick={() => setSelectedCategory('starters')}>Starters & Salads</button>
+            <button class={`btn-filter ${selectedCategory() === 'pasta' ? 'active' : ''}`} onClick={() => setSelectedCategory('pasta')}>Pasta & Risotti</button>
+            <button class={`btn-filter ${selectedCategory() === 'ravioli' ? 'active' : ''}`} onClick={() => setSelectedCategory('ravioli')}>Ravioli</button>
             <button class={`btn-filter ${selectedCategory() === 'main' ? 'active' : ''}`} onClick={() => setSelectedCategory('main')}>Secondi (Mains)</button>
-            <button class={`btn-filter ${selectedCategory() === 'dessert' ? 'active' : ''}`} onClick={() => setSelectedCategory('dessert')}>Desserts</button>
-            <button class={`btn-filter ${selectedCategory() === 'drinks' ? 'active' : ''}`} onClick={() => setSelectedCategory('drinks')}>Drinks</button>
+            <button class={`btn-filter ${selectedCategory() === 'sides' ? 'active' : ''}`} onClick={() => setSelectedCategory('sides')}>Sides</button>
           </div>
 
           <div class="menu-grid">
@@ -362,6 +421,7 @@ function App() {
         </div>
       </section>
 
+      {/* COMPONENTE SPECIAL DISH PRESERVATO */}
       <SpecialDish />
 
       {/* REVIEWS */}
@@ -502,7 +562,7 @@ function App() {
         </div>
       </section>
 
-      {/* SEZIONE CONTATTI RIPRISTINATA CON ICONE CORRETTE */}
+      {/* SEZIONE CONTATTI CON IL TUO STILE DELLE ICONE AGGIORNATO IERI */}
       <section class="section-padding" id="contact">
         <div class="container-custom">
           <div class="content-card-panel" data-aos="fade-up">
@@ -537,7 +597,7 @@ function App() {
         </div>
       </section>
 
-      {/* FOOTER RIPRISTINATO CON SOCIAL ICON */}
+      {/* FOOTER */}
       <footer>
         <div class="container-custom">
           <div class="social-links">
