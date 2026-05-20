@@ -12,7 +12,7 @@ function App() {
   const [formSubmitted, setFormSubmitted] = createSignal(false);
   const [isSending, setIsSending] = createSignal(false);
 
-  // --- LOGICA CAROUSEL HERO ---
+  // --- HERO CAROUSEL (Solo foto reali del tuo ristorante) ---
   const heroImages = [
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/hero_bg.jpg",
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg", 
@@ -26,23 +26,20 @@ function App() {
     return () => clearInterval(timer);
   });
 
-  // --- LOGICA MINI-CAROUSEL CARD CONTORNI (8 FOTO REALI E IN TEMA) ---
+  // --- CAROUSEL CONTORNI (Solo cibo italiano, zero palestre o sushi!) ---
   const sidesImages = [
-    "https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=600&auto=format&fit=crop", // French fries (Patatine fritte dorate)
-    "https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=600&auto=format&fit=crop", // Tuscan potatoes (Patate al forno con rosmarino)
-    "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=600&auto=format&fit=crop", // Rocket & Parmesan salad (Insalata rucola e parmigiano)
-    "https://images.unsplash.com/photo-1550317138-10000687a72b?q=80&w=600&auto=format&fit=crop", // Garlic spinach (Spinaci saltati in padella)
-    "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=600&auto=format&fit=crop", // Sautéed mushrooms (Funghi trifolati)
-    "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600&auto=format&fit=crop", // Mixed vegetables (Verdure grigliate/miste)
-    "https://images.unsplash.com/photo-1623428187969-5da2dced5ebf?q=80&w=600&auto=format&fit=crop", // Side salad (Insalata fresca d'accompagnamento)
-    "https://images.unsplash.com/photo-1597362925123-77861d3fbac7?q=80&w=600&auto=format&fit=crop"  // Tomatoes & red onions (Pomodori e cipolla rossa)
+    "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/hero_bg.jpg", // Patate e contorni rustici d'atmosfera
+    "https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=600&auto=format&fit=crop", // Patate al forno al rosmarino rustiche
+    "https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=600&auto=format&fit=crop", // Patatine fritte dorate classiche
+    "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=600&auto=format&fit=crop", // Funghi saltati trifolati
+    "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=600&auto=format&fit=crop"  // Insalata verde con scaglie di parmigiano
   ];
   const [currentSideIndex, setCurrentSideIndex] = createSignal(0);
   
   onMount(() => {
     const sidesTimer = setInterval(() => {
       setCurrentSideIndex((prev) => (prev + 1) % sidesImages.length);
-    }, 2800); // Cambia foto fluidamente ogni 2.8 secondi
+    }, 3000);
     return () => clearInterval(sidesTimer);
   });
 
@@ -71,7 +68,6 @@ function App() {
     return `${yyyy}-${mm}-${dd}`;
   };
 
-  // --- DATABASE MENU AGGIORNATO CON CARD CONTORNI AGGANCIATA AL CAROUSEL ---
   const menuItems = [
     { id: 1, title: "Margherita", category: "pizza", price: "£10.50", desc: "Tomato, mozzarella, and fresh basil. A classic Italian pizza done properly.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg" },
     { id: 2, title: "Carbonara", category: "pasta", price: "£12.00", desc: "Fresh pasta with guanciale, egg, and pecorino cheese. An authentic Roman recipe.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg" },
@@ -82,9 +78,7 @@ function App() {
     { id: 7, title: "Tiramisù", category: "dessert", price: "£6.00", desc: "Traditional recipe with mascarpone, espresso, and cocoa. Pure indulgence.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/tiramisu.jpg" },
     { id: 8, title: "Gelato Artigianale", category: "dessert", price: "£4.50", desc: "Pistachio, hazelnut, or chocolate. Freshly prepared with love every day.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gelato.jpg" },
     { id: 9, title: "Espresso & Caffè", category: "drinks", price: "£2.00", desc: "Double espresso, lungo, or macchiato. The perfect way to finish your meal.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/espresso.jpg" },
-    
-    // NUOVA CARD CONTORNI DINAMICA
-    { id: 10, title: "Contorni (Sides)", category: "main", price: "£5.00", desc: "French fries, Tuscan potatoes, Rocket & Parmesan salad, Garlic spinach, Sautéed mushrooms, Mixed vegetables, Side salad, Tomatoes & red onions.", isSidesCarousel: true }
+    { id: 10, title: "Contorni (Sides)", category: "main", price: "£5.00", desc: "Selection of Italian sides: Rosemary roasted potatoes, french fries, sautéed mushrooms or rocket salad.", isSidesCarousel: true }
   ];
 
   const filteredMenu = createMemo(() => {
@@ -217,11 +211,11 @@ function App() {
         .menu-card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); }
         .menu-card-image { width: 100%; height: 220px; object-fit: cover; display: block; }
         
-        /* STILI CAROUSEL CONTORNI */
+        /* CONTORNI CAROUSEL CLEAN STYLES */
         .sides-carousel-container { position: relative; width: 100%; height: 220px; overflow: hidden; background: #000; }
-        .sides-carousel-img { position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover; opacity:0; transition: opacity 0.6s ease-in-out; }
+        .sides-carousel-img { position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover; opacity:0; transition: opacity 0.5s ease-in-out; }
         .sides-carousel-img.active { opacity: 1; }
-        .sides-badge { position: absolute; bottom: 10px; right: 10px; background: rgba(42,42,42,0.85); color: var(--secondary); font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; border: 1px solid var(--secondary); font-weight: 600; z-index: 5; }
+        .sides-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.75); color: var(--secondary); font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; z-index: 5; }
 
         .menu-card-content { padding: 1.5rem; text-align: center; flex-grow: 1; }
         .menu-card-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; }
@@ -308,12 +302,12 @@ function App() {
 
       {/* HERO CON CAROUSEL */}
       <section class="hero" id="home">
-        {heroImages.map((img, index) => (
+        <For each={heroImages}>{(img, index) => (
           <div 
-            class={`hero-bg-image ${index === currentHeroIndex() ? 'active' : ''}`}
-            style={{ "background-image": `url('${img}')`, "z-index": index === currentHeroIndex() ? 2 : 1 }}
+            class={`hero-bg-image ${index() === currentHeroIndex() ? 'active' : ''}`}
+            style={{ "background-image": `url('${img}')`, "z-index": index() === currentHeroIndex() ? 2 : 1 }}
           />
-        ))}
+        )}</For>
 
         <div class="hero-content" data-aos="fade-up" style={{ "z-index": 10 }}>
           <h1 class="hero-title">DOLCE VITA</h1>
@@ -362,25 +356,22 @@ function App() {
           <div class="menu-grid">
             <For each={filteredMenu()}>{(item) => (
               <div class="menu-card" data-aos="fade-up">
-                
-                {/* LOGICA SELEZIONE IMMAGINE / CAROUSEL CONTORNI */}
                 {item.isSidesCarousel ? (
                   <div class="sides-carousel-container">
                     <For each={sidesImages}>{(img, idx) => (
                       <img 
                         src={img} 
                         class={`sides-carousel-img ${idx() === currentSideIndex() ? 'active' : ''}`} 
-                        alt="Delicious side option"
+                        alt="Authentic Italian side"
                       />
                     )}</For>
                     <div class="sides-badge">
-                      Contorni {currentSideIndex() + 1} / 8
+                      Sides {currentSideIndex() + 1} / 5
                     </div>
                   </div>
                 ) : (
                   <img src={item.img} class="menu-card-image" alt={item.title} />
                 )}
-
                 <div class="menu-card-content">
                   <h3 class="menu-card-title">{item.title}</h3>
                   <div class="menu-card-price">{item.price}</div>
