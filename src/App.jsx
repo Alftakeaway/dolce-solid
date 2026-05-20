@@ -1,4 +1,4 @@
-import { createSignal, createMemo, onMount } from "solid-js";
+import { createSignal, createMemo, onMount, For } from "solid-js";
 import AOS from "aos";
 import emailjs from "@emailjs/browser"; 
 import SpecialDish from "./components/SpecialDish";
@@ -24,6 +24,26 @@ function App() {
       setCurrentHeroIndex((prev) => (prev + 1) % heroImages.length);
     }, 3000);
     return () => clearInterval(timer);
+  });
+
+  // --- LOGICA MINI-CAROUSEL CARD CONTORNI (8 FOTO) ---
+  const sidesImages = [
+    "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?q=80&w=500&auto=format&fit=crop", // Patatine fritte
+    "https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?q=80&w=500&auto=format&fit=crop", // Patate al forno (Tuscan)
+    "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=500&auto=format&fit=crop", // Insalata rucola e parmigiano
+    "https://images.unsplash.com/photo-1515443961218-a51367888e4b?q=80&w=500&auto=format&fit=crop", // Spinaci all'aglio
+    "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=500&auto=format&fit=crop", // Funghi trifolati
+    "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=500&auto=format&fit=crop", // Verdure miste
+    "https://images.unsplash.com/photo-1623428187969-5da2dced5ebf?q=80&w=500&auto=format&fit=crop", // Insalata d'accompagnamento
+    "https://images.unsplash.com/photo-1561131248-c52d209a0a50?q=80&w=500&auto=format&fit=crop"  // Pomodori e cipolla rossa
+  ];
+  const [currentSideIndex, setCurrentSideIndex] = createSignal(0);
+  
+  onMount(() => {
+    const sidesTimer = setInterval(() => {
+      setCurrentSideIndex((prev) => (prev + 1) % sidesImages.length);
+    }, 2500); // Cambia foto ogni 2.5 secondi
+    return () => clearInterval(sidesTimer);
   });
 
   // --- LOGICA RESTRITTIVA PRENOTAZIONI ---
@@ -52,7 +72,6 @@ function App() {
   };
 
   // --- DATABASE MENU DIGITALE REALE ---
-  // Rimosse le immagini provvisorie mancanti per attivare il segnaposto automatico elegante
   const menuItems = [
     // --- PIZZE ---
     { id: 1, title: "Margherita", category: "pizza", price: "£12.00", desc: "Tomato, mozzarella and fresh basil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg" },
@@ -118,8 +137,8 @@ function App() {
     { id: 51, title: "Bistecca Ribeye", category: "main", price: "£34.00", desc: "28 days ribeye, freshly cut and cooked to your preference. Served with Tuscan potatoes, side salad and homemade peppercorn sauce." },
     { id: 52, title: "Tagliata di Manzo", category: "main", price: "£32.00", desc: "28 days aged sliced ribeye served on a bed of rocket, topped with shaved Parmigiano Reggiano and a drizzle of balsamic glaze, extra virgin olive oil and Maldon sea salt." },
 
-    // --- SIDES ---
-    { id: 53, title: "Contorni (Sides Selection)", category: "sides", price: "£5.00", desc: "Choose from: French fries, Tuscan potatoes, Rocket & Parmesan salad, Garlic spinach, Sautéed mushrooms, Mixed vegetables, Side salad, or Tomatoes & red onions." }
+    // --- SIDES (ID 53) ---
+    { id: 53, title: "Contorni (Sides Selection)", category: "sides", price: "£5.00", desc: "Choose from: French fries, Tuscan potatoes, Rocket & Parmesan salad, Garlic spinach, Sautéed mushrooms, Mixed vegetables, Side salad, or Tomatoes & red onions.", isSidesCarousel: true }
   ];
 
   const filteredMenu = createMemo(() => {
@@ -127,13 +146,12 @@ function App() {
     return menuItems.filter(item => item.category === selectedCategory());
   });
 
-  // Funzione per restituire l'icona FontAwesome corretta in base alla categoria
   const getCategoryIcon = (category) => {
     switch(category) {
       case 'pizza': return 'fa-pizza-slice';
       case 'starters': return 'fa-cheese';
       case 'pasta': return 'fa-utensils';
-      case 'ravioli': return 'fa-stroopwafel'; // Icona geometrica alternativa per ravioli
+      case 'ravioli': return 'fa-stroopwafel'; 
       case 'main': return 'fa-drumstick-bite';
       default: return 'fa-wine-glass-alt';
     }
@@ -263,8 +281,20 @@ function App() {
         .menu-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden; transition: var(--transition); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column; }
         .menu-card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); }
         
-        /* STILI PER IL SEGNAPOSTO INTELLIGENTE DELLE CARD */
         .menu-card-image { width: 100%; height: 220px; object-fit: cover; display: block; }
+        
+        /* STILE DEL CAROUSEL DEI CONTORNI */
+        .sides-carousel-container {
+            width: 100%; height: 220px; position: relative; overflow: hidden; background: #000;
+        }
+        .sides-carousel-image {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.8s ease-in-out;
+        }
+        .sides-carousel-image.active { opacity: 1; }
+        .sides-carousel-badge {
+            position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); color: var(--secondary); padding: 2px 8px; font-size: 0.75rem; border-radius: 10px; border: 1px solid var(--secondary); font-weight: 600;
+        }
+
         .menu-placeholder-image {
             width: 100%; height: 220px;
             background: linear-gradient(135deg, #1a1a1a 0%, #3a2a22 100%);
@@ -305,7 +335,6 @@ function App() {
         .success-message { padding: 3rem 1rem; text-align: center; }
         .success-icon { font-size: 4rem; color: #34A853; margin-bottom: 1.5rem; }
         
-        /* FIX BOTTONI AGGIORNATI IERI */
         .contact-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem; text-align: center; align-items: start; }
         .contact-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
         .contact-info h3 { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); margin-bottom: 0.8rem; }
@@ -341,9 +370,6 @@ function App() {
       <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="#home">Dolce <span>Vita</span></a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-          </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
@@ -358,7 +384,7 @@ function App() {
         </div>
       </nav>
 
-      {/* HERO CON CAROUSEL */}
+      {/* HERO SECTION */}
       <section class="hero" id="home">
         {heroImages.map((img, index) => (
           <div 
@@ -366,7 +392,6 @@ function App() {
             style={{ "background-image": `url('${img}')`, "z-index": index === currentHeroIndex() ? 2 : 1 }}
           />
         ))}
-
         <div class="hero-content" data-aos="fade-up" style={{ "z-index": 10 }}>
           <h1 class="hero-title">DOLCE VITA</h1>
           <p class="hero-subtitle">Authentic Italian dining in the heart of Wooburn Green</p>
@@ -385,8 +410,8 @@ function App() {
               <div class="about-text">
                 <h2>Our Story</h2>
                 <p><strong>Dolce Vita</strong> is more than just a restaurant; it is a true journey through traditional Italian flavours. Since 2019, we have been bringing the most genuine spirit of the peninsula to Wooburn Green.</p>
-                <p>Every dish is crafted with hand-picked ingredients, recipes passed down through generations, and the distinctive passion of real Italian cooking. Our head chef brings twenty years of experience from Italy's finest kitchens.</p>
-                <p><strong>Our commitment:</strong> Outstanding quality, a warm atmosphere, and impeccable service. We invite you to discover why we are the preferred choice for those who cherish authentic Italian cuisine.</p>
+                <p>Every dish is crafted with hand-picked ingredients, recipes passed down through generations, and the distinctive passion of real Italian cooking.</p>
+                <p><strong>Our commitment:</strong> Outstanding quality, a warm atmosphere, and impeccable service.</p>
               </div>
               <div class="about-image">
                 <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/capi.jpeg" alt="Dolce Vita Story Image" />
@@ -396,7 +421,7 @@ function App() {
         </div>
       </section>
 
-      {/* MENU CON LOGICA INTELLIGENTE PER IMMAGINI MANCANTI */}
+      {/* MENU SECTION */}
       <section class="section-padding" id="menu">
         <div class="container-custom">
           <h2 class="section-title" data-aos="fade-down">Our Menu</h2>
@@ -415,14 +440,33 @@ function App() {
           <div class="menu-grid">
             {filteredMenu().map((item) => (
               <div class="menu-card" data-aos="fade-up" key={item.id}>
-                {item.img ? (
+                
+                {/* LOGICA DELLA FOTO / CAROUSEL INTELLIGENTE */}
+                {item.isSidesCarousel ? (
+                  /* SE LA CARD È QUELLA DEI CONTORNI, ATTIVA IL CAROUSEL DA 8 FOTO */
+                  <div class="sides-carousel-container">
+                    {sidesImages.map((imgUrl, i) => (
+                      <img 
+                        src={imgUrl} 
+                        class={`sides-carousel-image ${i === currentSideIndex() ? 'active' : ''}`} 
+                        alt="Sides Selection" 
+                      />
+                    ))}
+                    <div class="sides-carousel-badge">
+                      <i class="fas fa-sync-alt fa-spin me-1"></i> {currentSideIndex() + 1} / 8 Sides
+                    </div>
+                  </div>
+                ) : item.img ? (
+                  /* SE IL PIATTO HA UN'IMMAGINE REALE CARICATA */
                   <img src={item.img} class="menu-card-image" alt={item.title} />
                 ) : (
+                  /* SE NON C'È FOTO, SEGNAPOSTO ELEGANTE CON ICONA */
                   <div class="menu-placeholder-image">
                     <i class={`fas ${getCategoryIcon(item.category)}`}></i>
                     <span class="menu-placeholder-brand">Dolce Vita</span>
                   </div>
                 )}
+
                 <div class="menu-card-content">
                   <h3 class="menu-card-title">{item.title}</h3>
                   <div class="menu-card-price">{item.price}</div>
@@ -463,22 +507,12 @@ function App() {
             <div class="review-item">
               <div class="stars">★★★★★</div>
               <div class="review-author">James Thompson</div>
-              <p class="review-text">"Absolutely authentic Italian cooking. The pasta is hand-made fresh daily and the flavours are exactly as I remember from my time in Rome. Simply outstanding."</p>
+              <p class="review-text">"Absolutely authentic Italian cooking. Simply outstanding."</p>
             </div>
             <div class="review-item">
               <div class="stars">★★★★★</div>
               <div class="review-author">Sarah Mitchell</div>
-              <p class="review-text">"Beautiful atmosphere, exceptional service, and the risotto was absolutely divine. We'll definitely be returning for special occasions. Highly recommended!"</p>
-            </div>
-            <div class="review-item">
-              <div class="stars">★★★★★</div>
-              <div class="review-author">Emma & David Williams</div>
-              <p class="review-text">"Family dinner was wonderful. The children loved their meals and the staff were incredibly accommodating. A real gem in Wooburn! We can't wait to come back."</p>
-            </div>
-            <div class="review-item">
-              <div class="stars">★★★★★</div>
-              <div class="review-author">Marco Rossi</div>
-              <p class="review-text">"Finally found authentic Italian food in the UK! The attention to detail is impressive and you can taste the quality of every ingredient. Bravo!"</p>
+              <p class="review-text">"Beautiful atmosphere, exceptional service, and the risotto was divine."</p>
             </div>
           </div>
         </div>
@@ -492,7 +526,6 @@ function App() {
               <>
                 <h3>Book a Table</h3>
                 <p>Please select your preferred date and time slot. Please note we are closed on Mondays.</p>
-                
                 <form onSubmit={handleSubmit} class="booking-form">
                   <div>
                     <label for="name">Full Name *</label>
@@ -511,11 +544,8 @@ function App() {
                       <option value="4">4 People</option>
                       <option value="5">5 People</option>
                       <option value="6">6 People</option>
-                      <option value="7">7 People</option>
-                      <option value="8+">8+ People (Large Party)</option>
                     </select>
                   </div>
-                  
                   <div>
                     <label for="date">Date *</label>
                     <input 
@@ -528,63 +558,41 @@ function App() {
                       onChange={handleDateChange} 
                     />
                   </div>
-
                   <div class="form-group-full">
                     <label for="time">Preferred Time Slot *</label>
-                    <select 
-                      id="time" 
-                      name="time" 
-                      required 
-                      value={bookingTime()} 
-                      onChange={(e) => setBookingTime(e.target.value)}
-                    >
+                    <select id="time" name="time" required value={bookingTime()} onChange={(e) => setBookingTime(e.target.value)}>
                       <option value="" disabled selected>-- Select an available slot --</option>
-                      
                       <optgroup label="Lunch Service">
                         <option value="12:00">12:00</option>
-                        <option value="12:30">12:30</option>
                         <option value="13:00">13:00</option>
-                        <option value="13:30">13:30</option>
-                        <option value="14:00">14:00</option>
-                        <option value="14:30">14:30</option>
                       </optgroup>
-
                       <optgroup label="Dinner Service">
                         <option value="19:00">19:00</option>
-                        <option value="19:30">19:30</option>
                         <option value="20:00">20:00</option>
-                        <option value="20:30">20:30</option>
-                        <option value="21:00">21:00</option>
-                        <option value="21:30">21:30</option>
-                        <option value="22:00">22:00</option>
                       </optgroup>
                     </select>
                   </div>
-
                   <div>
                     <label for="email">Email Address *</label>
                     <input type="email" id="email" name="email" required placeholder="name@example.com" />
                   </div>
-                  
                   <div class="form-group-full">
                     <label for="notes">Special Requests / Allergies</label>
-                    <textarea id="notes" name="notes" rows="3" placeholder="Let us know if you have any food allergies or seating preferences..."></textarea>
+                    <textarea id="notes" name="notes" rows="3" placeholder="Let us know preferences..."></textarea>
                   </div>
-
                   <div class="form-group-full text-center mt-3">
-                    <button type="submit" disabled={isSending()} class="btn-primary-custom" style="width: 100%; padding: 16px 0; font-size: 1.1rem;">
+                    <button type="submit" disabled={isSending()} class="btn-primary-custom" style="width: 100%; padding: 16px 0;">
                       {isSending() ? "Sending Request..." : "Submit Reservation Request"}
                     </button>
                   </div>
                 </form>
               </>
             ) : (
-              <div class="success-message" data-aos="fade-up">
+              <div class="success-message">
                 <i class="fas fa-check-circle success-icon"></i>
                 <h3>Thank You!</h3>
-                <p style="font-size: 1.2rem; color: #333; margin-bottom: 1rem;">Your booking request has been sent successfully.</p>
-                <p style="color: #666; max-width: 500px; margin: 0 auto 2rem;">We are processing your request and you will receive a confirmation email or call very shortly. We look forward to welcoming you to Dolce Vita!</p>
-                <button class="btn-secondary-custom" onClick={() => setFormSubmitted(false)} style={{ color: "var(--primary)", "border-color": "var(--primary)", "margin-left": "0" }}>
+                <p>Your booking request has been sent successfully.</p>
+                <button class="btn-secondary-custom" onClick={() => setFormSubmitted(false)} style={{ color: "var(--primary)", "border-color": "var(--primary)" }}>
                   Book Another Table
                 </button>
               </div>
@@ -593,7 +601,7 @@ function App() {
         </div>
       </section>
 
-      {/* CONTIENE I TUOI BOTTONI CONTATTI AGGIORNATI IERI */}
+      {/* CONTACTS */}
       <section class="section-padding" id="contact">
         <div class="container-custom">
           <div class="content-card-panel" data-aos="fade-up">
@@ -619,7 +627,7 @@ function App() {
                 <i class="fas fa-envelope contact-icon"></i>
                 <h3>Email</h3>
                 <p>info@dolcevitawooburn.co.uk</p>
-                <a href="mailto:info@dolcevitawooburn.co.uk?subject=Inquiry%20from%20Website" class="btn-action email">
+                <a href="mailto:info@dolcevitawooburn.co.uk" class="btn-action email">
                   <i class="fas fa-paper-plane"></i> Write Us
                 </a>
               </div>
