@@ -26,22 +26,7 @@ function App() {
     return () => clearInterval(timer);
   });
 
-  // --- CAROUSEL CONTORNI (Solo contorni italiani reali, zero errori!) ---
-  const sidesImages = [
-    "https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=600&auto=format&fit=crop", // Rosemary roasted potatoes
-    "https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=600&auto=format&fit=crop", // Golden french fries
-    "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=600&auto=format&fit=crop", // Sautéed garlic mushrooms
-    "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=600&auto=format&fit=crop"  // Rocket & parmesan salad
-  ];
-  const [currentSideIndex, setCurrentSideIndex] = createSignal(0);
-  onMount(() => {
-    const sidesTimer = setInterval(() => {
-      setCurrentSideIndex((prev) => (prev + 1) % sidesImages.length);
-    }, 3000);
-    return () => clearInterval(sidesTimer);
-  });
-
-  // --- LOGICA RESTRITTIVA PRENOTAZIONI ---
+  // --- LOGICA PRENOTAZIONI ---
   const [bookingDate, setBookingDate] = createSignal("");
   const [bookingTime, setBookingTime] = createSignal("");
 
@@ -66,42 +51,103 @@ function App() {
     return `${yyyy}-${mm}-${dd}`;
   };
 
-  // --- MENU COMPLETO CON TUTTI I NUOVI PIATTI ---
+  // --- ARRAY DI TUTTI I PIATTI DAL MENU REALE ---
+  // Se 'img' è una stringa vuota "", la card mostrerà l'icona corrispondente alla categoria
   const menuItems = [
+    // NIBBLES
+    { id: 1, title: "Bread and Nduja", category: "nibbles", price: "£6.00", desc: "Traditional Italian artisan bread paired with spicy, spreadable Calabrian nduja.", img: "" },
+    { id: 2, title: "Mixed Olives", category: "nibbles", price: "£6.00", desc: "A selection of fine marinated Italian olives with herbs and olive oil.", img: "" },
+    { id: 3, title: "Bread and Olive Oil", category: "nibbles", price: "£6.00", desc: "Freshly baked bread served with premium extra virgin olive oil and balsamic vinegar.", img: "" },
+
     // STARTERS
-    { id: 1, title: "Antipasto Misto", category: "starters", price: "£9.50", desc: "Selection of finest Italian cured meats, mozzarella, and marinated vegetables.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery4.jpg" },
-    { id: 2, title: "Bruschetta Classica", category: "starters", price: "£6.50", desc: "Toasted artisan bread topped with diced tomatoes, garlic, fresh basil, and extra virgin olive oil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery6.jpg" },
-    
-    // PIZZE
-    { id: 3, title: "Margherita", category: "pizza", price: "£10.50", desc: "Tomato sauce, mozzarella, and fresh basil. A timeless Italian classic.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg" },
-    { id: 4, title: "Piccante", category: "pizza", price: "£13.00", desc: "Tomato sauce, mozzarella, spicy Italian salami, and fresh chillies.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery7.jpg" },
-    
-    // PRIMI (PASTA)
-    { id: 5, title: "Carbonara", category: "pasta", price: "£12.00", desc: "Fresh pasta tossed with crispy guanciale, egg yolk, and rich Pecorino Romano.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg" },
-    { id: 6, title: "Spaghetti Gamberi", category: "pasta", price: "£14.50", desc: "Fresh prawns, garlic, white wine, and cherry tomatoes with a touch of chilli.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gamberi.jpg" },
-    { id: 7, title: "Tagliatelle Funghi", category: "pasta", price: "£11.50", desc: "Egg tagliatelle with wild porcini mushrooms, light cream, and truffle oil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/funghi.jpg" },
-    { id: 8, title: "Lasagna Casalinga", category: "pasta", price: "£12.50", desc: "Traditional slow-cooked beef ragù layered with béchamel and fresh pasta sheets.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery3.jpg" },
-    
-    // SECONDI (MAINS)
-    { id: 9, title: "Branzino al Forno", category: "main", price: "£16.00", desc: "Whole sea bass fillets baked with lemon, garlic, white wine, and aromatic herbs.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/branzino.jpg" },
-    { id: 10, title: "Tagliata di Manzo", category: "main", price: "£19.50", desc: "Sliced grilled sirloin steak served over a bed of wild rocket, topped with parmesan shavings.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery9.jpg" },
-    
-    // DESSERTS
-    { id: 11, title: "Tiramisù", category: "dessert", price: "£6.00", desc: "Traditional home-made recipe with savoiardi, mascarpone cream, espresso, and cocoa.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/tiramisu.jpg" },
-    { id: 12, title: "Gelato Artigianale", category: "dessert", price: "£4.50", desc: "Premium Italian gelato. Choose from pistachio, Piedmont hazelnut, or dark chocolate.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gelato.jpg" },
-    
-    // DRINKS
-    { id: 13, title: "Vino della Casa", category: "drinks", price: "£5.50", desc: "Our hand-picked house Italian red or white wine, perfectly matched for dining.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/vino.jpg" },
-    { id: 14, title: "Espresso & Caffè", category: "drinks", price: "£2.00", desc: "Authentic Neapolitan double espresso, lungo, or macchiato.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/espresso.jpg" },
-    
-    // CONTORNI (SIDES WITH CLEAN CAROUSEL)
-    { id: 15, title: "Contorni (Sides)", category: "main", price: "£5.00", desc: "Selection of classic Italian sides: Rosemary roasted potatoes, golden french fries, sautéed mushrooms or rocket salad.", isSidesCarousel: true }
+    { id: 4, title: "Focaccia all'aglio VV", category: "starters", price: "£7.00", desc: "Homemade pizza bread with garlic butter, oregano and rosemary.", img: "" },
+    { id: 5, title: "Bruschetta VV", category: "starters", price: "£8.50", desc: "Toasted bread topped with fresh chopped tomatoes, oregano, garlic, basil, balsamic glaze and extra virgin olive oil.", img: "" },
+    { id: 6, title: "Arancini V", category: "starters", price: "£10.00", desc: "Crispy rice balls filled with peas, tomato sauce and mozzarella. Served with tomato sauce.", img: "" },
+    { id: 7, title: "Calamari", category: "starters", price: "£10.00", desc: "Deep-fried squid rings, served with tartare sauce.", img: "" },
+    { id: 8, title: "Bianchetti", category: "starters", price: "£11.00", desc: "Deep-fried whitebait, served with tartare sauce.", img: "" },
+    { id: 9, title: "Polpette dello chef", category: "starters", price: "£12.00", desc: "Homemade meatballs in a rich, spicy tomato sauce with mixed peppers. Served with toasted bread.", img: "" },
+    { id: 10, title: "Parma Ham & Burrata", category: "starters", price: "£14.00", desc: "Fresh burrata from Puglia served with Parma ham, cherry tomato concassé and basil.", img: "" },
+    { id: 11, title: "Gamberoni Dolce Vita", category: "starters", price: "£12.00", desc: "King prawns cooked in a cherry tomato, white wine, garlic and parsley sauce, topped with rocket and served with toasted bread.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gamberi.jpg" },
+    { id: 12, title: "Funghi al Bosco V", category: "starters", price: "£11.00", desc: "Baked Portobello mushrooms stuffed with gorgonzola and mozzarella, dressed with garlic, parsley, balsamic glaze and extra virgin olive oil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/funghi.jpg" },
+    { id: 13, title: "Antipasto Italiano", category: "starters", price: "£30.00", desc: "Selection of Parma ham, Milano salami, spicy salami, arancini, fresh mozzarella, cherry tomatoes, mixed olives, roasted peppers, Italian cheeses and artichokes. Served with toasted bread.", img: "" },
+
+    // PIZZE & CALZONI & RUSTICHE
+    { id: 14, title: "Margherita V", category: "pizza", price: "£12.00", desc: "Tomato, mozzarella and fresh basil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg" },
+    { id: 15, title: "Diavola", category: "pizza", price: "£15.00", desc: "Tomato, mozzarella, pepperoni and fresh chilli.", img: "" },
+    { id: 16, title: "Roma", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, spicy pepperoni, mushrooms and red onion.", img: "" },
+    { id: 17, title: "Napoli", category: "pizza", price: "£16.50", desc: "Tomato, mozzarella, anchovies, capers, black olives, oregano, parsley and garlic oil.", img: "" },
+    { id: 18, title: "Quattro Gusti", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, chicken, cotto ham and pepperoni.", img: "" },
+    { id: 19, title: "Capricciosa", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, artichokes, cotto ham, black olives and mushrooms.", img: "" },
+    { id: 20, title: "Funghi & Salsiccia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, mushrooms and crumbled Italian pork sausage.", img: "" },
+    { id: 21, title: "Prosciutto & Funghi", category: "pizza", price: "£17.00", desc: "Tomato, mozzarella, cotto ham and mushrooms.", img: "" },
+    { id: 22, title: "Vulcano", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, pepperoni, red onions, egg, nduja.", img: "" },
+    { id: 23, title: "Vegetariana V", category: "pizza", price: "£17.00", desc: "Tomato, mozzarella, mixed peppers, mushrooms, black olives and red onion.", img: "" },
+    { id: 24, title: "Primavera", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, topped with rocket, cherry tomatoes, Parma ham and Parmesan.", img: "" },
+    { id: 25, title: "Sant'Elia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, salami chorizo, gorgonzola, mushrooms and red onion.", img: "" },
+    { id: 26, title: "Ferrandina", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, crumbled Italian pork sausage, cherry tomatoes, black olives and basil pesto.", img: "" },
+    { id: 27, title: "Calzone di Carne", category: "pizza", price: "£19.00", desc: "Folded pizza brushed with garlic butter, filled with tomato, mozzarella, pepperoni, crumbled Italian pork sausage and chicken. Served with a pot of tomato sauce.", img: "" },
+    { id: 28, title: "Calzone Piccante", category: "pizza", price: "£18.00", desc: "Folded pizza brushed with garlic butter, filled with tomato, mozzarella, chicken, chilli, nduja and mushrooms. Served with a pot of tomato sauce.", img: "" },
+    { id: 29, title: "Rustica Dolce Vita", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, salami chorizo, roasted peppers, black olives and rocket.", img: "" },
+    { id: 30, title: "Rustica Assassina", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, spicy chicken, fresh chilli, nduja and salame piccante.", img: "" },
+
+    // PASTA
+    { id: 31, title: "Penne Arrabbiata VV", category: "pasta", price: "£16.00", desc: "Penne in a spicy tomato sauce with chilli, basil, onion and garlic.", img: "" },
+    { id: 32, title: "Linguine Bolognese", category: "pasta", price: "£18.00", desc: "Linguine with a traditional homemade beef Bolognese sauce.", img: "" },
+    { id: 33, title: "Penne alla Boscaiola", category: "pasta", price: "£20.00", desc: "Penne in a rich creamy tomato sauce with crumbled Italian pork sausage, mushrooms and Calabrian nduja.", img: "" },
+    { id: 34, title: "Spaghetti Carbonara", category: "pasta", price: "£18.00", desc: "Spaghetti with Italian guanciale, Parmesan, black pepper and egg.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg" },
+    { id: 35, title: "Linguine al Granchio", category: "pasta", price: "£22.00", desc: "Linguine with crab meat, cherry tomato sauce, chilli, garlic, parsley, white wine and extra virgin olive oil.", img: "" },
+    { id: 36, title: "Spaghetti Gamberi & Acciughe", category: "pasta", price: "£20.00", desc: "Spaghetti with prawns and anchovies in a garlic, cherry tomato and white wine sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gamberi.jpg" },
+    { id: 37, title: "Linguine Salmone", category: "pasta", price: "£17.50", desc: "Linguine with smoked salmon, onion, cherry tomatoes, cream, parsley and a touch of tomato sauce.", img: "" },
+    { id: 38, title: "Spaghetti Pescatore", category: "pasta", price: "£21.00", desc: "Spaghetti with mixed seafood, prawns, squid, mussels and octopus in a garlic, white wine and tomato sauce.", img: "" },
+    { id: 39, title: "Linguine ai Gamberi & Pesto", category: "pasta", price: "£19.00", desc: "Linguine with homemade basil pesto, tiger prawns, cherry tomatoes and a touch of cream.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gamberi.jpg" },
+    { id: 40, title: "Penne al Forno", category: "pasta", price: "£19.00", desc: "Penne with mushrooms, crispy guanciale, spinach, garlic and parsley, baked with breadcrumbs and Parmigiano Reggiano.", img: "" },
+
+    // RISOTTI
+    { id: 41, title: "Risotto Gorgonzola & Salsiccia", category: "risotto", price: "£19.00", desc: "Carnaroli rice with crumbled Italian pork sausage and spinach, creamed with gorgonzola and Parmigiano Reggiano.", img: "" },
+    { id: 42, title: "Risotto Asparagi & Funghi", category: "risotto", price: "£18.00", desc: "Carnaroli rice with mushrooms, asparagus, onion and parsley, creamed with Parmigiano Reggiano.", img: "" },
+    { id: 43, title: "Risotto Frutti di Mare", category: "risotto", price: "£21.00", desc: "Carnaroli rice with mixed seafood, prawns, squid, mussels and octopus cooked in a white wine, garlic and tomato sauce.", img: "" },
+
+    // RAVIOLI
+    { id: 44, title: "Ravioli ai Porcini V", category: "ravioli", price: "£23.00", desc: "Porcini mushroom-filled ravioli, sautéed in a fragrant butter and sage sauce, finished with Parmigiano Reggiano.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/funghi.jpg" },
+    { id: 45, title: "Ravioli Astice & Granchio", category: "ravioli", price: "£26.00", desc: "Lobster filled-ravioli toasted in a rich velvety crab sauce, with cherry tomatoes, citrus hints and aromatic herbs.", img: "" },
+    { id: 46, title: "Ravioli Ricotta & Spinaci", category: "ravioli", price: "£20.00", desc: "Spinach and ricotta-filled ravioli cooked with crumbled Italian pork sausage and finished with shaved Parmigiano Reggiano.", img: "" },
+
+    // MAINS (SECONDI)
+    { id: 47, title: "Pollo Sambuca", category: "mains", price: "£25.00", desc: "Chicken breast cooked in a creamy sambuca sauce with red onions. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/capi.jpeg" },
+    { id: 48, title: "Pollo Cacciatore", category: "mains", price: "£25.00", desc: "Chicken breast cooked in a spicy tomato sauce with onions, mixed peppers, mushrooms, black olives and white wine. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/capi.jpeg" },
+    { id: 49, title: "Vitello ai Funghi", category: "mains", price: "£30.00", desc: "Thinly sliced veal cooked with onions and wild mushrooms in a rich white wine, parsley and cream sauce. Served with Tuscan potatoes and garlic spinach.", img: "" },
+    { id: 50, title: "Spigola al Limone", category: "mains", price: "£26.00", desc: "Pan-fried sea bass fillets cooked in a rich lemon butter and white wine sauce. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/branzino.jpg" },
+    { id: 51, title: "Zuppa di Pesce", category: "mains", price: "£28.00", desc: "Seafood selection, including prawns, squid, octopus and mussels, cooked in a spicy tomato sauce with white wine, garlic and parsley. Served with toasted bread.", img: "" },
+    { id: 52, title: "Baccalà in Umido", category: "mains", price: "£29.00", desc: "Cod loin cooked in a Mediterranean tomato sauce with red onions, black olives, capers, garlic and parsley. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/branzino.jpg" },
+    { id: 53, title: "Bistecca", category: "mains", price: "£34.00", desc: "28 days ribeye, freshly cut and cooked to your preference. Served with Tuscan potatoes, side salad and homemade peppercorn sauce.", img: "" },
+    { id: 54, title: "Tagliata di Manzo", category: "mains", price: "£32.00", desc: "28 days aged sliced ribeye served on a bed of rocket, topped with shaved Parmigiano Reggiano and a drizzle of balsamic glaze, extra virgin olive oil and Maldon sea salt.", img: "" },
+
+    // SALADS
+    { id: 55, title: "Classic Salad VV", category: "salads", price: "£14.00", desc: "Baby leaf and rocket salad with avocado, mixed peppers, red onion, cucumber, cherry tomatoes and olives, dressed with balsamic vinegar and extra virgin olive oil.", img: "" },
+
+    // SIDES
+    { id: 56, title: "Dolce Vita Sides", category: "sides", price: "£5.00", desc: "French fries, Tuscan potatoes, Rocket and Parmesan, Garlic spinach, Sautéed mushrooms, Mixed vegetables, Side salad, or Tomatoes & red onions. (Side bread £4.00)", img: "" }
   ];
 
   const filteredMenu = createMemo(() => {
     if (selectedCategory() === "all") return menuItems;
     return menuItems.filter(item => item.category === selectedCategory());
   });
+
+  // Ritorna la classe dell'icona FontAwesome corretta in base alla categoria se manca la foto
+  const getCategoryIcon = (category) => {
+    switch(category) {
+      case "nibbles": return "fas fa-cookie-bite";
+      case "starters": return "fas fa-utensils";
+      case "pizza": return "fas fa-pizza-slice";
+      case "pasta": return "fas fa-cloud"; // Rappresenta i fili/nidi o usa fas fa-utensils
+      case "risotto": case "ravioli": return "fas fa-bowl-rice";
+      case "mains": return "fas fa-drumstick-bite";
+      case "salads": return "fas fa-seedling";
+      case "sides": return "fas fa-bread-slice";
+      default: return "fas fa-utensils";
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -223,21 +269,29 @@ function App() {
         .about-image { height: 420px; border-radius: var(--border-radius); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
         .about-image img { width: 100%; height: 100%; object-fit: cover; }
         
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
         .menu-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden; transition: var(--transition); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column; }
         .menu-card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); }
-        .menu-card-image { width: 100%; height: 220px; object-fit: cover; display: block; }
         
-        /* CAROUSEL CONTORNI */
-        .sides-carousel-container { position: relative; width: 100%; height: 220px; overflow: hidden; background: #000; }
-        .sides-carousel-img { position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover; opacity:0; transition: opacity 0.5s ease-in-out; }
-        .sides-carousel-img.active { opacity: 1; }
-        .sides-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.75); color: var(--secondary); font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; z-index: 5; }
-
-        .menu-card-content { padding: 1.5rem; text-align: center; flex-grow: 1; }
+        /* Icon placeholder box style */
+        .menu-card-icon-placeholder { 
+            width: 100%; 
+            height: 220px; 
+            background: #f7f4ee; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: var(--secondary);
+            font-size: 3.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .menu-card-image { width: 100%; height: 220px; object-fit: cover; display: block; border-bottom: 1px solid var(--border-color); }
+        
+        .menu-card-content { padding: 1.5rem; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-card-top { margin-bottom: 0.8rem; }
         .menu-card-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; }
-        .menu-card-price { color: var(--secondary); font-family: 'Lato', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.8rem; }
-        .menu-card-description { color: #666666; font-family: 'Lato', sans-serif; font-size: 0.95rem; line-height: 1.6; text-align: center; margin: 0 auto; max-width: 90%; }
+        .menu-card-price { color: var(--secondary); font-family: 'Lato', sans-serif; font-size: 1.1rem; font-weight: 700; }
+        .menu-card-description { color: #666666; font-family: 'Lato', sans-serif; font-size: 0.95rem; line-height: 1.6; text-align: center; margin: 0 auto; max-width: 95%; }
         
         .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
         .gallery-item { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: var(--border-radius); cursor: pointer; }
@@ -317,7 +371,7 @@ function App() {
         </div>
       </nav>
 
-      {/* HERO CON CAROUSEL */}
+      {/* HERO SECTION */}
       <section class="hero" id="home">
         <For each={heroImages}>{(img, index) => (
           <div 
@@ -358,41 +412,37 @@ function App() {
       {/* MENU HIGHLIGHTS */}
       <section class="section-padding" id="menu">
         <div class="container-custom">
-          <h2 class="section-title" data-aos="fade-down">Menu Highlights</h2>
-          <p class="section-subtitle-custom" data-aos="fade-down">A selection of our most beloved dishes</p>
+          <h2 class="section-title" data-aos="fade-down">The Food Menu</h2>
+          <p class="section-subtitle-custom" data-aos="fade-down">Explore our extensive and authentic Italian selections</p>
           
           <div class="filter-container d-flex justify-content-center flex-wrap gap-2 mb-5" data-aos="fade-down">
-            <button class={`btn-filter ${selectedCategory() === 'all' ? 'active' : ''}`} onClick={() => setSelectedCategory('all')}>All Items</button>
+            <button class={`btn-filter ${selectedCategory() === 'all' ? 'active' : ''}`} onClick={() => setSelectedCategory('all')}>All Menu</button>
+            <button class={`btn-filter ${selectedCategory() === 'nibbles' ? 'active' : ''}`} onClick={() => setSelectedCategory('nibbles')}>Nibbles</button>
             <button class={`btn-filter ${selectedCategory() === 'starters' ? 'active' : ''}`} onClick={() => setSelectedCategory('starters')}>Starters</button>
-            <button class={`btn-filter ${selectedCategory() === 'pizza' ? 'active' : ''}`} onClick={() => setSelectedCategory('pizza')}>Pizze</button>
-            <button class={`btn-filter ${selectedCategory() === 'pasta' ? 'active' : ''}`} onClick={() => setSelectedCategory('pasta')}>Primi (Pasta)</button>
-            <button class={`btn-filter ${selectedCategory() === 'main' ? 'active' : ''}`} onClick={() => setSelectedCategory('main')}>Secondi (Mains)</button>
-            <button class={`btn-filter ${selectedCategory() === 'dessert' ? 'active' : ''}`} onClick={() => setSelectedCategory('dessert')}>Desserts</button>
-            <button class={`btn-filter ${selectedCategory() === 'drinks' ? 'active' : ''}`} onClick={() => setSelectedCategory('drinks')}>Drinks</button>
+            <button class={`btn-filter ${selectedCategory() === 'pizza' ? 'active' : ''}`} onClick={() => setSelectedCategory('pizza')}>Pizze & Calzoni</button>
+            <button class={`btn-filter ${selectedCategory() === 'pasta' ? 'active' : ''}`} onClick={() => setSelectedCategory('pasta')}>Pasta</button>
+            <button class={`btn-filter ${selectedCategory() === 'risotto' ? 'active' : ''}`} onClick={() => setSelectedCategory('risotto')}>Risotti</button>
+            <button class={`btn-filter ${selectedCategory() === 'ravioli' ? 'active' : ''}`} onClick={() => setSelectedCategory('ravioli')}>Ravioli</button>
+            <button class={`btn-filter ${selectedCategory() === 'mains' ? 'active' : ''}`} onClick={() => setSelectedCategory('mains')}>Mains</button>
+            <button class={`btn-filter ${selectedCategory() === 'salads' ? 'active' : ''}`} onClick={() => setSelectedCategory('salads')}>Salads</button>
+            <button class={`btn-filter ${selectedCategory() === 'sides' ? 'active' : ''}`} onClick={() => setSelectedCategory('sides')}>Sides</button>
           </div>
 
           <div class="menu-grid">
             <For each={filteredMenu()}>{(item) => (
               <div class="menu-card" data-aos="fade-up">
-                {item.isSidesCarousel ? (
-                  <div class="sides-carousel-container">
-                    <For each={sidesImages}>{(img, idx) => (
-                      <img 
-                        src={img} 
-                        class={`sides-carousel-img ${idx() === currentSideIndex() ? 'active' : ''}`} 
-                        alt="Authentic Italian side dish"
-                      />
-                    )}</For>
-                    <div class="sides-badge">
-                      Sides {currentSideIndex() + 1} / 4
-                    </div>
-                  </div>
-                ) : (
+                {item.img !== "" ? (
                   <img src={item.img} class="menu-card-image" alt={item.title} />
+                ) : (
+                  <div class="menu-card-icon-placeholder">
+                    <i class={getCategoryIcon(item.category)}></i>
+                  </div>
                 )}
                 <div class="menu-card-content">
-                  <h3 class="menu-card-title">{item.title}</h3>
-                  <div class="menu-card-price">{item.price}</div>
+                  <div class="menu-card-top">
+                    <h3 class="menu-card-title">{item.title}</h3>
+                    <div class="menu-card-price">{item.price}</div>
+                  </div>
                   <p class="menu-card-description">{item.desc}</p>
                 </div>
               </div>
@@ -440,11 +490,6 @@ function App() {
               <div class="stars">★★★★★</div>
               <div class="review-author">Emma & David Williams</div>
               <p class="review-text">"Family dinner was wonderful. The children loved their meals and the staff were incredibly accommodating. A real gem in Wooburn! We can't wait to come back."</p>
-            </div>
-            <div class="review-item">
-              <div class="stars">★★★★★</div>
-              <div class="review-author">Marco Rossi</div>
-              <p class="review-text">"Finally found authentic Italian food in the UK! The attention to detail is impressive and you can taste the quality of every ingredient. Bravo!"</p>
             </div>
           </div>
         </div>
@@ -549,7 +594,6 @@ function App() {
                 <i class="fas fa-check-circle success-icon"></i>
                 <h3>Thank You!</h3>
                 <p style="font-size: 1.2rem; color: #333; margin-bottom: 1rem;">Your booking request has been sent successfully.</p>
-                <p style="color: #666; max-width: 500px; margin: 0 auto 2rem;">We are processing your request and you will receive a confirmation email or call very shortly. We look forward to welcoming you to Dolce Vita!</p>
                 <button class="btn-secondary-custom" onClick={() => setFormSubmitted(false)} style={{ color: "var(--primary)", "border-color": "var(--primary)", "margin-left": "0" }}>
                   Book Another Table
                 </button>
@@ -559,7 +603,7 @@ function App() {
         </div>
       </section>
 
-      {/* SEZIONE CONTATTI */}
+      {/* CONTACTS */}
       <section class="section-padding" id="contact">
         <div class="container-custom">
           <div class="content-card-panel" data-aos="fade-up">
