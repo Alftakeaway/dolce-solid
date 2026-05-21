@@ -549,6 +549,11 @@ function App() {
               <div class="review-author">Emma & David Williams</div>
               <p class="review-text">"Family dinner was wonderful. The children loved their meals and the staff were incredibly accommodating. A real gem in Wooburn! We can't wait to come back."</p>
             </div>
+            <div class="review-item">
+            <div class="stars">★★★★★</div>
+              <div class="review-author">Marco Bianchi</div>
+              <p class="review-text">"As an Italian living abroad, I'm very picky about authentic cuisine. Dolce Vita exceeded all my expectations – the ingredients, the recipes, the warmth... it truly feels like home. Bravi!"</p>
+      </div>
           </div>
         </div>
       </section>
