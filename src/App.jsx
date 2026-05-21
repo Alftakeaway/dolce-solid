@@ -225,7 +225,7 @@ function App() {
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
 
- /* ===== NAVBAR CON ORO LUCIDO METALLICO 3D ===== */
+ /* ===== NAVBAR CON ORO SATINATO ELEGANTE ===== */
 
 /* LOGO "Dolce Vita" - Rimane invariato (Handwriting Parisienne) */
 .navbar-brand { 
@@ -242,11 +242,11 @@ function App() {
     font-style: normal;
 }
 
-/* CONNETTORI (Home, Menu, etc.) - ORO LUCIDO METALLICO */
+/* CONNETTORI (Home, Menu, etc.) - ORO SATINATO CALDO */
 .nav-link { 
     font-family: 'Bodoni Moda', serif !important; /* Font elegante tipo Voga */
     font-size: 1.4rem !important; 
-    font-weight: 700 !important; /* Grassetto essenziale per l'effetto metallo */
+    font-weight: 600 !important; /* Peso medio per eleganza */
     margin: 0 20px !important; 
     padding: 10px 15px !important;
     transition: all 0.3s ease !important;
@@ -254,43 +254,26 @@ function App() {
     letter-spacing: 1.5px;
     text-transform: none;
     
-    /* 1. GRADIENTE METALLICO: Simula la riflessione della luce su oro curvo */
-    /* Chiaro (luce) -> Scuro (ombra) -> Chiaro (riflesso) -> Scuro (base) */
-    background: linear-gradient(to bottom, 
-        #FFE5B4 0%,   /* Luce alta brillante */
-        #FFD700 25%,  /* Oro chiaro */
-        #B8860B 50%,  /* Ombra centrale scura (dà volume) */
-        #FFD700 75%,  /* Riflesso inferiore */
-        #DAA520 100%  /* Base dorata */
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
+    /* 1. COLORE BASE: Oro satinato caldo (non giallo acceso, ma dorato antico) */
+    color: #D4AF37 !important; /* Metallic Gold standard */
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
     
-    /* 2. OMBRE PER PROFONDITÀ 3D */
-    /* Drop-shadow esterna per staccare dallo sfondo */
-    filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.7));
-    
-    /* Text-shadow interna per definire i bordi e dare lucentezza */
+    /* 2. OMBRE PER PROFONDITÀ E CALORE */
+    /* Layer 1: Ombra nera morbida sotto (stacca dallo sfondo) */
+    /* Layer 2: Alone dorato molto sottile (calore) */
     text-shadow: 
-        0px 1px 0px rgba(255, 255, 255, 0.4), /* Highlight superiore netto */
-        0px -1px 0px rgba(0, 0, 0, 0.2);     /* Ombra inferiore sottile */
+        0px 2px 4px rgba(0, 0, 0, 0.6), 
+        0px 0px 8px rgba(212, 175, 55, 0.3);
 }
 
 .nav-link:hover { 
-    transform: translateY(-3px) scale(1.05);
-    /* All'hover il metallo diventa più brillante/chiaro */
-    background: linear-gradient(to bottom, 
-        #FFFACD 0%,   /* Quasi bianco */
-        #FFE44D 25%,  
-        #DAA520 50%,  
-        #FFE44D 75%,  
-        #FFD700 100%  
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.8));
+    transform: translateY(-3px);
+    /* All'hover diventa leggermente più chiaro/brillante */
+    color: #FFE5B4 !important; /* Champagne Gold */
+    text-shadow: 
+        0px 4px 6px rgba(0, 0, 0, 0.7), 
+        0px 0px 12px rgba(255, 229, 180, 0.5);
 }
 
 .nav-link::after {
@@ -300,11 +283,10 @@ function App() {
     left: 50%;
     width: 0;
     height: 2px;
-    /* Linea oro metallico sotto */
-    background: linear-gradient(90deg, #B8860B, #FFD700, #B8860B);
-    box-shadow: 0 0 5px #FFD700;
+    background: #D4AF37; /* Linea oro satinato */
     transition: all 0.3s ease;
     transform: translateX(-50%);
+    box-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
 }
 .nav-link:hover::after {
     width: 70%;
