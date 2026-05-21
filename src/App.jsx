@@ -8,7 +8,7 @@ function App() {
     AOS.init({ duration: 800, once: true });
   });
 
-  const [selectedCategory, setSelectedCategory] = createSignal("all"); // Di default mostra tutto il menu
+  const [selectedCategory, setSelectedCategory] = createSignal("all"); 
   const [formSubmitted, setFormSubmitted] = createSignal(false);
   const [isSending, setIsSending] = createSignal(false);
 
@@ -31,7 +31,7 @@ function App() {
       category: "pasta", 
       price: "£16.50", 
       desc: "Tortellini served in a rich cream sauce with cotto ham, peas, Parmigiano Reggiano and a touch of butter.", 
-      img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/tortellinip.jpg", // Foto caricata nella cartella assets
+      img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/tortellinip.jpg", 
       isSpecialMenu: true 
     }
   ]);
@@ -114,19 +114,16 @@ function App() {
     { id: 57, title: "Dolce Vita Sides", category: "sides", price: "£5.00", desc: "French fries, Tuscan potatoes, Garlic spinach, Sautéed mushrooms, Mixed vegetables, Side salad, or Tomatoes & red onions.", img: "", isSpecialMenu: false }
   ];
 
-  // --- UNIONE DEI PIATTI BASE CON QUELLI SPECIALI CREATI DINAMICAMENTE ---
   const allMenuItems = createMemo(() => {
     return [...baseMenuItems, ...dynamicSpecials()];
   });
 
-  // --- FILTRO CATEGORIE COMPRESA LA CATEGORIA "SPECIAL" ---
   const filteredMenu = createMemo(() => {
     if (selectedCategory() === "all") return allMenuItems();
     if (selectedCategory() === "special") return allMenuItems().filter(item => item.isSpecialMenu);
     return allMenuItems().filter(item => item.category === selectedCategory());
   });
 
-  // --- LOGICA DI AGGIUNTA DI UN NUOVO PIATTO DA PARTE DELL'ADMIN ---
   const handleAddSpecialItem = (e) => {
     e.preventDefault();
     if (!newSpecialTitle() || !newSpecialPrice()) return;
@@ -139,7 +136,7 @@ function App() {
       category: newSpecialCategory(),
       price: formattedPrice,
       desc: newSpecialDesc(),
-      img: "", // Placeholder standard
+      img: "", 
       isSpecialMenu: true 
     };
 
@@ -278,8 +275,9 @@ function App() {
         .hero-subtitle { font-size: 1.2rem; color: var(--secondary); margin-bottom: 2.5rem; font-style: italic; }
         
         .btn-primary-custom { display: inline-block; background: var(--primary); color: white; padding: 14px 38px; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; transition: var(--transition); border: none; text-decoration: none; }
-        .btn-secondary-custom { display: inline-block; background: transparent; color: white; padding: 14px 38px; border: 2px solid white; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; margin-left: 1rem; text-decoration: none; }
+        .btn-secondary-custom { display: inline-block; background: transparent; color: white; padding: 14px 38px; border: 2px solid white; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; margin-left: 1rem; text-decoration: none; transition: var(--transition); }
         .btn-primary-custom:hover { background: #6b0000; transform: translateY(-2px); color: white; }
+        .btn-secondary-custom:hover { background: white; color: black; transform: translateY(-2px); }
         
         .section-padding { padding: 100px 0; }
         .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
@@ -291,7 +289,6 @@ function App() {
         .btn-filter { background: #ffffff; color: var(--dark); border: 1px solid var(--border-color); padding: 8px 22px; font-size: 0.95rem; font-weight: 600; border-radius: 30px; transition: var(--transition); cursor: pointer; }
         .btn-filter:hover, .btn-filter.active { background: var(--primary); color: #ffffff; border-color: var(--primary); }
         
-        /* PULSANTE "SPECIALS" CON BORDO COMET */
         .btn-comet {
             position: relative;
             background: #111111;
@@ -332,7 +329,6 @@ function App() {
         .menu-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden; transition: var(--transition); display: flex; flex-direction: column; position: relative; }
         .menu-card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); }
         
-        /* BORDO E DETTAGLIO PER I PIATTI SPECIALI NELLE ALTRE CATEGORIE */
         .menu-card.special-highlight {
             border: 2px solid #b30000;
             box-shadow: 0 0 18px rgba(179, 0, 0, 0.25);
@@ -362,7 +358,6 @@ function App() {
         .menu-card-price { color: var(--secondary); font-size: 1.1rem; font-weight: 700; }
         .menu-card-description { color: #666666; font-size: 0.95rem; line-height: 1.6; }
         
-        /* ADMIN PANELS */
         .admin-toggle-btn { position: fixed; bottom: 20px; right: 20px; background: var(--dark); color: white; border: 1px solid var(--secondary); padding: 10px 15px; border-radius: 30px; font-weight: 600; z-index: 2000; cursor: pointer; font-size: 0.85rem; }
         .admin-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 2100; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; backdrop-filter: blur(5px); }
         .admin-modal { background: #ffffff; border-radius: var(--border-radius); max-width: 650px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 2.5rem; border-top: 4px solid var(--primary); }
@@ -385,7 +380,12 @@ function App() {
         .contact-icon { font-size: 2.5rem; color: var(--primary); }
         
         footer { background: var(--dark); color: white; padding: 3rem 0; text-align: center; border-top: 3px solid var(--secondary); }
-        @media (max-width: 768px) { .about-content { grid-template-columns: 1fr; } .gallery-grid { grid-template-columns: repeat(2, 1fr); } .booking-form { grid-template-columns: 1fr; .form-group-full { grid-column: span 1; } }
+        @media (max-width: 768px) { 
+            .about-content { grid-template-columns: 1fr; } 
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); } 
+            .booking-form { grid-template-columns: 1fr; }
+            .booking-form .form-group-full { grid-column: span 1; } 
+        }
       `}</style>
 
       {/* BOTTONE ACCESSO ADMIN */}
@@ -412,7 +412,7 @@ function App() {
               </form>
             ) : (
               <div>
-                {/* BANNER INIZIALE CON TORTELLINI */}
+                {/* BANNER SPECIALE */}
                 <div class="p-3 mb-4 rounded" style={{ background: "#fcf8f2", border: "1px solid var(--border-color)" }}>
                   <h5 class="font-serif mb-2" style={{ color: "var(--primary)", "font-weight": "700" }}><i class="fas fa-tv me-2"></i>1. Today's Special Banner</h5>
                   <div class="mb-2">
@@ -425,22 +425,21 @@ function App() {
                   </div>
                 </div>
 
-                {/* MODULO CREAZIONE NUOVI PIATTI SPECIALI */}
+                {/* CREAZIONE NUOVI PIATTI */}
                 <div class="p-3 rounded" style={{ background: "#f4f6f8", border: "1px solid #dcdfe6" }}>
                   <h5 class="font-serif mb-2" style={{ color: "var(--primary)", "font-weight": "700" }}><i class="fas fa-plus-circle me-2"></i>2. Create New Special Menu Items</h5>
-                  <p class="text-muted small mb-3">Add completely new dishes that aren't on the standard menu. They will appear under <strong>Specials</strong> and highlighted inside their native categories.</p>
                   
                   <form onSubmit={handleAddSpecialItem} class="row g-2 mb-4">
                     <div class="col-md-7">
                       <label class="small font-weight-bold mb-1">Dish Name *</label>
-                      <input type="text" class="form-control form-control-sm" placeholder="e.g. Tortellini panna prosciutto e piselli" value={newSpecialTitle()} onInput={(e) => setNewSpecialTitle(e.target.value)} required />
+                      <input type="text" class="form-control form-control-sm" placeholder="e.g. Tortellini panna..." value={newSpecialTitle()} onInput={(e) => setNewSpecialTitle(e.target.value)} required />
                     </div>
                     <div class="col-md-5">
                       <label class="small font-weight-bold mb-1">Price *</label>
                       <input type="text" class="form-control form-control-sm" placeholder="e.g. 16.50" value={newSpecialPrice()} onInput={(e) => setNewSpecialPrice(e.target.value)} required />
                     </div>
                     <div class="col-md-12">
-                      <label class="small font-weight-bold mb-1">Menu Category Appurtenance *</label>
+                      <label class="small font-weight-bold mb-1">Category *</label>
                       <select class="form-select form-select-sm" value={newSpecialCategory()} onChange={(e) => setNewSpecialCategory(e.target.value)}>
                         <option value="nibbles">Nibbles</option>
                         <option value="starters">Starters</option>
@@ -455,24 +454,22 @@ function App() {
                     </div>
                     <div class="col-12">
                       <label class="small font-weight-bold mb-1">English Description *</label>
-                      <textarea class="form-control form-control-sm" rows="2" placeholder="Describe the ingredients and preparation clearly..." value={newSpecialDesc()} onInput={(e) => setNewSpecialDesc(e.target.value)} required></textarea>
+                      <textarea class="form-control form-control-sm" rows="2" placeholder="Description..." value={newSpecialDesc()} onInput={(e) => setNewSpecialDesc(e.target.value)} required></textarea>
                     </div>
                     <div class="col-12 mt-2">
                       <button type="submit" class="btn btn-sm btn-success w-100 font-weight-bold"><i class="fas fa-check me-1"></i> Add to Specials</button>
                     </div>
                   </form>
 
-                  {/* LISTA DEI PIATTI SPECIALI ATTUALMENTE INSERITI */}
                   <h6 class="small font-weight-bold mb-1">Active Dynamic Specials ({dynamicSpecials().length})</h6>
                   <div class="current-specials-list">
-                    <button class="btn btn-sm btn-secondary w-100 mb-2 py-1" style={{ "font-size": "0.75rem" }} type="button" disabled>Static Real Menu Items (57 Dishes Loaded)</button>
                     <For each={dynamicSpecials()}>{(item) => (
                       <div class="d-flex justify-content-between align-items-center p-2 mb-1 rounded bg-white border" style={{ "font-size": "0.85rem" }}>
                         <div>
-                          <span class="badge bg-danger me-1 text-uppercase" style={{ "font-size": "0.65rem" }}>Special {item.category}</span>
-                          <strong>{item.title}</strong> — <span class="text-success font-weight-bold">{item.price}</span>
+                          <span class="badge bg-danger me-1 text-uppercase">Special {item.category}</span>
+                          <strong>{item.title}</strong>
                         </div>
-                        <button class="btn btn-sm btn-outline-danger p-0 px-2" style={{ "font-size": "0.75rem" }} onClick={() => handleRemoveSpecialItem(item.id)}>
+                        <button class="btn btn-sm btn-outline-danger p-0 px-2" onClick={() => handleRemoveSpecialItem(item.id)}>
                           <i class="fas fa-trash-alt"></i>
                         </button>
                       </div>
@@ -497,13 +494,12 @@ function App() {
               <li class="nav-item"><a class="nav-link" href="#about">Our Story</a></li>
               <li class="nav-item"><a class="nav-link" href="#menu">Menu</a></li>
               <li class="nav-item"><a class="nav-link" href="#reservation">Book a Table</a></li>
-              <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
             </ul>
           </div>
         </div>
       </nav>
 
-      {/* HERO SECTION */}
+      {/* HERO SECTION - RIPRISTINATO IL PULSANTE 'FULL MENU' AFFIANCO A 'BOOK NOW' */}
       <section class="hero" id="home">
         <For each={heroImages}>{(img, index) => (
           <div class={`hero-bg-image ${index() === currentHeroIndex() ? 'active' : ''}`} style={{ "background-image": `url('${img}')`, "z-index": index() === currentHeroIndex() ? 2 : 1 }} />
@@ -511,7 +507,10 @@ function App() {
         <div class="hero-content" data-aos="fade-up" style={{ "z-index": 10 }}>
           <h1 class="hero-title">DOLCE VITA</h1>
           <p class="hero-subtitle">Authentic Italian dining in the heart of Wooburn Green</p>
-          <a href="#reservation" class="btn-primary-custom">Book Now</a>
+          <div class="d-flex justify-content-center align-items-center flex-wrap gap-2">
+            <a href="#reservation" class="btn-primary-custom">Book Now</a>
+            <a href="#menu" class="btn-secondary-custom">Full Menu</a>
+          </div>
         </div>
       </section>
 
@@ -539,10 +538,8 @@ function App() {
           <p class="section-subtitle-custom" data-aos="fade-down">Explore our extensive and authentic Italian selections</p>
           
           <div class="filter-container d-flex justify-content-center flex-wrap gap-2 mb-5 align-items-center" data-aos="fade-down">
-            {/* RIPRISTINATO FISICAMENTE IL BOTTONE ALL MENU QUI SOTTO */}
             <button class={`btn-filter ${selectedCategory() === 'all' ? 'active' : ''}`} onClick={() => setSelectedCategory('all')}>All Menu</button>
             
-            {/* BOTTONE SPECIALS CON EFFETTO COMET BORDER */}
             <button class={`btn-comet ${selectedCategory() === 'special' ? 'active' : ''}`} onClick={() => setSelectedCategory('special')}>
               <i class="fas fa-star me-1 text-warning"></i> Specials
             </button>
@@ -561,12 +558,9 @@ function App() {
           <div class="menu-grid">
             <For each={filteredMenu()}>{(item) => (
               <div class={`menu-card ${item.isSpecialMenu ? 'special-highlight' : ''}`} data-aos="fade-up">
-                
-                {/* BADGE SULLE CARD SE IL PIATTO È UNO SPECIALE */}
                 {item.isSpecialMenu && (
                   <div class="special-tag-badge"><i class="fas fa-star me-1 text-warning"></i> Special Item</div>
                 )}
-                
                 {item.img !== "" ? (
                   <img src={item.img} class="menu-card-image" alt={item.title} />
                 ) : (
@@ -587,6 +581,7 @@ function App() {
         </div>
       </section>
 
+      {/* SEZIONE COMPONENTE PIATTO SPECIALE DEL GIORNO */}
       <SpecialDish />
 
       {/* RESERVATION SYSTEM */}
@@ -595,17 +590,46 @@ function App() {
           <div class="reservation-box" data-aos="zoom-in">
             {!formSubmitted() ? (
               <>
-                <h3>Book a Table</h3>
+                <h3 class="font-serif mb-4" style={{ "font-size": "2.2rem", color: "var(--primary)", "font-weight": "700" }}>Book a Table</h3>
                 <form onSubmit={handleSubmit} class="booking-form">
-                  <div><label>Full Name *</label><input type="text" name="name" required /></div>
-                  <div><label>Phone Number *</label><input type="tel" name="phone" required /></div>
-                  <div><label>Guests *</label><select name="guests"><option value="2">2 People</option></select></div>
-                  <div><label>Date *</label><input type="date" min={getTodayDateString()} value={bookingDate()} onChange={handleDateChange} required /></div>
-                  <div class="form-group-full"><button type="submit" class="btn-primary-custom" style="width:100%">{isSending() ? "Sending..." : "Submit"}</button></div>
+                  <div>
+                    <label class="form-label small font-weight-bold">Full Name *</label>
+                    <input type="text" name="name" required />
+                  </div>
+                  <div>
+                    <label class="form-label small font-weight-bold">Phone Number *</label>
+                    <input type="tel" name="phone" required />
+                  </div>
+                  <div>
+                    <label class="form-label small font-weight-bold">Guests *</label>
+                    <select name="guests">
+                      <option value="1">1 Person</option>
+                      <option value="2">2 People</option>
+                      <option value="3">3 People</option>
+                      <option value="4">4 People</option>
+                      <option value="5">5 People</option>
+                      <option value="6">6 People</option>
+                      <option value="7">7 People</option>
+                      <option value="8">8 People</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label small font-weight-bold">Date *</label>
+                    <input type="date" min={getTodayDateString()} value={bookingDate()} onChange={handleDateChange} required />
+                  </div>
+                  <div class="form-group-full">
+                    <button type="submit" class="btn-primary-custom w-100 mt-3">
+                      {isSending() ? "Sending Request..." : "Submit Reservation"}
+                    </button>
+                  </div>
                 </form>
               </>
             ) : (
-              <div class="success-message"><h3>Thank You!</h3></div>
+              <div class="p-4 text-center">
+                <i class="fas fa-check-circle text-success mb-3" style={{ "font-size": "3.5rem" }}></i>
+                <h3 class="font-serif mb-2" style={{ color: "var(--primary)", "font-weight": "700" }}>Thank You!</h3>
+                <p class="text-muted">Your booking request has been sent successfully. We will get back to you shortly.</p>
+              </div>
             )}
           </div>
         </div>
