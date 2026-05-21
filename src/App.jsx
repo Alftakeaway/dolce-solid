@@ -22,7 +22,7 @@ function App() {
   onMount(() => {
     const timer = setInterval(() => {
       setCurrentHeroIndex((prev) => (prev + 1) % heroImages.length);
-    }, 3000);
+    }, 5000);
     return () => clearInterval(timer);
   });
 
