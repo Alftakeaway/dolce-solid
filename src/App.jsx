@@ -242,11 +242,11 @@ function App() {
     font-style: normal;
 }
 
-/* CONNETTORI (Home, Menu, etc.) - ORO SATINATO CALDO */
+/* CONNETTORI (Home, Menu, etc.) - ORO ANTICO/BRONZO ELEGANTE */
 .nav-link { 
-    font-family: 'Bodoni Moda', serif !important; /* Font elegante tipo Voga */
+    font-family: 'Bodoni Moda', serif !important; /* Font elegante */
     font-size: 1.4rem !important; 
-    font-weight: 600 !important; /* Peso medio per eleganza */
+    font-weight: 600 !important; 
     margin: 0 20px !important; 
     padding: 10px 15px !important;
     transition: all 0.3s ease !important;
@@ -254,26 +254,22 @@ function App() {
     letter-spacing: 1.5px;
     text-transform: none;
     
-    /* 1. COLORE BASE: Oro satinato caldo (non giallo acceso, ma dorato antico) */
-    color: #D4AF37 !important; /* Metallic Gold standard */
-    background: none !important;
-    -webkit-text-fill-color: initial !important;
+    /* COLORE ESATTO DELL'IMMAGINE: Oro Antico/Bronzo */
+    color: #C5A059 !important; 
     
-    /* 2. OMBRE PER PROFONDITÀ E CALORE */
-    /* Layer 1: Ombra nera morbida sotto (stacca dallo sfondo) */
-    /* Layer 2: Alone dorato molto sottile (calore) */
+    /* OMBRA MORBIDA PER DARE PROFONDITÀ (come nell'immagine) */
     text-shadow: 
-        0px 2px 4px rgba(0, 0, 0, 0.6), 
-        0px 0px 8px rgba(212, 175, 55, 0.3);
+        0px 1px 2px rgba(0, 0, 0, 0.8),   /* Ombra nera vicina */
+        0px 0px 5px rgba(197, 160, 89, 0.3); /* Leggero alone ambrato */
 }
 
 .nav-link:hover { 
-    transform: translateY(-3px);
-    /* All'hover diventa leggermente più chiaro/brillante */
-    color: #FFE5B4 !important; /* Champagne Gold */
+    transform: translateY(-2px);
+    /* All'hover diventa leggermente più chiaro (Oro Chiaro) */
+    color: #E6C885 !important; 
     text-shadow: 
-        0px 4px 6px rgba(0, 0, 0, 0.7), 
-        0px 0px 12px rgba(255, 229, 180, 0.5);
+        0px 2px 4px rgba(0, 0, 0, 0.9),
+        0px 0px 8px rgba(230, 200, 133, 0.5);
 }
 
 .nav-link::after {
@@ -283,10 +279,9 @@ function App() {
     left: 50%;
     width: 0;
     height: 2px;
-    background: #D4AF37; /* Linea oro satinato */
+    background: #C5A059; /* Stesso colore del testo */
     transition: all 0.3s ease;
     transform: translateX(-50%);
-    box-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
 }
 .nav-link:hover::after {
     width: 70%;
