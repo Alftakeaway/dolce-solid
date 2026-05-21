@@ -54,6 +54,9 @@ function App() {
   // --- ARRAY DI TUTTI I PIATTI DAL MENU REALE ---
   // Nota: ho rimosso lo special hardcoded (id:99) e mantenuto solo il menu statico
   const menuItems = [
+
+  // SPECIALS  
+
     // NIBBLES
     { id: 1, title: "Bread and Nduja", category: "nibbles", price: "£6.00", desc: "Traditional Italian artisan bread paired with spicy, spreadable Calabrian nduja.", img: "", isVegetarian: false, isVegan: false },
     { id: 2, title: "Mixed Olives", category: "nibbles", price: "£6.00", desc: "A selection of fine marinated Italian olives with herbs and olive oil.", img: "", isVegetarian: true, isVegan: true },
