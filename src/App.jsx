@@ -8,7 +8,7 @@ function App() {
     AOS.init({ duration: 800, once: true });
   });
 
-  const [selectedCategory, setSelectedCategory] = createSignal("nibbles");
+  const [selectedCategory, setSelectedCategory] = createSignal("all"); // Di default mostra tutto il menu
   const [formSubmitted, setFormSubmitted] = createSignal(false);
   const [isSending, setIsSending] = createSignal(false);
 
@@ -19,103 +19,99 @@ function App() {
 
   // --- STATI PER IL NUOVO PIATTO SPECIALE (FORM ADMIN) ---
   const [newSpecialTitle, setNewSpecialTitle] = createSignal("");
-  const [newSpecialCategory, setNewSpecialCategory] = createSignal("starters");
+  const [newSpecialCategory, setNewSpecialCategory] = createSignal("pasta");
   const [newSpecialPrice, setNewSpecialPrice] = createSignal("");
   const [newSpecialDesc, setNewSpecialDesc] = createSignal("");
-  const [newSpecialDietary, setNewSpecialDietary] = createSignal("none"); // none, vegetarian, vegan
 
   // --- ARRAY DEI PIATTI SPECIALI AGGIUNTI DALL'ADMIN ---
   const [dynamicSpecials, setDynamicSpecials] = createSignal([
-    // Esempio iniziale per mostrare l'effetto grafico immediatamente
     { 
       id: "special-1", 
-      title: "Tagliolini all'Aragosta", 
+      title: "Tortellini panna prosciutto e piselli", 
       category: "pasta", 
-      price: "£26.00", 
-      desc: "Fresh egg tagliolini sautéed with half local lobster, sweet Datterini tomatoes, a hint of brandy, garlic and fresh parsley.", 
-      img: "", 
-      isVegetarian: false, 
-      isVegan: false, 
+      price: "£16.50", 
+      desc: "Tortellini served in a rich cream sauce with cotto ham, peas, Parmigiano Reggiano and a touch of butter.", 
+      img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/tortellinip.jpg", // Foto caricata nella cartella assets
       isSpecialMenu: true 
     }
   ]);
 
-  // --- MENU STATICO REALE (I 57 piatti di base) ---
+  // --- MENU STATICO REALE ---
   const baseMenuItems = [
     // NIBBLES
-    { id: 1, title: "Bread and Nduja", category: "nibbles", price: "£6.00", desc: "Traditional Italian artisan bread paired with spicy, spreadable Calabrian nduja.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 2, title: "Mixed Olives", category: "nibbles", price: "£6.00", desc: "A selection of fine marinated Italian olives with herbs and olive oil.", img: "", isVegetarian: true, isVegan: true, isSpecialMenu: false },
-    { id: 3, title: "Bread and Olive Oil", category: "nibbles", price: "£6.00", desc: "Freshly baked bread served with premium extra virgin olive oil and balsamic vinegar.", img: "", isVegetarian: true, isVegan: true, isSpecialMenu: false },
+    { id: 1, title: "Bread and Nduja", category: "nibbles", price: "£6.00", desc: "Traditional Italian artisan bread paired with spicy, spreadable Calabrian nduja.", img: "", isSpecialMenu: false },
+    { id: 2, title: "Mixed Olives", category: "nibbles", price: "£6.00", desc: "A selection of fine marinated Italian olives with herbs and olive oil.", img: "", isSpecialMenu: false },
+    { id: 3, title: "Bread and Olive Oil", category: "nibbles", price: "£6.00", desc: "Freshly baked bread served with premium extra virgin olive oil and balsamic vinegar.", img: "", isSpecialMenu: false },
 
     // STARTERS
-    { id: 4, title: "Focaccia all'aglio", category: "starters", price: "£7.00", desc: "Homemade pizza bread with garlic butter, oregano and rosemary.", img: "", isVegetarian: true, isVegan: true, isSpecialMenu: false },
-    { id: 5, title: "Bruschetta", category: "starters", price: "£8.50", desc: "Toasted bread topped with fresh chopped tomatoes, oregano, garlic, basil, balsamic glaze and extra virgin olive oil.", img: "", isVegetarian: true, isVegan: true, isSpecialMenu: false },
-    { id: 6, title: "Arancini", category: "starters", price: "£10.00", desc: "Crispy rice balls filled with peas, tomato sauce and mozzarella. Served with tomato sauce.", img: "", isVegetarian: true, isVegan: false, isSpecialMenu: false },
-    { id: 7, title: "Calamari", category: "starters", price: "£10.00", desc: "Deep-fried squid rings, served with tartare sauce.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 8, title: "Bianchetti", category: "starters", price: "£11.00", desc: "Deep-fried whitebait, served with tartare sauce.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 9, title: "Polpette dello chef", category: "starters", price: "£12.00", desc: "Homemade meatballs in a rich, spicy tomato sauce with mixed peppers. Served with toasted bread.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 10, title: "Parma Ham & Burrata", category: "starters", price: "£14.00", desc: "Fresh burrata from Puglia served with Parma ham, cherry tomato concassé and basil.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 11, title: "Gamberoni Dolce Vita", category: "starters", price: "£12.00", desc: "King prawns cooked in a cherry tomato, white wine, garlic and parsley sauce, topped with rocket and served with toasted bread.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 12, title: "Funghi al Bosco", category: "starters", price: "£11.00", desc: "Baked Portobello mushrooms stuffed with gorgonzola and mozzarella, dressed with garlic, parsley, balsamic glaze and extra virgin olive oil.", img: "", isVegetarian: true, isVegan: false, isSpecialMenu: false },
-    { id: 13, title: "Antipasto Italiano", category: "starters", price: "£30.00", desc: "Selection of Parma ham, Milano salami, spicy salami, arancini, fresh mozzarella, cherry tomatoes, mixed olives, roasted peppers, Italian cheeses and artichokes. Served with toasted bread.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
+    { id: 4, title: "Focaccia all'aglio", category: "starters", price: "£7.00", desc: "Homemade pizza bread with garlic butter, oregano and rosemary.", img: "", isSpecialMenu: false },
+    { id: 5, title: "Bruschetta", category: "starters", price: "£8.50", desc: "Toasted bread topped with fresh chopped tomatoes, oregano, garlic, basil, balsamic glaze and extra virgin olive oil.", img: "", isSpecialMenu: false },
+    { id: 6, title: "Arancini", category: "starters", price: "£10.00", desc: "Crispy rice balls filled with peas, tomato sauce and mozzarella. Served with tomato sauce.", img: "", isSpecialMenu: false },
+    { id: 7, title: "Calamari", category: "starters", price: "£10.00", desc: "Deep-fried squid rings, served with tartare sauce.", img: "", isSpecialMenu: false },
+    { id: 8, title: "Bianchetti", category: "starters", price: "£11.00", desc: "Deep-fried whitebait, served with tartare sauce.", img: "", isSpecialMenu: false },
+    { id: 9, title: "Polpette dello chef", category: "starters", price: "£12.00", desc: "Homemade meatballs in a rich, spicy tomato sauce with mixed peppers. Served with toasted bread.", img: "", isSpecialMenu: false },
+    { id: 10, title: "Parma Ham & Burrata", category: "starters", price: "£14.00", desc: "Fresh burrata from Puglia served with Parma ham, cherry tomato concassé and basil.", img: "", isSpecialMenu: false },
+    { id: 11, title: "Gamberoni Dolce Vita", category: "starters", price: "£12.00", desc: "King prawns cooked in a cherry tomato, white wine, garlic and parsley sauce, topped with rocket and served with toasted bread.", img: "", isSpecialMenu: false },
+    { id: 12, title: "Funghi al Bosco", category: "starters", price: "£11.00", desc: "Baked Portobello mushrooms stuffed with gorgonzola and mozzarella, dressed with garlic, parsley, balsamic glaze and extra virgin olive oil.", img: "", isSpecialMenu: false },
+    { id: 13, title: "Antipasto Italiano", category: "starters", price: "£30.00", desc: "Selection of Parma ham, Milano salami, spicy salami, arancini, fresh mozzarella, cherry tomatoes, mixed olives, roasted peppers, Italian cheeses and artichokes. Served with toasted bread.", img: "", isSpecialMenu: false },
 
     // PIZZE & CALZONI
-    { id: 14, title: "Margherita", category: "pizza", price: "£12.00", desc: "Tomato, mozzarella and fresh basil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg", isVegetarian: true, isVegan: false, isSpecialMenu: false },
-    { id: 15, title: "Diavola", category: "pizza", price: "£15.00", desc: "Tomato, mozzarella, pepperoni and fresh chilli.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 16, title: "Roma", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, spicy pepperoni, mushrooms and red onion.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 17, title: "Napoli", category: "pizza", price: "£16.50", desc: "Tomato, mozzarella, anchovies, capers, black olives, oregano, parsley and garlic oil.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 18, title: "Quattro Gusti", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, chicken, cotto ham and pepperoni.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 19, title: "Capricciosa", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, artichokes, cotto ham, black olives and mushrooms.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 20, title: "Funghi & Salsiccia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, mushrooms and crumbled Italian pork sausage.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 21, title: "Prosciutto & Funghi", category: "pizza", price: "£17.00", desc: "Tomato, mozzarella, cotto ham and mushrooms.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 22, title: "Vulcano", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, pepperoni, red onions, egg, nduja.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 23, title: "Vegetariana", category: "pizza", price: "£17.00", desc: "Tomato, mozzarella, mixed peppers, mushrooms, black olives and red onion.", img: "", isVegetarian: true, isVegan: false, isSpecialMenu: false },
-    { id: 24, title: "Primavera", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, topped with rocket, cherry tomatoes, Parma ham and Parmesan.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 25, title: "Sant'Elia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, salami chorizo, gorgonzola, mushrooms and red onion.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 26, title: "Ferrandina", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, crumbled Italian pork sausage, cherry tomatoes, black olives and basil pesto.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 27, title: "Calzone di Carne", category: "pizza", price: "£19.00", desc: "Folded pizza brushed with garlic butter, filled with tomato, mozzarella, pepperoni, crumbled Italian pork sausage and chicken. Served with a pot of tomato sauce.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 28, title: "Calzone Piccante", category: "pizza", price: "£18.00", desc: "Folded pizza brushed with garlic butter, filled with tomato, mozzarella, chicken, chilli, nduja and mushrooms. Served with a pot of tomato sauce.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 29, title: "Rustica Dolce Vita", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, salami chorizo, roasted peppers, black olives and rocket.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 30, title: "Rustica Assassina", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, spicy chicken, fresh chilli, nduja and salame piccante.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
+    { id: 14, title: "Margherita", category: "pizza", price: "£12.00", desc: "Tomato, mozzarella and fresh basil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg", isSpecialMenu: false },
+    { id: 15, title: "Diavola", category: "pizza", price: "£15.00", desc: "Tomato, mozzarella, pepperoni and fresh chilli.", img: "", isSpecialMenu: false },
+    { id: 16, title: "Roma", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, spicy pepperoni, mushrooms and red onion.", img: "", isSpecialMenu: false },
+    { id: 17, title: "Napoli", category: "pizza", price: "£16.50", desc: "Tomato, mozzarella, anchovies, capers, black olives, oregano, parsley and garlic oil.", img: "", isSpecialMenu: false },
+    { id: 18, title: "Quattro Gusti", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, chicken, cotto ham and pepperoni.", img: "", isSpecialMenu: false },
+    { id: 19, title: "Capricciosa", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, artichokes, cotto ham, black olives and mushrooms.", img: "", isSpecialMenu: false },
+    { id: 20, title: "Funghi & Salsiccia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, mushrooms and crumbled Italian pork sausage.", img: "", isSpecialMenu: false },
+    { id: 21, title: "Prosciutto & Funghi", category: "pizza", price: "£17.00", desc: "Tomato, mozzarella, cotto ham and mushrooms.", img: "", isSpecialMenu: false },
+    { id: 22, title: "Vulcano", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, pepperoni, red onions, egg, nduja.", img: "", isSpecialMenu: false },
+    { id: 23, title: "Vegetariana", category: "pizza", price: "£17.00", desc: "Tomato, mozzarella, mixed peppers, mushrooms, black olives and red onion.", img: "", isSpecialMenu: false },
+    { id: 24, title: "Primavera", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, topped with rocket, cherry tomatoes, Parma ham and Parmesan.", img: "", isSpecialMenu: false },
+    { id: 25, title: "Sant'Elia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, salami chorizo, gorgonzola, mushrooms and red onion.", img: "", isSpecialMenu: false },
+    { id: 26, title: "Ferrandina", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, crumbled Italian pork sausage, cherry tomatoes, black olives and basil pesto.", img: "", isSpecialMenu: false },
+    { id: 27, title: "Calzone di Carne", category: "pizza", price: "£19.00", desc: "Folded pizza brushed with garlic butter, filled with tomato, mozzarella, pepperoni, crumbled Italian pork sausage and chicken. Served with a pot of tomato sauce.", img: "", isSpecialMenu: false },
+    { id: 28, title: "Calzone Piccante", category: "pizza", price: "£18.00", desc: "Folded pizza brushed with garlic butter, filled with tomato, mozzarella, chicken, chilli, nduja and mushrooms. Served with a pot of tomato sauce.", img: "", isSpecialMenu: false },
+    { id: 29, title: "Rustica Dolce Vita", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, salami chorizo, roasted peppers, black olives and rocket.", img: "", isSpecialMenu: false },
+    { id: 30, title: "Rustica Assassina", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, spicy chicken, fresh chilli, nduja and salame piccante.", img: "", isSpecialMenu: false },
 
     // PASTA
-    { id: 31, title: "Penne Arrabbiata", category: "pasta", price: "£16.00", desc: "Penne in a spicy tomato sauce with chilli, basil, onion and garlic.", img: "", isVegetarian: true, isVegan: true, isSpecialMenu: false },
-    { id: 32, title: "Linguine Bolognese", category: "pasta", price: "£18.00", desc: "Linguine with a traditional homemade beef Bolognese sauce.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 33, title: "Penne alla Boscaiola", category: "pasta", price: "£20.00", desc: "Penne in a rich creamy tomato sauce with crumbled Italian pork sausage, mushrooms and Calabrian nduja.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 34, title: "Spaghetti Carbonara", category: "pasta", price: "£18.00", desc: "Spaghetti with Italian guanciale, Parmesan, black pepper and egg.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 35, title: "Linguine al Granchio", category: "pasta", price: "£22.00", desc: "Linguine with crab meat, cherry tomato sauce, chilli, garlic, parsley, white wine and extra virgin olive oil.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 36, title: "Spaghetti Gamberi & Acciughe", category: "pasta", price: "£20.00", desc: "Spaghetti with prawns and anchovies in a garlic, cherry tomato and white wine sauce.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 37, title: "Linguine Salmone", category: "pasta", price: "£17.50", desc: "Linguine with smoked salmon, onion, cherry tomatoes, cream, parsley and a touch of tomato sauce.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 38, title: "Spaghetti Pescatore", category: "pasta", price: "£21.00", desc: "Spaghetti with mixed seafood, prawns, squid, mussels and octopus in a garlic, white wine and tomato sauce.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 39, title: "Linguine ai Gamberi & Pesto", category: "pasta", price: "£19.00", desc: "Linguine with homemade basil pesto, tiger prawns, cherry tomatoes and a touch of cream.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 40, title: "Penne al Forno", category: "pasta", price: "£19.00", desc: "Penne with mushrooms, crispy guanciale, spinach, garlic and parsley, baked with breadcrumbs and Parmigiano Reggiano.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
+    { id: 31, title: "Penne Arrabbiata", category: "pasta", price: "£16.00", desc: "Penne in a spicy tomato sauce with chilli, basil, onion and garlic.", img: "", isSpecialMenu: false },
+    { id: 32, title: "Linguine Bolognese", category: "pasta", price: "£18.00", desc: "Linguine with a traditional homemade beef Bolognese sauce.", img: "", isSpecialMenu: false },
+    { id: 33, title: "Penne alla Boscaiola", category: "pasta", price: "£20.00", desc: "Penne in a rich creamy tomato sauce with crumbled Italian pork sausage, mushrooms and Calabrian nduja.", img: "", isSpecialMenu: false },
+    { id: 34, title: "Spaghetti Carbonara", category: "pasta", price: "£18.00", desc: "Spaghetti with Italian guanciale, Parmesan, black pepper and egg.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg", isSpecialMenu: false },
+    { id: 35, title: "Linguine al Granchio", category: "pasta", price: "£22.00", desc: "Linguine with crab meat, cherry tomato sauce, chilli, garlic, parsley, white wine and extra virgin olive oil.", img: "", isSpecialMenu: false },
+    { id: 36, title: "Spaghetti Gamberi & Acciughe", category: "pasta", price: "£20.00", desc: "Spaghetti with prawns and anchovies in a garlic, cherry tomato and white wine sauce.", img: "", isSpecialMenu: false },
+    { id: 37, title: "Linguine Salmone", category: "pasta", price: "£17.50", desc: "Linguine with smoked salmon, onion, cherry tomatoes, cream, parsley and a touch of tomato sauce.", img: "", isSpecialMenu: false },
+    { id: 38, title: "Spaghetti Pescatore", category: "pasta", price: "£21.00", desc: "Spaghetti with mixed seafood, prawns, squid, mussels and octopus in a garlic, white wine and tomato sauce.", img: "", isSpecialMenu: false },
+    { id: 39, title: "Linguine ai Gamberi & Pesto", category: "pasta", price: "£19.00", desc: "Linguine with homemade basil pesto, tiger prawns, cherry tomatoes and a touch of cream.", img: "", isSpecialMenu: false },
+    { id: 40, title: "Penne al Forno", category: "pasta", price: "£19.00", desc: "Penne with mushrooms, crispy guanciale, spinach, garlic and parsley, baked with breadcrumbs and Parmigiano Reggiano.", img: "", isSpecialMenu: false },
 
     // RISOTTI
-    { id: 41, title: "Risotto Gorgonzola & Salsiccia", category: "risotto", price: "£19.00", desc: "Carnaroli rice with crumbled Italian pork sausage and spinach, creamed with gorgonzola and Parmigiano Reggiano.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 42, title: "Risotto Asparagi & Funghi", category: "risotto", price: "£18.00", desc: "Carnaroli rice with mushrooms, asparagus, onion and parsley, creamed with Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false, isSpecialMenu: false },
-    { id: 43, title: "Risotto Frutti di Mare", category: "risotto", price: "£21.00", desc: "Carnaroli rice with mixed seafood, prawns, squid, mussels and octopus cooked in a white wine, garlic and tomato sauce.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
+    { id: 41, title: "Risotto Gorgonzola & Salsiccia", category: "risotto", price: "£19.00", desc: "Carnaroli rice with crumbled Italian pork sausage and spinach, creamed with gorgonzola and Parmigiano Reggiano.", img: "", isSpecialMenu: false },
+    { id: 42, title: "Risotto Asparagi & Funghi", category: "risotto", price: "£18.00", desc: "Carnaroli rice with mushrooms, asparagus, onion and parsley, creamed with Parmigiano Reggiano.", img: "", isSpecialMenu: false },
+    { id: 43, title: "Risotto Frutti di Mare", category: "risotto", price: "£21.00", desc: "Carnaroli rice with mixed seafood, prawns, squid, mussels and octopus cooked in a white wine, garlic and tomato sauce.", img: "", isSpecialMenu: false },
 
     // RAVIOLI
-    { id: 44, title: "Ravioli ai Porcini", category: "ravioli", price: "£23.00", desc: "Porcini mushroom-filled ravioli, sautéed in a fragrant butter and sage sauce, finished with Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false, isSpecialMenu: false },
-    { id: 45, title: "Ravioli Astice & Granchio", category: "ravioli", price: "£26.00", desc: "Lobster filled-ravioli toasted in a rich velvety crab sauce, with cherry tomatoes, citrus hints and aromatic herbs.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 46, title: "Ravioli Ricotta & Spinaci", category: "ravioli", price: "£20.00", desc: "Spinach and ricotta-filled ravioli cooked with crumbled Italian pork sausage and finished with shaved Parmigiano Reggiano.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
+    { id: 44, title: "Ravioli ai Porcini", category: "ravioli", price: "£23.00", desc: "Porcini mushroom-filled ravioli, sautéed in a fragrant butter and sage sauce, finished with Parmigiano Reggiano.", img: "", isSpecialMenu: false },
+    { id: 45, title: "Ravioli Astice & Granchio", category: "ravioli", price: "£26.00", desc: "Lobster filled-ravioli toasted in a rich velvety crab sauce, with cherry tomatoes, citrus hints and aromatic herbs.", img: "", isSpecialMenu: false },
+    { id: 46, title: "Ravioli Ricotta & Spinaci", category: "ravioli", price: "£20.00", desc: "Spinach and ricotta-filled ravioli cooked with crumbled Italian pork sausage and finished with shaved Parmigiano Reggiano.", img: "", isSpecialMenu: false },
 
     // MAINS
-    { id: 47, title: "Pollo Sambuca", category: "mains", price: "£25.00", desc: "Chicken breast cooked in a creamy sambuca sauce with red onions. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 48, title: "Pollo Cacciatore", category: "mains", price: "£25.00", desc: "Chicken breast cooked in a spicy tomato sauce with onions, mixed peppers, mushrooms, black olives and white wine. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 49, title: "Vitello ai Funghi", category: "mains", price: "£30.00", desc: "Thinly sliced veal cooked with onions and wild mushrooms in a rich white wine, parsley and cream sauce. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 50, title: "Spigola al Limone", category: "mains", price: "£26.00", desc: "Pan-fried sea bass fillets cooked in a rich lemon butter and white wine sauce. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 51, title: "Zuppa di Pesce", category: "mains", price: "£28.00", desc: "Seafood selection, including prawns, squid, octopus and mussels, cooked in a spicy tomato sauce with white wine, garlic and parsley. Served with toasted bread.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 52, title: "Baccalà in Umido", category: "mains", price: "£29.00", desc: "Cod loin cooked in a Mediterranean tomato sauce with red onions, black olives, capers, garlic and parsley. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 53, title: "Bistecca", category: "mains", price: "£34.00", desc: "28 days ribeye, freshly cut and cooked to your preference. Served with Tuscan potatoes, side salad and homemade peppercorn sauce.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
-    { id: 54, title: "Tagliata di Manzo", category: "mains", price: "£32.00", desc: "28 days aged sliced ribeye served on a bed of rocket, topped with shaved Parmigiano Reggiano and a drizzle of balsamic glaze, extra virgin olive oil and Maldon sea salt.", img: "", isVegetarian: false, isVegan: false, isSpecialMenu: false },
+    { id: 47, title: "Pollo Sambuca", category: "mains", price: "£25.00", desc: "Chicken breast cooked in a creamy sambuca sauce with red onions. Served with Tuscan potatoes and garlic spinach.", img: "", isSpecialMenu: false },
+    { id: 48, title: "Pollo Cacciatore", category: "mains", price: "£25.00", desc: "Chicken breast cooked in a spicy tomato sauce with onions, mixed peppers, mushrooms, black olives and white wine. Served with Tuscan potatoes and garlic spinach.", img: "", isSpecialMenu: false },
+    { id: 49, title: "Vitello ai Funghi", category: "mains", price: "£30.00", desc: "Thinly sliced veal cooked with onions and wild mushrooms in a rich white wine, parsley and cream sauce. Served with Tuscan potatoes and garlic spinach.", img: "", isSpecialMenu: false },
+    { id: 50, title: "Spigola al Limone", category: "mains", price: "£26.00", desc: "Pan-fried sea bass fillets cooked in a rich lemon butter and white wine sauce. Served with Tuscan potatoes and garlic spinach.", img: "", isSpecialMenu: false },
+    { id: 51, title: "Zuppa di Pesce", category: "mains", price: "£28.00", desc: "Seafood selection, including prawns, squid, octopus and mussels, cooked in a spicy tomato sauce with white wine, garlic and parsley. Served with toasted bread.", img: "", isSpecialMenu: false },
+    { id: 52, title: "Baccalà in Umido", category: "mains", price: "£29.00", desc: "Cod loin cooked in a Mediterranean tomato sauce with red onions, black olives, capers, garlic and parsley. Served with Tuscan potatoes and garlic spinach.", img: "", isSpecialMenu: false },
+    { id: 53, title: "Bistecca", category: "mains", price: "£34.00", desc: "28 days ribeye, freshly cut and cooked to your preference. Served with Tuscan potatoes, side salad and homemade peppercorn sauce.", img: "", isSpecialMenu: false },
+    { id: 54, title: "Tagliata di Manzo", category: "mains", price: "£32.00", desc: "28 days aged sliced ribeye served on a bed of rocket, topped with shaved Parmigiano Reggiano and a drizzle of balsamic glaze, extra virgin olive oil and Maldon sea salt.", img: "", isSpecialMenu: false },
 
     // SALADS
-    { id: 55, title: "Classic Salad", category: "salads", price: "£14.00", desc: "Baby leaf and rocket salad with avocado, mixed peppers, red onion, cucumber, cherry tomatoes and olives, dressed with balsamic vinegar and extra virgin olive oil.", img: "", isVegetarian: true, isVegan: true, isSpecialMenu: false },
+    { id: 55, title: "Classic Salad", category: "salads", price: "£14.00", desc: "Baby leaf and rocket salad with avocado, mixed peppers, red onion, cucumber, cherry tomatoes and olives, dressed with balsamic vinegar and extra virgin olive oil.", img: "", isSpecialMenu: false },
 
     // SIDES
-    { id: 56, title: "Rocket and Parmesan", category: "sides", price: "£5.00", desc: "Fresh rocket salad topped with shavings of Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false, isSpecialMenu: false },
-    { id: 57, title: "Dolce Vita Sides", category: "sides", price: "£5.00", desc: "French fries, Tuscan potatoes, Garlic spinach, Sautéed mushrooms, Mixed vegetables, Side salad, or Tomatoes & red onions.", img: "", isVegetarian: true, isVegan: true, isSpecialMenu: false }
+    { id: 56, title: "Rocket and Parmesan", category: "sides", price: "£5.00", desc: "Fresh rocket salad topped with shavings of Parmigiano Reggiano.", img: "", isSpecialMenu: false },
+    { id: 57, title: "Dolce Vita Sides", category: "sides", price: "£5.00", desc: "French fries, Tuscan potatoes, Garlic spinach, Sautéed mushrooms, Mixed vegetables, Side salad, or Tomatoes & red onions.", img: "", isSpecialMenu: false }
   ];
 
   // --- UNIONE DEI PIATTI BASE CON QUELLI SPECIALI CREATI DINAMICAMENTE ---
@@ -126,8 +122,6 @@ function App() {
   // --- FILTRO CATEGORIE COMPRESA LA CATEGORIA "SPECIAL" ---
   const filteredMenu = createMemo(() => {
     if (selectedCategory() === "all") return allMenuItems();
-    if (selectedCategory() === "vegetarian") return allMenuItems().filter(item => item.isVegetarian);
-    if (selectedCategory() === "vegan") return allMenuItems().filter(item => item.isVegan);
     if (selectedCategory() === "special") return allMenuItems().filter(item => item.isSpecialMenu);
     return allMenuItems().filter(item => item.category === selectedCategory());
   });
@@ -145,19 +139,15 @@ function App() {
       category: newSpecialCategory(),
       price: formattedPrice,
       desc: newSpecialDesc(),
-      img: "", // Icona placeholder di default
-      isVegetarian: newSpecialDietary() === "vegetarian" || newSpecialDietary() === "vegan",
-      isVegan: newSpecialDietary() === "vegan",
-      isSpecialMenu: true // Contrassegna come piatto speciale
+      img: "", // Placeholder standard se non ha un link
+      isSpecialMenu: true 
     };
 
     setDynamicSpecials(prev => [newItem, ...prev]);
     
-    // Reset campi modulo
     setNewSpecialTitle("");
     setNewSpecialPrice("");
     setNewSpecialDesc("");
-    setNewSpecialDietary("none");
     alert("Special dish successfully added to the menu!");
   };
 
@@ -301,7 +291,7 @@ function App() {
         .btn-filter { background: #ffffff; color: var(--dark); border: 1px solid var(--border-color); padding: 8px 22px; font-size: 0.95rem; font-weight: 600; border-radius: 30px; transition: var(--transition); cursor: pointer; }
         .btn-filter:hover, .btn-filter.active { background: var(--primary); color: #ffffff; border-color: var(--primary); }
         
-        /* 1. PULSANTE "SPECIALS" CON BORDO COMET */
+        /* PULSANTE "SPECIALS" CON BORDO COMET */
         .btn-comet {
             position: relative;
             background: #111111;
@@ -338,14 +328,11 @@ function App() {
         .btn-comet:hover, .btn-comet.active { color: white; box-shadow: 0 0 15px rgba(139, 0, 0, 0.6); }
         @keyframes comet-rotate { 100% { transform: rotate(360deg); } }
 
-        .btn-filter.dietary-filter { border-color: #2e7d32; color: #2e7d32; }
-        .btn-filter.dietary-filter:hover, .btn-filter.dietary-filter.active { background: #2e7d32; color: #ffffff; border-color: #2e7d32; }
-
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
         .menu-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden; transition: var(--transition); display: flex; flex-direction: column; position: relative; }
         .menu-card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); }
         
-        /* 2. ELEGANTE BORDO E DETTAGLIO PER I PIATTI SPECIALI NELLE ALTRE CATEGORIE */
+        /* BORDO E DETTAGLIO PER I PIATTI SPECIALI NELLE ALTRE CATEGORIE */
         .menu-card.special-highlight {
             border: 2px solid #b30000;
             box-shadow: 0 0 18px rgba(179, 0, 0, 0.25);
@@ -425,20 +412,20 @@ function App() {
               </form>
             ) : (
               <div>
-                {/* 1. SEZIONE TODAY'S SPECIAL BANNER */}
+                {/* BANNER INIZIALE CORRETTO CON TORTELLINI */}
                 <div class="p-3 mb-4 rounded" style={{ background: "#fcf8f2", border: "1px solid var(--border-color)" }}>
                   <h5 class="font-serif mb-2" style={{ color: "var(--primary)", "font-weight": "700" }}><i class="fas fa-tv me-2"></i>1. Today's Special Banner</h5>
                   <div class="mb-2">
                     <label class="form-label small font-weight-bold mb-1">Banner Title</label>
-                    <input type="text" class="form-control form-control-sm" value="Tagliolini all'Aragosta" />
+                    <input type="text" class="form-control form-control-sm" value="Tortellini panna prosciutto e piselli" />
                   </div>
                   <div>
                     <label class="form-label small font-weight-bold mb-1">Banner Description</label>
-                    <textarea class="form-control form-control-sm" rows="2">Fresh egg tagliolini sautéed with half local lobster, sweet Datterini tomatoes, a hint of brandy, garlic and fresh parsley.</textarea>
+                    <textarea class="form-control form-control-sm" rows="2">Tortellini served in a rich cream sauce with cotto ham, peas, Parmigiano Reggiano and a touch of butter.</textarea>
                   </div>
                 </div>
 
-                {/* 2. SEZIONE NUOVA CREAZIONE PIATTI SPECIALI */}
+                {/* MODULO CREAZIONE NUOVI PIATTI SPECIALI */}
                 <div class="p-3 rounded" style={{ background: "#f4f6f8", border: "1px solid #dcdfe6" }}>
                   <h5 class="font-serif mb-2" style={{ color: "var(--primary)", "font-weight": "700" }}><i class="fas fa-plus-circle me-2"></i>2. Create New Special Menu Items</h5>
                   <p class="text-muted small mb-3">Add completely new dishes that aren't on the standard menu. They will appear under <strong>Specials</strong> and highlighted inside their native categories.</p>
@@ -446,13 +433,13 @@ function App() {
                   <form onSubmit={handleAddSpecialItem} class="row g-2 mb-4">
                     <div class="col-md-7">
                       <label class="small font-weight-bold mb-1">Dish Name *</label>
-                      <input type="text" class="form-control form-control-sm" placeholder="e.g. Risotto al Tartufo" value={newSpecialTitle()} onInput={(e) => setNewSpecialTitle(e.target.value)} required />
+                      <input type="text" class="form-control form-control-sm" placeholder="e.g. Tortellini panna prosciutto e piselli" value={newSpecialTitle()} onInput={(e) => setNewSpecialTitle(e.target.value)} required />
                     </div>
                     <div class="col-md-5">
                       <label class="small font-weight-bold mb-1">Price *</label>
-                      <input type="text" class="form-control form-control-sm" placeholder="e.g. 24.50" value={newSpecialPrice()} onInput={(e) => setNewSpecialPrice(e.target.value)} required />
+                      <input type="text" class="form-control form-control-sm" placeholder="e.g. 16.50" value={newSpecialPrice()} onInput={(e) => setNewSpecialPrice(e.target.value)} required />
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                       <label class="small font-weight-bold mb-1">Menu Category Appurtenance *</label>
                       <select class="form-select form-select-sm" value={newSpecialCategory()} onChange={(e) => setNewSpecialCategory(e.target.value)}>
                         <option value="nibbles">Nibbles</option>
@@ -464,14 +451,6 @@ function App() {
                         <option value="mains">Mains</option>
                         <option value="salads">Salads</option>
                         <option value="sides">Sides</option>
-                      </select>
-                    </div>
-                    <div class="col-md-6">
-                      <label class="small font-weight-bold mb-1">Dietary Attributes</label>
-                      <select class="form-select form-select-sm" value={newSpecialDietary()} onChange={(e) => setNewSpecialDietary(e.target.value)}>
-                        <option value="none">Standard Meat/Fish</option>
-                        <option value="vegetarian">Vegetarian (V)</option>
-                        <option value="vegan">Vegan (VG)</option>
                       </select>
                     </div>
                     <div class="col-12">
@@ -553,13 +532,14 @@ function App() {
         </div>
       </section>
 
-      {/* MENU HIGHLIGHTS */}
+      {/* FOOD MENU SECTION */}
       <section class="section-padding" id="menu">
         <div class="container-custom">
           <h2 class="section-title" data-aos="fade-down">The Food Menu</h2>
           <p class="section-subtitle-custom" data-aos="fade-down">Explore our extensive and authentic Italian selections</p>
           
           <div class="filter-container d-flex justify-content-center flex-wrap gap-2 mb-5 align-items-center" data-aos="fade-down">
+            {/* BOTTONE ALL MENU RIPRISTINATO */}
             <button class={`btn-filter ${selectedCategory() === 'all' ? 'active' : ''}`} onClick={() => setSelectedCategory('all')}>All Menu</button>
             
             {/* BOTTONE SPECIALS CON EFFETTO COMET BORDER */}
@@ -576,16 +556,13 @@ function App() {
             <button class={`btn-filter ${selectedCategory() === 'mains' ? 'active' : ''}`} onClick={() => setSelectedCategory('mains')}>Mains</button>
             <button class={`btn-filter ${selectedCategory() === 'salads' ? 'active' : ''}`} onClick={() => setSelectedCategory('salads')}>Salads</button>
             <button class={`btn-filter ${selectedCategory() === 'sides' ? 'active' : ''}`} onClick={() => setSelectedCategory('sides')}>Sides</button>
-            
-            <button class={`btn-filter dietary-filter ${selectedCategory() === 'vegetarian' ? 'active' : ''}`} onClick={() => setSelectedCategory('vegetarian')}><i class="fas fa-leaf me-1"></i> Vegetarian</button>
-            <button class={`btn-filter dietary-filter ${selectedCategory() === 'vegan' ? 'active' : ''}`} onClick={() => setSelectedCategory('vegan')}><i class="fas fa-seedling me-1"></i> Vegan</button>
           </div>
 
           <div class="menu-grid">
             <For each={filteredMenu()}>{(item) => (
               <div class={`menu-card ${item.isSpecialMenu ? 'special-highlight' : ''}`} data-aos="fade-up">
                 
-                {/* 3. BADGE SULLA CARD SE IL PIATTO È AGGIUNTO COME SPECIALE DALL'ADMIN */}
+                {/* BADGE ROSSO/DORATO SUI PIATTI SPECIALI */}
                 {item.isSpecialMenu && (
                   <div class="special-tag-badge"><i class="fas fa-star me-1 text-warning"></i> Special Item</div>
                 )}
@@ -599,9 +576,7 @@ function App() {
                 )}
                 <div class="menu-card-content">
                   <div>
-                    <h3 class="menu-card-title">
-                      {item.title} {item.isVegetarian && !item.isVegan && <span class="text-success small">(V)</span>} {item.isVegan && <span class="text-success small">(VG)</span>}
-                    </h3>
+                    <h3 class="menu-card-title">{item.title}</h3>
                     <div class="menu-card-price mb-3">{item.price}</div>
                   </div>
                   <p class="menu-card-description">{item.desc}</p>
