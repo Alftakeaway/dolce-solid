@@ -242,38 +242,32 @@ function App() {
     font-style: normal;
 }
 
-/* CONNETTORI (Home, Menu, etc.) - ORO SATINATO ELEGANTE */
+/* CONNETTORI (Home, Menu, etc.) - ORO BRILLANTE LINGOTTO */
 .nav-link { 
-    font-family: 'Bodoni Moda', serif !important; /* Font elegante tipo Voga/Bodoni */
+    font-family: 'Bodoni Moda', serif !important;
     font-size: 1.4rem !important; 
-    font-weight: 600 !important; /* Peso medio per eleganza */
+    font-weight: 600 !important;
     margin: 0 20px !important; 
     padding: 10px 15px !important;
     transition: all 0.3s ease !important;
     position: relative;
     letter-spacing: 1.5px;
-    text-transform: none;
     
-    /* COLORE ESATTO: Oro Satinato/Antico (non giallo acceso) */
-    color: #C5A059 !important; 
+    /* ORO BRILLANTE - come nell'immagine */
+    color: #D4AF37 !important; 
     
-    /* OMBRA MORBIDA PER DARE PROFONDITÀ (come nell'immagine) */
-    /* Layer 1: Ombra nera vicina per staccare dallo sfondo */
-    /* Layer 2: Leggero alone ambrato per calore */
+    /* OMBRA PER PROFONDITÀ */
     text-shadow: 
-        0px 1px 2px rgba(0, 0, 0, 0.8),   
-        0px 0px 5px rgba(197, 160, 89, 0.2); 
+        0px 1px 2px rgba(0, 0, 0, 0.9),
+        0px 0px 8px rgba(212, 175, 55, 0.3); 
 }
-
 .nav-link:hover { 
     transform: translateY(-2px);
-    /* All'hover diventa leggermente più chiaro (Champagne) */
-    color: #E6C885 !important; 
+    color: #FFD700 !important; 
     text-shadow: 
         0px 2px 4px rgba(0, 0, 0, 0.9),
-        0px 0px 8px rgba(230, 200, 133, 0.4);
+        0px 0px 12px rgba(255, 215, 0, 0.5);
 }
-
 .nav-link::after {
     content: '';
     position: absolute;
@@ -281,12 +275,13 @@ function App() {
     left: 50%;
     width: 0;
     height: 2px;
-    background: #C5A059; /* Stesso colore del testo */
+    background: #D4AF37;
     transition: all 0.3s ease;
     transform: translateX(-50%);
 }
 .nav-link:hover::after {
     width: 70%;
+    background: #FFD700;
 }
 /* ========================================== */
   
