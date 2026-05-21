@@ -213,45 +213,50 @@ function App() {
   }
   
   /* ===== NAVBAR - FONT HANDWRITING E MENU GRANDE ===== */
-  .navbar {
-      background: rgba(42, 42, 42, 0.98) !important;
-      backdrop-filter: blur(15px);
-      border-bottom: 2px solid var(--secondary);
-      padding: 1rem 0;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  }
-  .navbar-brand { 
-      font-family: 'Parisienne', cursive !important; 
-      font-size: 3rem !important; 
-      font-weight: 400 !important; 
-      color: #ffffff !important; 
-      letter-spacing: 3px !important;
-      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
-      transition: var(--transition);
-  }
-  .navbar-brand:hover {
-      transform: scale(1.05);
-      text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
-  }
-  .navbar-brand span { 
-      color: var(--secondary);
-      font-style: normal;
-  }
-  .nav-link { 
+  /* ===== NAVBAR CORRETTA: Logo Handwriting + Menu Serif Elegante ===== */
+.navbar {
+    background: rgba(42, 42, 42, 0.98) !important;
+    backdrop-filter: blur(15px);
+    border-bottom: 2px solid var(--secondary);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 1. LOGO "Dolce Vita" - Font Handwriting Elegante */
+.navbar-brand { 
+    font-family: 'Parisienne', cursive !important; /* O 'Great Vibes' se preferisci */
+    font-size: 3.2rem !important; 
+    font-weight: 400 !important; 
     color: #ffffff !important; 
-    font-family: 'Bodoni Moda', serif !important; /* Font elegante tipo Voga */
-    font-size: 1.4rem !important; /* Più grande e leggibile */
+    letter-spacing: 2px !important;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+    transition: var(--transition);
+}
+.navbar-brand:hover {
+    transform: scale(1.05);
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
+}
+.navbar-brand span { 
+    color: var(--secondary);
+    font-style: normal;
+}
+
+/* 2. SEZIONI MENU - Font Serif Elegante (Tipo Voga/Bodoni) */
+.nav-link { 
+    color: #ffffff !important; 
+    font-family: 'Bodoni Moda', serif !important; /* Alternativa gratuita a Voga */
+    font-size: 1.4rem !important; 
     font-weight: 400 !important; 
     margin: 0 20px !important; 
     padding: 10px 15px !important;
     transition: all 0.3s ease !important;
     position: relative;
     letter-spacing: 1.5px;
-    text-transform: none; /* No maiuscolo forzato, più naturale */
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6); /* Contrasto contro lo sfondo scuro */
+    text-transform: none; /* Normale, non maiuscolo forzato */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
 }
 .nav-link:hover { 
     color: var(--secondary) !important;
@@ -272,7 +277,7 @@ function App() {
 .nav-link:hover::after {
     width: 70%;
 }
-  /* ========================================== */
+/* ========================================== */
   
   .hero {
       min-height: 100vh;
