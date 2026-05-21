@@ -1,7 +1,6 @@
 import { createSignal, createMemo, onMount, For } from "solid-js";
 import AOS from "aos";
 import emailjs from "@emailjs/browser"; 
-import SpecialDish from "./components/SpecialDish";
 
 function App() {
   onMount(() => {
@@ -369,19 +368,29 @@ function App() {
         .about-image { height: 420px; border-radius: var(--border-radius); overflow: hidden; }
         .about-image img { width: 100%; height: 100%; object-fit: cover; }
         
-        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-        .gallery-item { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: var(--border-radius); }
-        .gallery-image { width: 100%; height: 100%; object-fit: cover; }
-        .reservation-box { max-width: 800px; margin: 0 auto; padding: 3.5rem 2.5rem; border: 1px solid rgba(201, 169, 97, 0.2); background: #ffffff; text-align: center; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+        .gallery-item { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: var(--border-radius); border: 1px solid var(--border-color); }
+        .gallery-image { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .gallery-item:hover .gallery-image { transform: scale(1.05); }
+
+        .reservation-box { max-width: 800px; margin: 0 auto; padding: 3.5rem 2.5rem; border: 1px solid rgba(201, 169, 97, 0.2); background: #ffffff; text-align: center; border-radius: var(--border-radius); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         .booking-form { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; text-align: left; }
         .form-group-full { grid-column: span 2; }
-        .booking-form input, .booking-form select, .booking-form textarea { width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: var(--border-radius); background-color: #faf8f5; }
-        .contact-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem; text-align: center; }
-        .contact-icon { font-size: 2.5rem; color: var(--primary); }
+        .booking-form input, .booking-form select, .booking-form textarea { width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: var(--border-radius); background-color: #faf8f5; font-family: inherit; font-size: 0.95rem; }
         
-        footer { background: var(--dark); color: white; padding: 3rem 0; text-align: center; border-top: 3px solid var(--secondary); }
+        .contact-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem; text-align: center; margin-top: 3rem; }
+        .contact-card { background: #ffffff; padding: 2rem; border-radius: var(--border-radius); border: 1px solid var(--border-color); box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .contact-icon { font-size: 2.2rem; color: var(--primary); margin-bottom: 1rem; }
+        .contact-card h4 { font-family: 'Playfair Display', serif; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--primary); font-weight: 700; }
+        .contact-card p { font-size: 0.95rem; color: #555; }
+
+        footer { background: var(--dark); color: white; padding: 3.5rem 0; text-align: center; border-top: 3px solid var(--secondary); }
+        footer p { font-size: 0.95rem; opacity: 0.85; margin-bottom: 1rem; }
+        .footer-socials a { color: white; font-size: 1.4rem; margin: 0 12px; transition: var(--transition); }
+        .footer-socials a:hover { color: var(--secondary); }
+
         @media (max-width: 768px) { 
-            .about-content { grid-template-columns: 1fr; } 
+            .about-content { grid-template-columns: 1fr; gap: 30px; } 
             .gallery-grid { grid-template-columns: repeat(2, 1fr); } 
             .booking-form { grid-template-columns: 1fr; }
             .booking-form .form-group-full { grid-column: span 1; } 
@@ -499,7 +508,7 @@ function App() {
         </div>
       </nav>
 
-      {/* HERO SECTION - RIPRISTINATO IL PULSANTE 'FULL MENU' AFFIANCO A 'BOOK NOW' */}
+      {/* HERO SECTION */}
       <section class="hero" id="home">
         <For each={heroImages}>{(img, index) => (
           <div class={`hero-bg-image ${index() === currentHeroIndex() ? 'active' : ''}`} style={{ "background-image": `url('${img}')`, "z-index": index() === currentHeroIndex() ? 2 : 1 }} />
@@ -526,6 +535,13 @@ function App() {
               <div class="about-image">
                 <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/capi.jpeg" alt="Story Image" />
               </div>
+            </div>
+            
+            {/* GRIGLIA IMMAGINI DI GALLERIA (SEZIONE DEL PIE DI PAGINA STILE VECCHIO LAYOUT) */}
+            <div class="gallery-grid">
+              <div class="gallery-item"><img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg" class="gallery-image" alt="Interior" /></div>
+              <div class="gallery-item"><img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg" class="gallery-image" alt="Pizza Margherita" /></div>
+              <div class="gallery-item"><img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg" class="gallery-image" alt="Spaghetti Carbonara" /></div>
             </div>
           </div>
         </div>
@@ -581,10 +597,7 @@ function App() {
         </div>
       </section>
 
-      {/* SEZIONE COMPONENTE PIATTO SPECIALE DEL GIORNO */}
-      <SpecialDish />
-
-      {/* RESERVATION SYSTEM */}
+      {/* RESERVATION SYSTEM (INTERAMENTE RIPRISTINATO E PERFETTAMENTE IN LINEA SUL BROWSER) */}
       <section class="section-padding" id="reservation">
         <div class="container-custom">
           <div class="reservation-box" data-aos="zoom-in">
@@ -617,9 +630,32 @@ function App() {
                     <label class="form-label small font-weight-bold">Date *</label>
                     <input type="date" min={getTodayDateString()} value={bookingDate()} onChange={handleDateChange} required />
                   </div>
+                  <div>
+                    <label class="form-label small font-weight-bold">Preferred Time *</label>
+                    <select name="time" value={bookingTime()} onChange={(e) => setBookingTime(e.target.value)} required>
+                      <option value="">Select a time...</option>
+                      <option value="12:00">12:00 PM</option>
+                      <option value="12:30">12:30 PM</option>
+                      <option value="13:00">01:00 PM</option>
+                      <option value="13:30">01:30 PM</option>
+                      <option value="14:00">02:00 PM</option>
+                      <option value="17:30">05:30 PM</option>
+                      <option value="18:00">06:00 PM</option>
+                      <option value="18:30">06:30 PM</option>
+                      <option value="19:00">07:00 PM</option>
+                      <option value="19:30">07:30 PM</option>
+                      <option value="20:00">08:00 PM</option>
+                      <option value="20:30">08:30 PM</option>
+                      <option value="21:00">09:00 PM</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label small font-weight-bold">Email Address *</label>
+                    <input type="email" name="email" required />
+                  </div>
                   <div class="form-group-full">
-                    <button type="submit" class="btn-primary-custom w-100 mt-3">
-                      {isSending() ? "Sending Request..." : "Submit Reservation"}
+                    <button type="submit" class="btn-primary-custom w-100 mt-2">
+                      {isSending() ? "Sending Request..." : "Submit Reservation Request"}
                     </button>
                   </div>
                 </form>
@@ -632,12 +668,38 @@ function App() {
               </div>
             )}
           </div>
+
+          {/* CONTATTI E INFO SOTTO IL FORM */}
+          <div class="contact-info" data-aos="fade-up">
+            <div class="contact-card">
+              <i class="fas fa-map-marker-alt contact-icon"></i>
+              <h4>Our Location</h4>
+              <p>The Green, Wooburn Green, High Wycombe HP10 0EU</p>
+            </div>
+            <div class="contact-card">
+              <i class="fas fa-phone-alt contact-icon"></i>
+              <h4>Phone Number</h4>
+              <p>01628 522777</p>
+            </div>
+            <div class="contact-card">
+              <i class="fas fa-clock contact-icon"></i>
+              <h4>Opening Hours</h4>
+              <p>Tue - Sat: 12:00 - 22:00<br />Sun: 12:00 - 21:00<br /><strong>Monday: Closed</strong></p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* FOOTER CON SOCIAL E PULSANTI */}
       <footer>
-        <p>© 2026 <strong>Dolce Vita by Alfredo Forte</strong> - Authentic Italian Cuisine</p>
+        <div class="container-custom">
+          <p>© 2026 <strong>Dolce Vita by Alfredo Forte</strong> - Authentic Italian Cuisine</p>
+          <div class="footer-socials">
+            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+            <a href="mailto:info@dolcevitarestaurant.co.uk"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
       </footer>
     </>
   );
