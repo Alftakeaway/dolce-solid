@@ -225,71 +225,71 @@ function App() {
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
 
-  /* 1. LOGO "Dolce Vita" - INTATTO (Handwriting Parisienne) */
-  .navbar-brand { 
-      font-family: 'Parisienne', cursive !important; 
-      font-size: 3.2rem !important; 
-      font-weight: 400 !important; 
-      color: #ffffff !important; /* O il colore che hai attualmente */
-      letter-spacing: 2px !important;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-      transition: var(--transition);
-  }
-  .navbar-brand:hover {
-      transform: scale(1.05);
-  }
-  .navbar-brand span { 
-      color: var(--secondary); /* "Vita" in oro */
-      font-style: normal;
-  }
+  /* ===== NAVBAR CON ORO GLOSSY SUI MENU ===== */
 
-  /* 2. CONNETTORI (Home, Menu, etc.) - GRADIENTE ROSSO-ORO */
-  .nav-link { 
-      font-family: 'Bodoni Moda', serif !important; /* Font elegante tipo Voga */
-      font-size: 1.4rem !important; 
-      font-weight: 600 !important; 
-      margin: 0 20px !important; 
-      padding: 10px 15px !important;
-      transition: all 0.3s ease !important;
-      position: relative;
-      letter-spacing: 1.5px;
-      text-transform: none;
-      
-      /* APPLICAZIONE GRADIENTE AL TESTO */
-      background: linear-gradient(90deg, #8B0000 0%, #C9A961 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      color: transparent;
-      
-      /* Ombra esterna per leggibilità su sfondo scuro */
-      filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.8));
-  }
+/* LOGO "Dolce Vita" - Rimane invariato (Handwriting Parisienne) */
+.navbar-brand { 
+    font-family: 'Parisienne', cursive !important; 
+    font-size: 3.2rem !important; 
+    font-weight: 400 !important; 
+    color: #ffffff !important; 
+    letter-spacing: 2px !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    transition: var(--transition);
+}
+.navbar-brand span { 
+    color: #C9A961; /* Oro solido per "Vita" */
+    font-style: normal;
+}
 
-  .nav-link:hover { 
-      transform: translateY(-3px);
-      /* Inverti il gradiente all'hover per effetto dinamico */
-      background: linear-gradient(90deg, #C9A961 0%, #8B0000 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.9));
-  }
+/* CONNETTORI (Home, Menu, etc.) - ORO GLOSSY METALLICO */
+.nav-link { 
+    font-family: 'Bodoni Moda', serif !important; /* Font elegante tipo Voga */
+    font-size: 1.4rem !important; 
+    font-weight: 700 !important; /* Più spesso per far risaltare l'effetto metallo */
+    margin: 0 20px !important; 
+    padding: 10px 15px !important;
+    transition: all 0.3s ease !important;
+    position: relative;
+    letter-spacing: 1.5px;
+    text-transform: none;
+    
+    /* EFFETTO ORO GLOSSY: Gradiente chiaro-scuro-chiaro per simulare il riflesso */
+    background: linear-gradient(to bottom, #FFE5B4 0%, #C9A961 50%, #8a6e28 51%, #C9A961 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    
+    /* Ombra esterna dorata per staccare dallo sfondo scuro */
+    filter: drop-shadow(0px 1px 2px rgba(201, 169, 97, 0.4));
+}
 
-  .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 0;
-      height: 2px;
-      background: #C9A961; /* Linea dorata sotto */
-      transition: all 0.3s ease;
-      transform: translateX(-50%);
-  }
-  .nav-link:hover::after {
-      width: 70%;
-  }
-  /* ========================================== */
+.nav-link:hover { 
+    transform: translateY(-3px) scale(1.05);
+    /* All'hover diventa più brillante/chiaro */
+    background: linear-gradient(to bottom, #FFF0D0 0%, #FFD700 50%, #C9A961 51%, #FFD700 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: drop-shadow(0px 2px 4px rgba(255, 215, 0, 0.6));
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: #C9A961; /* Linea oro solido sotto */
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+    box-shadow: 0 0 5px #C9A961; /* Leggero glow sulla linea */
+}
+.nav-link:hover::after {
+    width: 70%;
+}
+/* ========================================== */
   
   .hero {
       min-height: 100vh;
