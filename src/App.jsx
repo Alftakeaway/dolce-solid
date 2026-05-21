@@ -242,31 +242,29 @@ function App() {
     font-style: normal;
 }
 
-/* CONNETTORI (Home, Menu, etc.) - ORO BRILLANTE LINGOTTO */
+@import url('https://fonts.googleapis.com/css2?family=Licorice&display=swap');
+
 .nav-link { 
-    font-family: 'Bodoni Moda', serif !important;
-    font-size: 1.4rem !important; 
-    font-weight: 600 !important;
+    font-family: 'Licorice', cursive !important;
+    font-size: 1.8rem !important; 
+    font-weight: 400 !important;
     margin: 0 20px !important; 
     padding: 10px 15px !important;
-    transition: all 0.3s ease !important;
-    position: relative;
-    letter-spacing: 1.5px;
     
-    /* ORO BRILLANTE - come nell'immagine */
     color: #D4AF37 !important; 
-    
-    /* OMBRA PER PROFONDITÀ */
     text-shadow: 
         0px 1px 2px rgba(0, 0, 0, 0.9),
         0px 0px 8px rgba(212, 175, 55, 0.3); 
+    
+    transition: all 0.3s ease !important;
 }
+
 .nav-link:hover { 
-    transform: translateY(-2px);
     color: #FFD700 !important; 
     text-shadow: 
         0px 2px 4px rgba(0, 0, 0, 0.9),
         0px 0px 12px rgba(255, 215, 0, 0.5);
+    transform: translateY(-2px);
 }
 .nav-link::after {
     content: '';
