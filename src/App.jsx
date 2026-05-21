@@ -139,7 +139,7 @@ function App() {
       category: newSpecialCategory(),
       price: formattedPrice,
       desc: newSpecialDesc(),
-      img: "", // Placeholder standard se non ha un link
+      img: "", // Placeholder standard
       isSpecialMenu: true 
     };
 
@@ -412,7 +412,7 @@ function App() {
               </form>
             ) : (
               <div>
-                {/* BANNER INIZIALE CORRETTO CON TORTELLINI */}
+                {/* BANNER INIZIALE CON TORTELLINI */}
                 <div class="p-3 mb-4 rounded" style={{ background: "#fcf8f2", border: "1px solid var(--border-color)" }}>
                   <h5 class="font-serif mb-2" style={{ color: "var(--primary)", "font-weight": "700" }}><i class="fas fa-tv me-2"></i>1. Today's Special Banner</h5>
                   <div class="mb-2">
@@ -539,7 +539,7 @@ function App() {
           <p class="section-subtitle-custom" data-aos="fade-down">Explore our extensive and authentic Italian selections</p>
           
           <div class="filter-container d-flex justify-content-center flex-wrap gap-2 mb-5 align-items-center" data-aos="fade-down">
-            {/* BOTTONE ALL MENU RIPRISTINATO */}
+            {/* RIPRISTINATO FISICAMENTE IL BOTTONE ALL MENU QUI SOTTO */}
             <button class={`btn-filter ${selectedCategory() === 'all' ? 'active' : ''}`} onClick={() => setSelectedCategory('all')}>All Menu</button>
             
             {/* BOTTONE SPECIALS CON EFFETTO COMET BORDER */}
@@ -562,7 +562,7 @@ function App() {
             <For each={filteredMenu()}>{(item) => (
               <div class={`menu-card ${item.isSpecialMenu ? 'special-highlight' : ''}`} data-aos="fade-up">
                 
-                {/* BADGE ROSSO/DORATO SUI PIATTI SPECIALI */}
+                {/* BADGE SULLE CARD SE IL PIATTO È UNO SPECIALE */}
                 {item.isSpecialMenu && (
                   <div class="special-tag-badge"><i class="fas fa-star me-1 text-warning"></i> Special Item</div>
                 )}
