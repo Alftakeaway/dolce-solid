@@ -215,69 +215,81 @@ function App() {
   /* ===== NAVBAR - FONT HANDWRITING E MENU GRANDE ===== */
   /* ===== NAVBAR CORRETTA: Logo Handwriting + Menu Serif Elegante ===== */
 .navbar {
-    background: rgba(42, 42, 42, 0.98) !important;
-    backdrop-filter: blur(15px);
-    border-bottom: 2px solid var(--secondary);
-    padding: 1rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
+      background: rgba(42, 42, 42, 0.98) !important;
+      backdrop-filter: blur(15px);
+      border-bottom: 2px solid var(--secondary);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
 
-/* 1. LOGO "Dolce Vita" - Font Handwriting Elegante */
-.navbar-brand { 
-    font-family: 'Parisienne', cursive !important; /* O 'Great Vibes' se preferisci */
-    font-size: 3.2rem !important; 
-    font-weight: 400 !important; 
-    color: #ffffff !important; 
-    letter-spacing: 2px !important;
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
-    transition: var(--transition);
-}
-.navbar-brand:hover {
-    transform: scale(1.05);
-    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
-}
-.navbar-brand span { 
-    color: var(--secondary);
-    font-style: normal;
-}
+  /* 1. LOGO "Dolce Vita" - INTATTO (Handwriting Parisienne) */
+  .navbar-brand { 
+      font-family: 'Parisienne', cursive !important; 
+      font-size: 3.2rem !important; 
+      font-weight: 400 !important; 
+      color: #ffffff !important; /* O il colore che hai attualmente */
+      letter-spacing: 2px !important;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+      transition: var(--transition);
+  }
+  .navbar-brand:hover {
+      transform: scale(1.05);
+  }
+  .navbar-brand span { 
+      color: var(--secondary); /* "Vita" in oro */
+      font-style: normal;
+  }
 
-/* 2. SEZIONI MENU - Font Serif Elegante (Tipo Voga/Bodoni) */
-.nav-link { 
-    color: #ffffff !important; 
-    font-family: 'Bodoni Moda', serif !important; /* Alternativa gratuita a Voga */
-    font-size: 1.4rem !important; 
-    font-weight: 400 !important; 
-    margin: 0 20px !important; 
-    padding: 10px 15px !important;
-    transition: all 0.3s ease !important;
-    position: relative;
-    letter-spacing: 1.5px;
-    text-transform: none; /* Normale, non maiuscolo forzato */
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
-}
-.nav-link:hover { 
-    color: var(--secondary) !important;
-    transform: translateY(-3px);
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
-}
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: var(--secondary);
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
-}
-.nav-link:hover::after {
-    width: 70%;
-}
-/* ========================================== */
+  /* 2. CONNETTORI (Home, Menu, etc.) - GRADIENTE ROSSO-ORO */
+  .nav-link { 
+      font-family: 'Bodoni Moda', serif !important; /* Font elegante tipo Voga */
+      font-size: 1.4rem !important; 
+      font-weight: 600 !important; 
+      margin: 0 20px !important; 
+      padding: 10px 15px !important;
+      transition: all 0.3s ease !important;
+      position: relative;
+      letter-spacing: 1.5px;
+      text-transform: none;
+      
+      /* APPLICAZIONE GRADIENTE AL TESTO */
+      background: linear-gradient(90deg, #8B0000 0%, #C9A961 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      
+      /* Ombra esterna per leggibilità su sfondo scuro */
+      filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.8));
+  }
+
+  .nav-link:hover { 
+      transform: translateY(-3px);
+      /* Inverti il gradiente all'hover per effetto dinamico */
+      background: linear-gradient(90deg, #C9A961 0%, #8B0000 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.9));
+  }
+
+  .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #C9A961; /* Linea dorata sotto */
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+  }
+  .nav-link:hover::after {
+      width: 70%;
+  }
+  /* ========================================== */
   
   .hero {
       min-height: 100vh;
