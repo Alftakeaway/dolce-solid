@@ -242,21 +242,21 @@ function App() {
   }
   .nav-link { 
     color: #ffffff !important; 
-    font-family: 'Playfair Display', serif !important;
-    font-size: 1.3rem !important; 
-    font-weight: 600 !important; 
-    margin: 0 18px !important; 
+    font-family: 'Bodoni Moda', serif !important; /* Font elegante tipo Voga */
+    font-size: 1.4rem !important; /* Più grande e leggibile */
+    font-weight: 400 !important; 
+    margin: 0 20px !important; 
     padding: 10px 15px !important;
     transition: all 0.3s ease !important;
     position: relative;
     letter-spacing: 1.5px;
-    text-transform: uppercase;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    text-transform: none; /* No maiuscolo forzato, più naturale */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6); /* Contrasto contro lo sfondo scuro */
 }
 .nav-link:hover { 
     color: var(--secondary) !important;
     transform: translateY(-3px);
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
 }
 .nav-link::after {
     content: '';
@@ -264,13 +264,13 @@ function App() {
     bottom: 0;
     left: 50%;
     width: 0;
-    height: 3px;
+    height: 2px;
     background: var(--secondary);
     transition: all 0.3s ease;
     transform: translateX(-50%);
 }
 .nav-link:hover::after {
-    width: 80%;
+    width: 70%;
 }
   /* ========================================== */
   
