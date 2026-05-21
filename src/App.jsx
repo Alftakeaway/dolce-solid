@@ -212,48 +212,49 @@ function App() {
       font-size: 16px !important;
   }
   
-  /* ===== NAVBAR AGGIORNATA ===== */
+  /* ===== NAVBAR - FONT HANDWRITING E MENU GRANDE ===== */
   .navbar {
       background: rgba(42, 42, 42, 0.98) !important;
       backdrop-filter: blur(15px);
       border-bottom: 2px solid var(--secondary);
-      padding: 1.2rem 0;
+      padding: 1rem 0;
       position: sticky;
       top: 0;
       z-index: 1000;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
   .navbar-brand { 
-      font-family: 'Playfair Display', serif !important; 
-      font-size: 2.2rem !important; 
-      font-weight: 700 !important; 
+      font-family: 'Parisienne', cursive !important; 
+      font-size: 3rem !important; 
+      font-weight: 400 !important; 
       color: #ffffff !important; 
-      letter-spacing: 2px !important;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      letter-spacing: 3px !important;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
       transition: var(--transition);
   }
   .navbar-brand:hover {
-      transform: translateY(-2px);
-      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+      transform: scale(1.05);
+      text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
   }
   .navbar-brand span { 
       color: var(--secondary);
-      font-style: italic;
+      font-style: normal;
   }
   .nav-link { 
       color: #ffffff !important; 
       font-family: 'Lato', sans-serif !important;
-      font-size: 1.1rem !important; 
+      font-size: 1.4rem !important; 
       font-weight: 500 !important; 
-      margin: 0 15px !important; 
-      padding: 8px 12px !important;
+      margin: 0 18px !important; 
+      padding: 10px 15px !important;
       transition: all 0.3s ease !important;
       position: relative;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
   }
   .nav-link:hover { 
       color: var(--secondary) !important;
-      transform: translateY(-2px);
+      transform: translateY(-3px);
   }
   .nav-link::after {
       content: '';
@@ -261,15 +262,15 @@ function App() {
       bottom: 0;
       left: 50%;
       width: 0;
-      height: 2px;
+      height: 3px;
       background: var(--secondary);
       transition: all 0.3s ease;
       transform: translateX(-50%);
   }
   .nav-link:hover::after {
-      width: 70%;
+      width: 80%;
   }
-  /* ============================== */
+  /* ========================================== */
   
   .hero {
       min-height: 100vh;
@@ -439,8 +440,8 @@ function App() {
       .gallery-grid { grid-template-columns: repeat(2, 1fr); }
       .booking-form { grid-template-columns: 1fr; }
       .form-group-full { grid-column: span 1; }
-      .navbar-brand { font-size: 1.8rem !important; }
-      .nav-link { font-size: 0.95rem !important; margin: 0 8px !important; }
+      .navbar-brand { font-size: 2.2rem !important; }
+      .nav-link { font-size: 1.1rem !important; margin: 0 10px !important; }
   }
 `}</style>
 
