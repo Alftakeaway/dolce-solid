@@ -12,101 +12,6 @@ function App() {
   const [formSubmitted, setFormSubmitted] = createSignal(false);
   const [isSending, setIsSending] = createSignal(false);
 
-  // --- ADMIN PANEL ---
-  const [showAdminModal, setShowAdminModal] = createSignal(false);
-  const [adminAuthenticated, setAdminAuthenticated] = createSignal(false);
-  const [adminPassword, setAdminPassword] = createSignal("");
-  const [newDishTitle, setNewDishTitle] = createSignal("");
-  const [newDishPrice, setNewDishPrice] = createSignal("");
-  const [newDishDesc, setNewDishDesc] = createSignal("");
-  const [newDishImg, setNewDishImg] = createSignal("");
-  const [newDishImgPreview, setNewDishImgPreview] = createSignal("");
-  const [newDishVegetarian, setNewDishVegetarian] = createSignal(false);
-  const [newDishVegan, setNewDishVegan] = createSignal(false);
-  const [customMenuItems, setCustomMenuItems] = createSignal([]);
-
-  // Carica i piatti custom dal localStorage
-  onMount(() => {
-    const saved = localStorage.getItem("dolceVitaSpecials");
-    if (saved) {
-      try {
-        setCustomMenuItems(JSON.parse(saved));
-      } catch (e) {
-        console.error("Errore caricamento specials:", e);
-      }
-    }
-  });
-
-  const handleAdminLogin = (password) => {
-    if (password === "dolcevita2024") {
-      setAdminAuthenticated(true);
-      setAdminPassword("");
-      setShowAdminModal(true);
-    } else {
-      alert("Password scorretta!");
-    }
-  };
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const base64 = event.target.result;
-        setNewDishImg(base64);
-        setNewDishImgPreview(base64);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleSaveSpecial = () => {
-    if (!newDishTitle().trim() || !newDishPrice().trim() || !newDishDesc().trim()) {
-      alert("Compila almeno Titolo, Prezzo e Descrizione!");
-      return;
-    }
-
-    const newSpecial = {
-      id: Date.now(),
-      title: newDishTitle(),
-      category: "specials",
-      price: newDishPrice(),
-      desc: newDishDesc(),
-      img: newDishImg(),
-      isVegetarian: newDishVegetarian(),
-      isVegan: newDishVegan(),
-    };
-
-    const updated = [...customMenuItems(), newSpecial];
-    setCustomMenuItems(updated);
-    localStorage.setItem("dolceVitaSpecials", JSON.stringify(updated));
-
-    // Reset form
-    setNewDishTitle("");
-    setNewDishPrice("");
-    setNewDishDesc("");
-    setNewDishImg("");
-    setNewDishImgPreview("");
-    setNewDishVegetarian(false);
-    setNewDishVegan(false);
-
-    alert("Piatto Special aggiunto con successo!");
-  };
-
-  const handleDeleteSpecial = (id) => {
-    if (confirm("Sei sicuro di voler cancellare questo piatto?")) {
-      const updated = customMenuItems().filter((item) => item.id !== id);
-      setCustomMenuItems(updated);
-      localStorage.setItem("dolceVitaSpecials", JSON.stringify(updated));
-    }
-  };
-
-  const handleLogout = () => {
-    setAdminAuthenticated(false);
-    setShowAdminModal(false);
-    setAdminPassword("");
-  };
-
   // --- HERO CAROUSEL ---
   const heroImages = [
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/hero_bg.jpg",
@@ -147,10 +52,8 @@ function App() {
   };
 
   // --- ARRAY DI TUTTI I PIATTI DAL MENU REALE ---
+  // Nota: ho rimosso lo special hardcoded (id:99) e mantenuto solo il menu statico
   const menuItems = [
-    // SPECIALS
-    { id: 99, title: "Tortellini panna prosciutto e piselli", category: "specials", price: "£16.50", desc: "Tortellini served in a rich cream sauce with cotto ham, peas, Parmigiano Reggiano and a touch of butter.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/tortellinip.jpg", isVegetarian: false, isVegan: false },
-    
     // NIBBLES
     { id: 1, title: "Bread and Nduja", category: "nibbles", price: "£6.00", desc: "Traditional Italian artisan bread paired with spicy, spreadable Calabrian nduja.", img: "", isVegetarian: false, isVegan: false },
     { id: 2, title: "Mixed Olives", category: "nibbles", price: "£6.00", desc: "A selection of fine marinated Italian olives with herbs and olive oil.", img: "", isVegetarian: true, isVegan: true },
@@ -227,17 +130,15 @@ function App() {
   ];
 
   const filteredMenu = createMemo(() => {
-    const allItems = [...menuItems, ...customMenuItems()];
-    if (selectedCategory() === "all") return allItems;
-    if (selectedCategory() === "vegetarian") return allItems.filter(item => item.isVegetarian);
-    if (selectedCategory() === "vegan") return allItems.filter(item => item.isVegan);
-    return allItems.filter(item => item.category === selectedCategory());
+    if (selectedCategory() === "all") return menuItems;
+    if (selectedCategory() === "vegetarian") return menuItems.filter(item => item.isVegetarian);
+    if (selectedCategory() === "vegan") return menuItems.filter(item => item.isVegan);
+    return menuItems.filter(item => item.category === selectedCategory());
   });
 
-  // Conta quanti piatti specials ci sono
+  // Conta piatti special - bottone scompare se 0
   const specials = createMemo(() => {
-    const allItems = [...menuItems, ...customMenuItems()];
-    return allItems.filter(item => item.category === "specials");
+    return menuItems.filter(item => item.category === "specials");
   });
 
   const getCategoryIcon = (category) => {
@@ -435,227 +336,6 @@ function App() {
           box-shadow: 0 2px 8px rgba(255, 140, 0, 0.3);
         }
         
-        /* ADMIN PANEL STYLING */
-        .admin-button {
-          position: fixed;
-          bottom: 30px;
-          right: 30px;
-          background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-          color: #ecf0f1;
-          border: none;
-          padding: 12px 16px;
-          border-radius: 8px;
-          font-size: 0.85rem;
-          font-weight: 600;
-          cursor: pointer;
-          z-index: 999;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-          display: flex;
-          align-items: center;
-          gap: 6px;
-        }
-        .admin-button:hover {
-          background: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%);
-          transform: translateY(-2px);
-          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-        }
-        
-        .admin-modal-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.7);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 1000;
-          animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        .admin-modal {
-          background: white;
-          border-radius: 12px;
-          padding: 2.5rem;
-          max-width: 500px;
-          width: 90%;
-          max-height: 90vh;
-          overflow-y: auto;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-          animation: slideUp 0.3s ease;
-        }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        .admin-modal h2 {
-          font-family: 'Playfair Display', serif;
-          color: var(--primary);
-          margin-bottom: 1.5rem;
-          font-size: 1.8rem;
-        }
-        
-        .admin-form-group {
-          margin-bottom: 1.2rem;
-        }
-        .admin-form-group label {
-          display: block;
-          font-weight: 600;
-          color: #333;
-          margin-bottom: 0.4rem;
-          font-size: 0.95rem;
-        }
-        .admin-form-group input,
-        .admin-form-group textarea {
-          width: 100%;
-          padding: 10px 12px;
-          border: 1px solid #ddd;
-          border-radius: 6px;
-          font-family: 'Lato', sans-serif;
-          font-size: 0.95rem;
-          transition: border-color 0.2s ease;
-        }
-        .admin-form-group input:focus,
-        .admin-form-group textarea:focus {
-          outline: none;
-          border-color: var(--primary);
-          box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
-        }
-        
-        .admin-form-row {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1rem;
-        }
-        
-        .admin-checkbox-group {
-          display: flex;
-          gap: 1.5rem;
-        }
-        .admin-checkbox-group label {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          margin: 0;
-          font-weight: 500;
-          cursor: pointer;
-        }
-        .admin-checkbox-group input[type="checkbox"] {
-          width: 18px;
-          height: 18px;
-          cursor: pointer;
-        }
-        
-        .admin-image-preview {
-          width: 100%;
-          height: 150px;
-          background: #f5f5f5;
-          border: 2px dashed var(--secondary);
-          border-radius: 6px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          overflow: hidden;
-          margin-top: 0.5rem;
-        }
-        .admin-image-preview img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-        
-        .admin-buttons {
-          display: flex;
-          gap: 1rem;
-          margin-top: 2rem;
-        }
-        .admin-btn-save,
-        .admin-btn-cancel {
-          flex: 1;
-          padding: 12px 20px;
-          border: none;
-          border-radius: 6px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          font-size: 0.95rem;
-        }
-        .admin-btn-save {
-          background: var(--primary);
-          color: white;
-        }
-        .admin-btn-save:hover {
-          background: #6b0000;
-          box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
-        }
-        .admin-btn-cancel {
-          background: #e0e0e0;
-          color: #333;
-        }
-        .admin-btn-cancel:hover {
-          background: #d0d0d0;
-        }
-        
-        .admin-specials-list {
-          margin-top: 2rem;
-          padding-top: 2rem;
-          border-top: 2px solid #f0f0f0;
-        }
-        .admin-specials-list h3 {
-          color: var(--primary);
-          margin-bottom: 1rem;
-          font-size: 1.2rem;
-        }
-        .admin-special-item {
-          background: #f9f9f9;
-          padding: 1rem;
-          border-radius: 6px;
-          margin-bottom: 1rem;
-          border-left: 4px solid var(--secondary);
-        }
-        .admin-special-item h4 {
-          color: var(--primary);
-          margin: 0 0 0.5rem 0;
-          font-size: 1.1rem;
-        }
-        .admin-special-item p {
-          margin: 0.3rem 0;
-          font-size: 0.9rem;
-          color: #666;
-        }
-        .admin-special-item-price {
-          color: var(--secondary);
-          font-weight: 700;
-          font-size: 1rem;
-        }
-        .admin-btn-delete {
-          background: #ff6b6b;
-          color: white;
-          border: none;
-          padding: 6px 12px;
-          border-radius: 4px;
-          cursor: pointer;
-          font-size: 0.85rem;
-          margin-top: 0.5rem;
-          transition: all 0.2s ease;
-        }
-        .admin-btn-delete:hover {
-          background: #ff5252;
-        }
-        
-        .admin-password-input {
-          padding: 12px 16px;
-          border: 2px solid var(--border-color);
-          border-radius: 6px;
-          font-size: 1rem;
-          margin-bottom: 1rem;
-        }
-        .admin-password-input:focus {
-          outline: none;
-          border-color: var(--primary);
-        }
-        
         .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
         .gallery-item { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: var(--border-radius); cursor: pointer; }
         .gallery-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
@@ -847,87 +527,86 @@ function App() {
         </div>
       </section>
 
-      {/* REVIEWS SECTION - WITH SPECIAL DISH COMPONENT */}
+      <SpecialDish />
+
+      {/* REVIEWS */}
       <section class="section-padding" id="reviews">
         <div class="container-custom">
-          <h2 class="section-title" data-aos="fade-down">What Our Guests Say</h2>
-          <p class="section-subtitle-custom" data-aos="fade-down">Authentic reviews from our valued customers</p>
           <div class="content-card-panel" data-aos="fade-up">
+            <h2 class="section-title">What Our Guests Say</h2>
             <div class="review-item">
               <div class="stars">★★★★★</div>
-              <p class="review-author">Marco Rossi</p>
-              <p class="review-text">"The most authentic Italian experience in Wooburn! The pasta was absolutely perfect – exactly how you'd get it in Roma. Alfredo's passion for genuine Italian cuisine really shows in every dish."</p>
+              <div class="review-author">James Thompson</div>
+              <p class="review-text">"Absolutely authentic Italian cooking. The pasta is hand-made fresh daily and the flavours are exactly as I remember from my time in Rome. Simply outstanding."</p>
             </div>
             <div class="review-item">
               <div class="stars">★★★★★</div>
-              <p class="review-author">Sarah Johnson</p>
-              <p class="review-text">"Exceptional service and outstanding food quality. We took our family for a special occasion and the team made us feel like family. The risotto was divine!"</p>
+              <div class="review-author">Sarah Mitchell</div>
+              <p class="review-text">"Beautiful atmosphere, exceptional service, and the risotto was absolutely divine. We'll definitely be returning for special occasions. Highly recommended!"</p>
             </div>
             <div class="review-item">
               <div class="stars">★★★★★</div>
-              <p class="review-author">Giovanni De Rossi</p>
-              <p class="review-text">"Finally found a place that serves real Italian food. The ingredients are clearly fresh and sourced with care. Will definitely be back regularly!"</p>
-            </div>
-            <div class="review-item">
-              <div class="stars">★★★★★</div>
-              <p class="review-author">Emma Wilson</p>
-              <p class="review-text">"Beautiful atmosphere, attentive staff, and delicious food. The pizza is cooked perfectly in a proper oven. Highly recommend!"</p>
+              <div class="review-author">Emma & David Williams</div>
+              <p class="review-text">"Family dinner was wonderful. The children loved their meals and the staff were incredibly accommodating. A real gem in Wooburn! We can't wait to come back."</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* RESERVATION SECTION */}
+      {/* RESERVATION SYSTEM */}
       <section class="section-padding" id="reservation">
         <div class="container-custom">
-          <div class="reservation-box" data-aos="fade-up">
+          <div class="reservation-box" data-aos="zoom-in">
             {!formSubmitted() ? (
               <>
-                <h3>Book Your Table</h3>
-                <p>Make a reservation request and we'll confirm your booking via email</p>
+                <h3>Book a Table</h3>
+                <p>Please select your preferred date and time slot. Please note we are closed on Mondays.</p>
+                
                 <form onSubmit={handleSubmit} class="booking-form">
                   <div>
                     <label for="name">Full Name *</label>
-                    <input type="text" id="name" name="name" required placeholder="e.g. Antonio Verdi" />
+                    <input type="text" id="name" name="name" required placeholder="e.g. John Doe" />
                   </div>
-
                   <div>
                     <label for="phone">Phone Number *</label>
-                    <input type="tel" id="phone" name="phone" required placeholder="e.g. 07123456789" />
+                    <input type="tel" id="phone" name="phone" required placeholder="e.g. 07123 456789" />
                   </div>
-
                   <div>
                     <label for="guests">Number of Guests *</label>
                     <select id="guests" name="guests" required>
-                      <option value="" disabled selected>-- Select number of guests --</option>
-                      <option value="1">1 Guest</option>
-                      <option value="2">2 Guests</option>
-                      <option value="3">3 Guests</option>
-                      <option value="4">4 Guests</option>
-                      <option value="5">5 Guests</option>
-                      <option value="6">6 Guests</option>
-                      <option value="7">7 Guests</option>
-                      <option value="8">8 Guests</option>
-                      <option value="9">9 Guests</option>
-                      <option value="10+">10+ Guests</option>
+                      <option value="1">1 Person</option>
+                      <option value="2" selected>2 People</option>
+                      <option value="3">3 People</option>
+                      <option value="4">4 People</option>
+                      <option value="5">5 People</option>
+                      <option value="6">6 People</option>
+                      <option value="7">7 People</option>
+                      <option value="8+">8+ People (Large Party)</option>
                     </select>
                   </div>
-
+                  
                   <div>
-                    <label for="date">Preferred Date *</label>
+                    <label for="date">Date *</label>
                     <input 
                       type="date" 
                       id="date" 
                       name="date" 
                       required 
-                      min={getTodayDateString()}
-                      onChange={handleDateChange}
+                      min={getTodayDateString()} 
+                      value={bookingDate()} 
+                      onChange={handleDateChange} 
                     />
                   </div>
 
-                  <div>
-                    <label for="time">Preferred Time *</label>
-                    <select id="time" name="time" required>
+                  <div class="form-group-full">
+                    <label for="time">Preferred Time Slot *</label>
+                    <select 
+                      id="time" 
+                      name="time" 
+                      required 
+                      value={bookingTime()} 
+                      onChange={(e) => setBookingTime(e.target.value)}
+                    >
                       <option value="" disabled selected>-- Select an available slot --</option>
                       
                       <optgroup label="Lunch Service">
@@ -1027,168 +706,6 @@ function App() {
           <p>© 2026 <strong>Dolce Vita by Alfredo Forte</strong> - Authentic Italian Cuisine</p>
         </div>
       </footer>
-
-      {/* ADMIN BUTTON */}
-      <button class="admin-button" onClick={() => setShowAdminModal(true)}>
-        <i class="fas fa-lock"></i> Admin
-      </button>
-
-      {/* ADMIN LOGIN MODAL */}
-      {showAdminModal() && !adminAuthenticated() && (
-        <div class="admin-modal-overlay" onClick={() => setShowAdminModal(false)}>
-          <div class="admin-modal" onClick={(e) => e.stopPropagation()}>
-            <h2>🔐 Admin Access</h2>
-            <p style="color: #666; margin-bottom: 1.5rem;">Inserisci la password per accedere al pannello admin</p>
-            <div class="admin-form-group">
-              <label>Password</label>
-              <input
-                type="password"
-                placeholder="Inserisci password..."
-                value={adminPassword()}
-                onInput={(e) => setAdminPassword(e.target.value)}
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") handleAdminLogin(adminPassword());
-                }}
-                class="admin-password-input"
-              />
-            </div>
-            <div class="admin-buttons">
-              <button
-                class="admin-btn-save"
-                onClick={() => handleAdminLogin(adminPassword())}
-              >
-                Accedi
-              </button>
-              <button
-                class="admin-btn-cancel"
-                onClick={() => {
-                  setShowAdminModal(false);
-                  setAdminPassword("");
-                }}
-              >
-                Annulla
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ADMIN DASHBOARD */}
-      {showAdminModal() && adminAuthenticated() && (
-        <div class="admin-modal-overlay" onClick={() => handleLogout()}>
-          <div class="admin-modal" onClick={(e) => e.stopPropagation()}>
-            <h2>⭐ Aggiungi Piatto Special</h2>
-
-            {/* FORM */}
-            <div class="admin-form-group">
-              <label>Titolo Piatto *</label>
-              <input
-                type="text"
-                placeholder="es. Risotto ai Tartufi"
-                value={newDishTitle()}
-                onInput={(e) => setNewDishTitle(e.target.value)}
-              />
-            </div>
-
-            <div class="admin-form-row">
-              <div class="admin-form-group">
-                <label>Prezzo *</label>
-                <input
-                  type="text"
-                  placeholder="es. £24.00"
-                  value={newDishPrice()}
-                  onInput={(e) => setNewDishPrice(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div class="admin-form-group">
-              <label>Descrizione *</label>
-              <textarea
-                rows="3"
-                placeholder="Descrizione del piatto..."
-                value={newDishDesc()}
-                onInput={(e) => setNewDishDesc(e.target.value)}
-              />
-            </div>
-
-            <div class="admin-form-group">
-              <label>Carica Foto</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-              />
-              {newDishImgPreview() && (
-                <div class="admin-image-preview">
-                  <img src={newDishImgPreview()} alt="Preview" />
-                </div>
-              )}
-            </div>
-
-            <div class="admin-form-group">
-              <label style="font-weight: 600; margin-bottom: 0.8rem; display: block;">Opzioni Dietetiche</label>
-              <div class="admin-checkbox-group">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={newDishVegetarian()}
-                    onChange={(e) => setNewDishVegetarian(e.target.checked)}
-                  />
-                  Vegetariano
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={newDishVegan()}
-                    onChange={(e) => setNewDishVegan(e.target.checked)}
-                  />
-                  Vegan
-                </label>
-              </div>
-            </div>
-
-            <div class="admin-buttons">
-              <button
-                class="admin-btn-save"
-                onClick={handleSaveSpecial}
-              >
-                💾 Salva Piatto
-              </button>
-              <button
-                class="admin-btn-cancel"
-                onClick={handleLogout}
-              >
-                Esci
-              </button>
-            </div>
-
-            {/* LISTA SPECIALS */}
-            {customMenuItems().length > 0 && (
-              <div class="admin-specials-list">
-                <h3>Piatti Special Aggiunti ({customMenuItems().length})</h3>
-                <For each={customMenuItems()}>
-                  {(item) => (
-                    <div class="admin-special-item">
-                      <h4>{item.title}</h4>
-                      <p class="admin-special-item-price">{item.price}</p>
-                      <p style="margin: 0.5rem 0;">{item.desc}</p>
-                      {item.isVegetarian && <p style="color: #2e7d32; font-weight: 600; font-size: 0.85rem;">🌿 Vegetariano</p>}
-                      {item.isVegan && <p style="color: #2e7d32; font-weight: 600; font-size: 0.85rem;">🌱 Vegan</p>}
-                      <button
-                        class="admin-btn-delete"
-                        onClick={() => handleDeleteSpecial(item.id)}
-                      >
-                        🗑️ Cancella
-                      </button>
-                    </div>
-                  )}
-                </For>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </>
   );
 }
