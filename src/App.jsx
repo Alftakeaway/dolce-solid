@@ -1,178 +1,16 @@
 import { createSignal, createMemo, onMount, For } from "solid-js";
 import AOS from "aos";
 import emailjs from "@emailjs/browser"; 
+import SpecialDish from "./components/SpecialDish";
 
 function App() {
   onMount(() => {
     AOS.init({ duration: 800, once: true });
   });
 
-  const [selectedCategory, setSelectedCategory] = createSignal("all"); 
+  const [selectedCategory, setSelectedCategory] = createSignal("all");
   const [formSubmitted, setFormSubmitted] = createSignal(false);
   const [isSending, setIsSending] = createSignal(false);
-
-  // --- STATO ADMIN ---
-  const [isAdminOpen, setIsAdminOpen] = createSignal(false);
-  const [adminPassword, setAdminPassword] = createSignal("");
-  const [isLoggedIn, setIsLoggedIn] = createSignal(false);
-
-  // --- STATI PER IL NUOVO PIATTO SPECIALE (FORM ADMIN) ---
-  const [newSpecialTitle, setNewSpecialTitle] = createSignal("");
-  const [newSpecialCategory, setNewSpecialCategory] = createSignal("pasta");
-  const [newSpecialPrice, setNewSpecialPrice] = createSignal("");
-  const [newSpecialDesc, setNewSpecialDesc] = createSignal("");
-
-  // --- ARRAY DEI PIATTI SPECIALI AGGIUNTI DALL'ADMIN ---
-  const [dynamicSpecials, setDynamicSpecials] = createSignal([
-    { 
-      id: "special-1", 
-      title: "Tortellini panna prosciutto e piselli", 
-      category: "pasta", 
-      price: "£16.50", 
-      desc: "Tortellini served in a rich cream sauce with cotto ham, peas, Parmigiano Reggiano and a touch of butter.", 
-      img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/tortellinip.jpg", 
-      isSpecialMenu: true 
-    }
-  ]);
-
-  // --- MENU STATICO REALE ---
-  const baseMenuItems = [
-    // NIBBLES
-    { id: 1, title: "Bread and Nduja", category: "nibbles", price: "£6.00", desc: "Traditional Italian artisan bread paired with spicy, spreadable Calabrian nduja.", img: "", isSpecialMenu: false },
-    { id: 2, title: "Mixed Olives", category: "nibbles", price: "£6.00", desc: "A selection of fine marinated Italian olives with herbs and olive oil.", img: "", isSpecialMenu: false },
-    { id: 3, title: "Bread and Olive Oil", category: "nibbles", price: "£6.00", desc: "Freshly baked bread served with premium extra virgin olive oil and balsamic vinegar.", img: "", isSpecialMenu: false },
-
-    // STARTERS
-    { id: 4, title: "Focaccia all'aglio", category: "starters", price: "£7.00", desc: "Homemade pizza bread with garlic butter, oregano and rosemary.", img: "", isSpecialMenu: false },
-    { id: 5, title: "Bruschetta", category: "starters", price: "£8.50", desc: "Toasted bread topped with fresh chopped tomatoes, oregano, garlic, basil, balsamic glaze and extra virgin olive oil.", img: "", isSpecialMenu: false },
-    { id: 6, title: "Arancini", category: "starters", price: "£10.00", desc: "Crispy rice balls filled with peas, tomato sauce and mozzarella. Served with tomato sauce.", img: "", isSpecialMenu: false },
-    { id: 7, title: "Calamari", category: "starters", price: "£10.00", desc: "Deep-fried squid rings, served with tartare sauce.", img: "", isSpecialMenu: false },
-    { id: 8, title: "Bianchetti", category: "starters", price: "£11.00", desc: "Deep-fried whitebait, served with tartare sauce.", img: "", isSpecialMenu: false },
-    { id: 9, title: "Polpette dello chef", category: "starters", price: "£12.00", desc: "Homemade meatballs in a rich, spicy tomato sauce with mixed peppers. Served with toasted bread.", img: "", isSpecialMenu: false },
-    { id: 10, title: "Parma Ham & Burrata", category: "starters", price: "£14.00", desc: "Fresh burrata from Puglia served with Parma ham, cherry tomato concassé and basil.", img: "", isSpecialMenu: false },
-    { id: 11, title: "Gamberoni Dolce Vita", category: "starters", price: "£12.00", desc: "King prawns cooked in a cherry tomato, white wine, garlic and parsley sauce, topped with rocket and served with toasted bread.", img: "", isSpecialMenu: false },
-    { id: 12, title: "Funghi al Bosco", category: "starters", price: "£11.00", desc: "Baked Portobello mushrooms stuffed with gorgonzola and mozzarella, dressed with garlic, parsley, balsamic glaze and extra virgin olive oil.", img: "", isSpecialMenu: false },
-    { id: 13, title: "Antipasto Italiano", category: "starters", price: "£30.00", desc: "Selection of Parma ham, Milano salami, spicy salami, arancini, fresh mozzarella, cherry tomatoes, mixed olives, roasted peppers, Italian cheeses and artichokes. Served with toasted bread.", img: "", isSpecialMenu: false },
-
-    // PIZZE & CALZONI
-    { id: 14, title: "Margherita", category: "pizza", price: "£12.00", desc: "Tomato, mozzarella and fresh basil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg", isSpecialMenu: false },
-    { id: 15, title: "Diavola", category: "pizza", price: "£15.00", desc: "Tomato, mozzarella, pepperoni and fresh chilli.", img: "", isSpecialMenu: false },
-    { id: 16, title: "Roma", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, spicy pepperoni, mushrooms and red onion.", img: "", isSpecialMenu: false },
-    { id: 17, title: "Napoli", category: "pizza", price: "£16.50", desc: "Tomato, mozzarella, anchovies, capers, black olives, oregano, parsley and garlic oil.", img: "", isSpecialMenu: false },
-    { id: 18, title: "Quattro Gusti", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, chicken, cotto ham and pepperoni.", img: "", isSpecialMenu: false },
-    { id: 19, title: "Capricciosa", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, artichokes, cotto ham, black olives and mushrooms.", img: "", isSpecialMenu: false },
-    { id: 20, title: "Funghi & Salsiccia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, mushrooms and crumbled Italian pork sausage.", img: "", isSpecialMenu: false },
-    { id: 21, title: "Prosciutto & Funghi", category: "pizza", price: "£17.00", desc: "Tomato, mozzarella, cotto ham and mushrooms.", img: "", isSpecialMenu: false },
-    { id: 22, title: "Vulcano", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, pepperoni, red onions, egg, nduja.", img: "", isSpecialMenu: false },
-    { id: 23, title: "Vegetariana", category: "pizza", price: "£17.00", desc: "Tomato, mozzarella, mixed peppers, mushrooms, black olives and red onion.", img: "", isSpecialMenu: false },
-    { id: 24, title: "Primavera", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, topped with rocket, cherry tomatoes, Parma ham and Parmesan.", img: "", isSpecialMenu: false },
-    { id: 25, title: "Sant'Elia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, salami chorizo, gorgonzola, mushrooms and red onion.", img: "", isSpecialMenu: false },
-    { id: 26, title: "Ferrandina", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, crumbled Italian pork sausage, cherry tomatoes, black olives and basil pesto.", img: "", isSpecialMenu: false },
-    { id: 27, title: "Calzone di Carne", category: "pizza", price: "£19.00", desc: "Folded pizza brushed with garlic butter, filled with tomato, mozzarella, pepperoni, crumbled Italian pork sausage and chicken. Served with a pot of tomato sauce.", img: "", isSpecialMenu: false },
-    { id: 28, title: "Calzone Piccante", category: "pizza", price: "£18.00", desc: "Folded pizza brushed with garlic butter, filled with tomato, mozzarella, chicken, chilli, nduja and mushrooms. Served with a pot of tomato sauce.", img: "", isSpecialMenu: false },
-    { id: 29, title: "Rustica Dolce Vita", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, salami chorizo, roasted peppers, black olives and rocket.", img: "", isSpecialMenu: false },
-    { id: 30, title: "Rustica Assassina", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, spicy chicken, fresh chilli, nduja and salame piccante.", img: "", isSpecialMenu: false },
-
-    // PASTA
-    { id: 31, title: "Penne Arrabbiata", category: "pasta", price: "£16.00", desc: "Penne in a spicy tomato sauce with chilli, basil, onion and garlic.", img: "", isSpecialMenu: false },
-    { id: 32, title: "Linguine Bolognese", category: "pasta", price: "£18.00", desc: "Linguine with a traditional homemade beef Bolognese sauce.", img: "", isSpecialMenu: false },
-    { id: 33, title: "Penne alla Boscaiola", category: "pasta", price: "£20.00", desc: "Penne in a rich creamy tomato sauce with crumbled Italian pork sausage, mushrooms and Calabrian nduja.", img: "", isSpecialMenu: false },
-    { id: 34, title: "Spaghetti Carbonara", category: "pasta", price: "£18.00", desc: "Spaghetti with Italian guanciale, Parmesan, black pepper and egg.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg", isSpecialMenu: false },
-    { id: 35, title: "Linguine al Granchio", category: "pasta", price: "£22.00", desc: "Linguine with crab meat, cherry tomato sauce, chilli, garlic, parsley, white wine and extra virgin olive oil.", img: "", isSpecialMenu: false },
-    { id: 36, title: "Spaghetti Gamberi & Acciughe", category: "pasta", price: "£20.00", desc: "Spaghetti with prawns and anchovies in a garlic, cherry tomato and white wine sauce.", img: "", isSpecialMenu: false },
-    { id: 37, title: "Linguine Salmone", category: "pasta", price: "£17.50", desc: "Linguine with smoked salmon, onion, cherry tomatoes, cream, parsley and a touch of tomato sauce.", img: "", isSpecialMenu: false },
-    { id: 38, title: "Spaghetti Pescatore", category: "pasta", price: "£21.00", desc: "Spaghetti with mixed seafood, prawns, squid, mussels and octopus in a garlic, white wine and tomato sauce.", img: "", isSpecialMenu: false },
-    { id: 39, title: "Linguine ai Gamberi & Pesto", category: "pasta", price: "£19.00", desc: "Linguine with homemade basil pesto, tiger prawns, cherry tomatoes and a touch of cream.", img: "", isSpecialMenu: false },
-    { id: 40, title: "Penne al Forno", category: "pasta", price: "£19.00", desc: "Penne with mushrooms, crispy guanciale, spinach, garlic and parsley, baked with breadcrumbs and Parmigiano Reggiano.", img: "", isSpecialMenu: false },
-
-    // RISOTTI
-    { id: 41, title: "Risotto Gorgonzola & Salsiccia", category: "risotto", price: "£19.00", desc: "Carnaroli rice with crumbled Italian pork sausage and spinach, creamed with gorgonzola and Parmigiano Reggiano.", img: "", isSpecialMenu: false },
-    { id: 42, title: "Risotto Asparagi & Funghi", category: "risotto", price: "£18.00", desc: "Carnaroli rice with mushrooms, asparagus, onion and parsley, creamed with Parmigiano Reggiano.", img: "", isSpecialMenu: false },
-    { id: 43, title: "Risotto Frutti di Mare", category: "risotto", price: "£21.00", desc: "Carnaroli rice with mixed seafood, prawns, squid, mussels and octopus cooked in a white wine, garlic and tomato sauce.", img: "", isSpecialMenu: false },
-
-    // RAVIOLI
-    { id: 44, title: "Ravioli ai Porcini", category: "ravioli", price: "£23.00", desc: "Porcini mushroom-filled ravioli, sautéed in a fragrant butter and sage sauce, finished with Parmigiano Reggiano.", img: "", isSpecialMenu: false },
-    { id: 45, title: "Ravioli Astice & Granchio", category: "ravioli", price: "£26.00", desc: "Lobster filled-ravioli toasted in a rich velvety crab sauce, with cherry tomatoes, citrus hints and aromatic herbs.", img: "", isSpecialMenu: false },
-    { id: 46, title: "Ravioli Ricotta & Spinaci", category: "ravioli", price: "£20.00", desc: "Spinach and ricotta-filled ravioli cooked with crumbled Italian pork sausage and finished with shaved Parmigiano Reggiano.", img: "", isSpecialMenu: false },
-
-    // MAINS
-    { id: 47, title: "Pollo Sambuca", category: "mains", price: "£25.00", desc: "Chicken breast cooked in a creamy sambuca sauce with red onions. Served with Tuscan potatoes and garlic spinach.", img: "", isSpecialMenu: false },
-    { id: 48, title: "Pollo Cacciatore", category: "mains", price: "£25.00", desc: "Chicken breast cooked in a spicy tomato sauce with onions, mixed peppers, mushrooms, black olives and white wine. Served with Tuscan potatoes and garlic spinach.", img: "", isSpecialMenu: false },
-    { id: 49, title: "Vitello ai Funghi", category: "mains", price: "£30.00", desc: "Thinly sliced veal cooked with onions and wild mushrooms in a rich white wine, parsley and cream sauce. Served with Tuscan potatoes and garlic spinach.", img: "", isSpecialMenu: false },
-    { id: 50, title: "Spigola al Limone", category: "mains", price: "£26.00", desc: "Pan-fried sea bass fillets cooked in a rich lemon butter and white wine sauce. Served with Tuscan potatoes and garlic spinach.", img: "", isSpecialMenu: false },
-    { id: 51, title: "Zuppa di Pesce", category: "mains", price: "£28.00", desc: "Seafood selection, including prawns, squid, octopus and mussels, cooked in a spicy tomato sauce with white wine, garlic and parsley. Served with toasted bread.", img: "", isSpecialMenu: false },
-    { id: 52, title: "Baccalà in Umido", category: "mains", price: "£29.00", desc: "Cod loin cooked in a Mediterranean tomato sauce with red onions, black olives, capers, garlic and parsley. Served with Tuscan potatoes and garlic spinach.", img: "", isSpecialMenu: false },
-    { id: 53, title: "Bistecca", category: "mains", price: "£34.00", desc: "28 days ribeye, freshly cut and cooked to your preference. Served with Tuscan potatoes, side salad and homemade peppercorn sauce.", img: "", isSpecialMenu: false },
-    { id: 54, title: "Tagliata di Manzo", category: "mains", price: "£32.00", desc: "28 days aged sliced ribeye served on a bed of rocket, topped with shaved Parmigiano Reggiano and a drizzle of balsamic glaze, extra virgin olive oil and Maldon sea salt.", img: "", isSpecialMenu: false },
-
-    // SALADS
-    { id: 55, title: "Classic Salad", category: "salads", price: "£14.00", desc: "Baby leaf and rocket salad with avocado, mixed peppers, red onion, cucumber, cherry tomatoes and olives, dressed with balsamic vinegar and extra virgin olive oil.", img: "", isSpecialMenu: false },
-
-    // SIDES
-    { id: 56, title: "Rocket and Parmesan", category: "sides", price: "£5.00", desc: "Fresh rocket salad topped with shavings of Parmigiano Reggiano.", img: "", isSpecialMenu: false },
-    { id: 57, title: "Dolce Vita Sides", category: "sides", price: "£5.00", desc: "French fries, Tuscan potatoes, Garlic spinach, Sautéed mushrooms, Mixed vegetables, Side salad, or Tomatoes & red onions.", img: "", isSpecialMenu: false }
-  ];
-
-  const allMenuItems = createMemo(() => {
-    return [...baseMenuItems, ...dynamicSpecials()];
-  });
-
-  const filteredMenu = createMemo(() => {
-    if (selectedCategory() === "all") return allMenuItems();
-    if (selectedCategory() === "special") return allMenuItems().filter(item => item.isSpecialMenu);
-    return allMenuItems().filter(item => item.category === selectedCategory());
-  });
-
-  const handleAddSpecialItem = (e) => {
-    e.preventDefault();
-    if (!newSpecialTitle() || !newSpecialPrice()) return;
-
-    const formattedPrice = newSpecialPrice().startsWith("£") ? newSpecialPrice() : `£${newSpecialPrice()}`;
-    
-    const newItem = {
-      id: `special-${Date.now()}`,
-      title: newSpecialTitle(),
-      category: newSpecialCategory(),
-      price: formattedPrice,
-      desc: newSpecialDesc(),
-      img: "", 
-      isSpecialMenu: true 
-    };
-
-    setDynamicSpecials(prev => [newItem, ...prev]);
-    
-    setNewSpecialTitle("");
-    setNewSpecialPrice("");
-    setNewSpecialDesc("");
-    alert("Special dish successfully added to the menu!");
-  };
-
-  const handleRemoveSpecialItem = (id) => {
-    setDynamicSpecials(prev => prev.filter(item => item.id !== id));
-  };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (adminPassword() === "DolceVita2026") { 
-      setIsLoggedIn(true);
-    } else {
-      alert("Incorrect Password!");
-    }
-  };
-
-  const getCategoryIcon = (category) => {
-    switch(category) {
-      case "nibbles": return "fas fa-cookie-bite";
-      case "starters": return "fas fa-utensils";
-      case "pizza": return "fas fa-pizza-slice";
-      case "pasta": return "fas fa-utensils";
-      case "risotto": case "ravioli": return "fas fa-utensils";
-      case "mains": return "fas fa-drumstick-bite";
-      case "salads": return "fas fa-seedling";
-      case "sides": return "fas fa-bread-slice";
-      default: return "fas fa-utensils";
-    }
-  };
 
   // --- HERO CAROUSEL ---
   const heroImages = [
@@ -188,13 +26,16 @@ function App() {
     return () => clearInterval(timer);
   });
 
+  // --- LOGICA PRENOTAZIONI ---
   const [bookingDate, setBookingDate] = createSignal("");
   const [bookingTime, setBookingTime] = createSignal("");
 
   const handleDateChange = (e) => {
     const dateVal = e.target.value;
     if (!dateVal) return;
-    if (new Date(dateVal).getDay() === 1) { 
+    
+    const day = new Date(dateVal).getDay();
+    if (day === 1) { 
       alert("Dolce Vita is closed on Mondays. Please select another day.");
       setBookingDate("");
       return;
@@ -204,25 +45,131 @@ function App() {
 
   const getTodayDateString = () => {
     const today = new Date();
-    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  // --- ARRAY DI TUTTI I PIATTI DAL MENU REALE ---
+  // Abbiamo aggiunto i flag isVegetarian e isVegan per la nuova barra dei filtri in alto
+  const menuItems = [
+    // NIBBLES
+    { id: 1, title: "Bread and Nduja", category: "nibbles", price: "£6.00", desc: "Traditional Italian artisan bread paired with spicy, spreadable Calabrian nduja.", img: "", isVegetarian: false, isVegan: false },
+    { id: 2, title: "Mixed Olives", category: "nibbles", price: "£6.00", desc: "A selection of fine marinated Italian olives with herbs and olive oil.", img: "", isVegetarian: true, isVegan: true },
+    { id: 3, title: "Bread and Olive Oil", category: "nibbles", price: "£6.00", desc: "Freshly baked bread served with premium extra virgin olive oil and balsamic vinegar.", img: "", isVegetarian: true, isVegan: true },
+
+    // STARTERS
+    { id: 4, title: "Focaccia all'aglio", category: "starters", price: "£7.00", desc: "Homemade pizza bread with garlic butter, oregano and rosemary.", img: "", isVegetarian: true, isVegan: true },
+    { id: 5, title: "Bruschetta", category: "starters", price: "£8.50", desc: "Toasted bread topped with fresh chopped tomatoes, oregano, garlic, basil, balsamic glaze and extra virgin olive oil.", img: "", isVegetarian: true, isVegan: true },
+    { id: 6, title: "Arancini", category: "starters", price: "£10.00", desc: "Crispy rice balls filled with peas, tomato sauce and mozzarella. Served with tomato sauce.", img: "", isVegetarian: true, isVegan: false },
+    { id: 7, title: "Calamari", category: "starters", price: "£10.00", desc: "Deep-fried squid rings, served with tartare sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 8, title: "Bianchetti", category: "starters", price: "£11.00", desc: "Deep-fried whitebait, served with tartare sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 9, title: "Polpette dello chef", category: "starters", price: "£12.00", desc: "Homemade meatballs in a rich, spicy tomato sauce with mixed peppers. Served with toasted bread.", img: "", isVegetarian: false, isVegan: false },
+    { id: 10, title: "Parma Ham & Burrata", category: "starters", price: "£14.00", desc: "Fresh burrata from Puglia served with Parma ham, cherry tomato concassé and basil.", img: "", isVegetarian: false, isVegan: false },
+    { id: 11, title: "Gamberoni Dolce Vita", category: "starters", price: "£12.00", desc: "King prawns cooked in a cherry tomato, white wine, garlic and parsley sauce, topped with rocket and served with toasted bread.", img: "", isVegetarian: false, isVegan: false },
+    { id: 12, title: "Funghi al Bosco", category: "starters", price: "£11.00", desc: "Baked Portobello mushrooms stuffed with gorgonzola and mozzarella, dressed with garlic, parsley, balsamic glaze and extra virgin olive oil.", img: "", isVegetarian: true, isVegan: false },
+    { id: 13, title: "Antipasto Italiano", category: "starters", price: "£30.00", desc: "Selection of Parma ham, Milano salami, spicy salami, arancini, fresh mozzarella, cherry tomatoes, mixed olives, roasted peppers, Italian cheeses and artichokes. Served with toasted bread.", img: "", isVegetarian: false, isVegan: false },
+
+    // PIZZE & CALZONI & RUSTICHE
+    { id: 14, title: "Margherita", category: "pizza", price: "£12.00", desc: "Tomato, mozzarella and fresh basil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg", isVegetarian: true, isVegan: false },
+    { id: 15, title: "Diavola", category: "pizza", price: "£15.00", desc: "Tomato, mozzarella, pepperoni and fresh chilli.", img: "", isVegetarian: false, isVegan: false },
+    { id: 16, title: "Roma", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, spicy pepperoni, mushrooms and red onion.", img: "", isVegetarian: false, isVegan: false },
+    { id: 17, title: "Napoli", category: "pizza", price: "£16.50", desc: "Tomato, mozzarella, anchovies, capers, black olives, oregano, parsley and garlic oil.", img: "", isVegetarian: false, isVegan: false },
+    { id: 18, title: "Quattro Gusti", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, chicken, cotto ham and pepperoni.", img: "", isVegetarian: false, isVegan: false },
+    { id: 19, title: "Capricciosa", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, artichokes, cotto ham, black olives and mushrooms.", img: "", isVegetarian: false, isVegan: false },
+    { id: 20, title: "Funghi & Salsiccia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, mushrooms and crumbled Italian pork sausage.", img: "", isVegetarian: false, isVegan: false },
+    { id: 21, title: "Prosciutto & Funghi", category: "pizza", price: "£17.00", desc: "Tomato, mozzarella, cotto ham and mushrooms.", img: "", isVegetarian: false, isVegan: false },
+    { id: 22, title: "Vulcano", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, pepperoni, red onions, egg, nduja.", img: "", isVegetarian: false, isVegan: false },
+    { id: 23, title: "Vegetariana", category: "pizza", price: "£17.00", desc: "Tomato, mozzarella, mixed peppers, mushrooms, black olives and red onion.", img: "", isVegetarian: true, isVegan: false },
+    { id: 24, title: "Primavera", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, topped with rocket, cherry tomatoes, Parma ham and Parmesan.", img: "", isVegetarian: false, isVegan: false },
+    { id: 25, title: "Sant'Elia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, salami chorizo, gorgonzola, mushrooms and red onion.", img: "", isVegetarian: false, isVegan: false },
+    { id: 26, title: "Ferrandina", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, crumbled Italian pork sausage, cherry tomatoes, black olives and basil pesto.", img: "", isVegetarian: false, isVegan: false },
+    { id: 27, title: "Calzone di Carne", category: "pizza", price: "£19.00", desc: "Folded pizza brushed with garlic butter, filled with tomato, mozzarella, pepperoni, crumbled Italian pork sausage and chicken. Served with a pot of tomato sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 28, title: "Calzone Piccante", category: "pizza", price: "£18.00", desc: "Folded pizza brushed with garlic butter, filled with tomato, mozzarella, chicken, chilli, nduja and mushrooms. Served with a pot of tomato sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 29, title: "Rustica Dolce Vita", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, salami chorizo, roasted peppers, black olives and rocket.", img: "", isVegetarian: false, isVegan: false },
+    { id: 30, title: "Rustica Assassina", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, spicy chicken, fresh chilli, nduja and salame piccante.", img: "", isVegetarian: false, isVegan: false },
+
+    // PASTA
+    { id: 31, title: "Penne Arrabbiata", category: "pasta", price: "£16.00", desc: "Penne in a spicy tomato sauce with chilli, basil, onion and garlic.", img: "", isVegetarian: true, isVegan: true },
+    { id: 32, title: "Linguine Bolognese", category: "pasta", price: "£18.00", desc: "Linguine with a traditional homemade beef Bolognese sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 33, title: "Penne alla Boscaiola", category: "pasta", price: "£20.00", desc: "Penne in a rich creamy tomato sauce with crumbled Italian pork sausage, mushrooms and Calabrian nduja.", img: "", isVegetarian: false, isVegan: false },
+    { id: 34, title: "Spaghetti Carbonara", category: "pasta", price: "£18.00", desc: "Spaghetti with Italian guanciale, Parmesan, black pepper and egg.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg", isVegetarian: false, isVegan: false },
+    { id: 35, title: "Linguine al Granchio", category: "pasta", price: "£22.00", desc: "Linguine with crab meat, cherry tomato sauce, chilli, garlic, parsley, white wine and extra virgin olive oil.", img: "", isVegetarian: false, isVegan: false },
+    { id: 36, title: "Spaghetti Gamberi & Acciughe", category: "pasta", price: "£20.00", desc: "Spaghetti with prawns and anchovies in a garlic, cherry tomato and white wine sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 37, title: "Linguine Salmone", category: "pasta", price: "£17.50", desc: "Linguine with smoked salmon, onion, cherry tomatoes, cream, parsley and a touch of tomato sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 38, title: "Spaghetti Pescatore", category: "pasta", price: "£21.00", desc: "Spaghetti with mixed seafood, prawns, squid, mussels and octopus in a garlic, white wine and tomato sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 39, title: "Linguine ai Gamberi & Pesto", category: "pasta", price: "£19.00", desc: "Linguine with homemade basil pesto, tiger prawns, cherry tomatoes and a touch of cream.", img: "", isVegetarian: false, isVegan: false },
+    { id: 40, title: "Penne al Forno", category: "pasta", price: "£19.00", desc: "Penne with mushrooms, crispy guanciale, spinach, garlic and parsley, baked with breadcrumbs and Parmigiano Reggiano.", img: "", isVegetarian: false, isVegan: false },
+
+    // RISOTTI
+    { id: 41, title: "Risotto Gorgonzola & Salsiccia", category: "risotto", price: "£19.00", desc: "Carnaroli rice with crumbled Italian pork sausage and spinach, creamed with gorgonzola and Parmigiano Reggiano.", img: "", isVegetarian: false, isVegan: false },
+    { id: 42, title: "Risotto Asparagi & Funghi", category: "risotto", price: "£18.00", desc: "Carnaroli rice with mushrooms, asparagus, onion and parsley, creamed with Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false },
+    { id: 43, title: "Risotto Frutti di Mare", category: "risotto", price: "£21.00", desc: "Carnaroli rice with mixed seafood, prawns, squid, mussels and octopus cooked in a white wine, garlic and tomato sauce.", img: "", isVegetarian: false, isVegan: false },
+
+    // RAVIOLI
+    { id: 44, title: "Ravioli ai Porcini", category: "ravioli", price: "£23.00", desc: "Porcini mushroom-filled ravioli, sautéed in a fragrant butter and sage sauce, finished with Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false },
+    { id: 45, title: "Ravioli Astice & Granchio", category: "ravioli", price: "£26.00", desc: "Lobster filled-ravioli toasted in a rich velvety crab sauce, with cherry tomatoes, citrus hints and aromatic herbs.", img: "", isVegetarian: false, isVegan: false },
+    { id: 46, title: "Ravioli Ricotta & Spinaci", category: "ravioli", price: "£20.00", desc: "Spinach and ricotta-filled ravioli cooked with crumbled Italian pork sausage and finished with shaved Parmigiano Reggiano.", img: "", isVegetarian: false, isVegan: false },
+
+    // MAINS (SECONDI)
+    { id: 47, title: "Pollo Sambuca", category: "mains", price: "£25.00", desc: "Chicken breast cooked in a creamy sambuca sauce with red onions. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false },
+    { id: 48, title: "Pollo Cacciatore", category: "mains", price: "£25.00", desc: "Chicken breast cooked in a spicy tomato sauce with onions, mixed peppers, mushrooms, black olives and white wine. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false },
+    { id: 49, title: "Vitello ai Funghi", category: "mains", price: "£30.00", desc: "Thinly sliced veal cooked with onions and wild mushrooms in a rich white wine, parsley and cream sauce. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false },
+    { id: 50, title: "Spigola al Limone", category: "mains", price: "£26.00", desc: "Pan-fried sea bass fillets cooked in a rich lemon butter and white wine sauce. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/branzino.jpg", isVegetarian: false, isVegan: false },
+    { id: 51, title: "Zuppa di Pesce", category: "mains", price: "£28.00", desc: "Seafood selection, including prawns, squid, octopus and mussels, cooked in a spicy tomato sauce with white wine, garlic and parsley. Served with toasted bread.", img: "", isVegetarian: false, isVegan: false },
+    { id: 52, title: "Baccalà in Umido", category: "mains", price: "£29.00", desc: "Cod loin cooked in a Mediterranean tomato sauce with red onions, black olives, capers, garlic and parsley. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/branzino.jpg", isVegetarian: false, isVegan: false },
+    { id: 53, title: "Bistecca", category: "mains", price: "£34.00", desc: "28 days ribeye, freshly cut and cooked to your preference. Served with Tuscan potatoes, side salad and homemade peppercorn sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 54, title: "Tagliata di Manzo", category: "mains", price: "£32.00", desc: "28 days aged sliced ribeye served on a bed of rocket, topped with shaved Parmigiano Reggiano and a drizzle of balsamic glaze, extra virgin olive oil and Maldon sea salt.", img: "", isVegetarian: false, isVegan: false },
+
+    // SALADS
+    { id: 55, title: "Classic Salad", category: "salads", price: "£14.00", desc: "Baby leaf and rocket salad with avocado, mixed peppers, red onion, cucumber, cherry tomatoes and olives, dressed with balsamic vinegar and extra virgin olive oil.", img: "", isVegetarian: true, isVegan: true },
+
+    // SIDES
+    { id: 56, title: "Dolce Vita Sides", category: "sides", price: "£5.00", desc: "French fries, Tuscan potatoes, Rocket and Parmesan, Garlic spinach, Sautéed mushrooms, Mixed vegetables, Side salad, or Tomatoes & red onions. (Side bread £4.00)", img: "", isVegetarian: true, isVegan: false }
+  ];
+
+  // Logica intelligente del filtro: filtra per categoria normale oppure per i flag vegetarian/vegan
+  const filteredMenu = createMemo(() => {
+    if (selectedCategory() === "all") return menuItems;
+    if (selectedCategory() === "vegetarian") return menuItems.filter(item => item.isVegetarian);
+    if (selectedCategory() === "vegan") return menuItems.filter(item => item.isVegan);
+    return menuItems.filter(item => item.category === selectedCategory());
+  });
+
+  const getCategoryIcon = (category) => {
+    switch(category) {
+      case "nibbles": return "fas fa-cookie-bite";
+      case "starters": return "fas fa-utensils";
+      case "pizza": return "fas fa-pizza-slice";
+      case "pasta": return "fas fa-utensils";
+      case "risotto": case "ravioli": return "fas fa-utensils";
+      case "mains": return "fas fa-drumstick-bite";
+      case "salads": return "fas fa-seedling";
+      case "sides": return "fas fa-bread-slice";
+      default: return "fas fa-utensils";
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
+
     try {
       const restaurantMail = await emailjs.sendForm("service_4mzmr8s", "template_5sf632c", e.target, "zRfkntw9T_O_C4S43");
       const customerMail = await emailjs.sendForm("service_4mzmr8s", "template_lec527l", e.target, "zRfkntw9T_O_C4S43");
+
       if (restaurantMail.text === "OK" && customerMail.text === "OK") {
         setFormSubmitted(true);
         setBookingDate("");
         setBookingTime("");
         e.target.reset();
       } else {
-        alert("Ops! Something went wrong. Please try again.");
+        alert("Ops! Something went wrong. Please try again or call us directly.");
       }
     } catch (error) {
-      alert("Connection error. Please try again.");
+      console.error("EmailJS Error:", error);
+      alert("Connection error. Please try again or call us directly.");
     } finally {
       setIsSending(false);
     }
@@ -249,7 +196,9 @@ function App() {
             overflow-x: hidden; 
             line-height: 1.6;
             display: block !important;
+            text-align: left !important;
             width: 100% !important;
+            min-width: 100% !important;
             font-size: 16px !important;
         }
         .navbar {
@@ -263,246 +212,165 @@ function App() {
         }
         .navbar-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; color: #ffffff !important; letter-spacing: 1px; }
         .navbar-brand span { color: var(--secondary); }
-        .nav-link { color: #ffffff !important; font-weight: 500; margin: 0 12px; }
+        .nav-link { color: #ffffff !important; font-weight: 500; margin: 0 12px; transition: color 0.3s ease; }
         .nav-link:hover { color: var(--secondary) !important; }
         
-        .hero { min-height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; background: #000000; }
-        .hero-bg-image { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.5s ease-in-out; }
-        .hero-bg-image.active { opacity: 0.3; }
+        .hero {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000000;
+        }
+        .hero-bg-image {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            z-index: 1;
+        }
+        .hero-bg-image.active {
+            opacity: 0.3;
+            animation: subtle-zoom 20s ease-in-out infinite;
+        }
+        @keyframes subtle-zoom { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        
         .hero-content { position: relative; z-index: 10; text-align: center; color: white; }
-        .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 700; letter-spacing: 2px; }
-        .hero-subtitle { font-size: 1.2rem; color: var(--secondary); margin-bottom: 2.5rem; font-style: italic; }
-        
-        .btn-primary-custom { display: inline-block; background: var(--primary); color: white; padding: 14px 38px; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; transition: var(--transition); border: none; text-decoration: none; }
-        .btn-secondary-custom { display: inline-block; background: transparent; color: white; padding: 14px 38px; border: 2px solid white; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; margin-left: 1rem; text-decoration: none; transition: var(--transition); }
-        .btn-primary-custom:hover { background: #6b0000; transform: translateY(-2px); color: white; }
-        .btn-secondary-custom:hover { background: white; color: black; transform: translateY(-2px); }
-        
+        .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 700; letter-spacing: 2px; text-shadow: 2px 2px 15px rgba(0,0,0,0.6); }
+        .hero-subtitle { font-size: 1.2rem; color: var(--secondary); margin-bottom: 2.5rem; font-style: italic; text-shadow: 1px 1px 5px rgba(0,0,0,0.6); }
+        .btn-primary-custom { display: inline-block; text-decoration: none; background: var(--primary); color: white; padding: 14px 38px; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; transition: var(--transition); border: none; }
+        .btn-secondary-custom { display: inline-block; text-decoration: none; background: transparent; color: white; padding: 14px 38px; border: 2px solid white; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; margin-left: 1rem; transition: var(--transition); }
+        .btn-primary-custom:hover:not(:disabled) { background: #6b0000; transform: translateY(-2px); color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn-primary-custom:disabled { background: #cccccc; cursor: not-allowed; }
+        .btn-secondary-custom:hover { border-color: var(--secondary); color: var(--secondary); background: rgba(255,255,255,0.05); }
         .section-padding { padding: 100px 0; }
         .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .content-card-panel { background: rgba(255, 255, 255, 0.95); padding: 3.5rem; border-radius: var(--border-radius); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
-        .section-title { font-family: 'Playfair Display', serif; font-size: 2.8rem; text-align: center; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; }
-        .section-title::after { content: ''; display: block; width: 60px; height: 2px; background: var(--secondary); margin: 1rem auto 0; }
-        .section-subtitle-custom { text-align: center; font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primary); font-style: italic; margin-bottom: 3rem; }
-        
-        .btn-filter { background: #ffffff; color: var(--dark); border: 1px solid var(--border-color); padding: 8px 22px; font-size: 0.95rem; font-weight: 600; border-radius: 30px; transition: var(--transition); cursor: pointer; }
-        .btn-filter:hover, .btn-filter.active { background: var(--primary); color: #ffffff; border-color: var(--primary); }
-        
-        .btn-comet {
-            position: relative;
-            background: #111111;
-            color: #ffffff;
-            border: none;
-            padding: 8px 24px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            border-radius: 30px;
-            cursor: pointer;
-            overflow: hidden;
-            z-index: 1;
-            box-shadow: 0 0 10px rgba(201, 169, 97, 0.3);
-            transition: var(--transition);
-        }
-        .btn-comet::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: conic-gradient(transparent, var(--secondary), transparent 30%);
-            animation: comet-rotate 2.5s linear infinite;
-            z-index: -2;
-        }
-        .btn-comet::after {
-            content: '';
-            position: absolute;
-            top: 2px; left: 2px; right: 2px; bottom: 2px;
-            background: #111111;
-            border-radius: 30px;
-            z-index: -1;
-            transition: var(--transition);
-        }
-        .btn-comet:hover::after, .btn-comet.active::after { background: var(--primary); }
-        .btn-comet:hover, .btn-comet.active { color: white; box-shadow: 0 0 15px rgba(139, 0, 0, 0.6); }
-        @keyframes comet-rotate { 100% { transform: rotate(360deg); } }
-
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
-        .menu-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden; transition: var(--transition); display: flex; flex-direction: column; position: relative; }
-        .menu-card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); }
-        
-        .menu-card.special-highlight {
-            border: 2px solid #b30000;
-            box-shadow: 0 0 18px rgba(179, 0, 0, 0.25);
-            background: #fffbfb;
-        }
-        .special-tag-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: linear-gradient(135deg, #b30000 0%, #8b0000 100%);
-            color: #ffffff;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 5px 12px;
-            border-radius: 4px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-            z-index: 10;
-            letter-spacing: 0.8px;
+        .content-card-panel {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
             border: 1px solid rgba(255,255,255,0.2);
         }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 2.8rem; text-align: center; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 0.5px; }
+        .section-title::after { content: ''; display: block; width: 60px; height: 2px; background: var(--secondary); margin: 1rem auto 0; }
+        .section-subtitle-custom { text-align: center; font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primary); font-style: italic; margin-bottom: 3rem; font-weight: 600; }
+        
+        .btn-filter {
+            background: #ffffff; color: var(--dark); border: 1px solid var(--border-color); padding: 8px 22px; font-size: 0.95rem; font-weight: 600; border-radius: 30px; transition: var(--transition); cursor: pointer;
+        }
+        .btn-filter:hover, .btn-filter.active { background: var(--primary); color: #ffffff; border-color: var(--primary); box-shadow: 0 4px 12px rgba(139, 0, 0, 0.2); }
+        
+        /* Stili speciali per evidenziare i filtri dietetici rispetto a quelli di categoria */
+        .btn-filter.dietary-filter { border-color: #2e7d32; color: #2e7d32; }
+        .btn-filter.dietary-filter:hover, .btn-filter.dietary-filter.active { background: #2e7d32; color: #ffffff; border-color: #2e7d32; box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2); }
 
-        .menu-card-icon-placeholder { width: 100%; height: 220px; background: #f7f4ee; display: flex; align-items: center; justify-content: center; color: var(--secondary); font-size: 3.5rem; border-bottom: 1px solid var(--border-color); }
-        .menu-card-image { width: 100%; height: 220px; object-fit: cover; display: block; border-bottom: 1px solid var(--border-color); }
-        .menu-card-content { padding: 1.5rem; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .menu-card-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; }
-        .menu-card-price { color: var(--secondary); font-size: 1.1rem; font-weight: 700; }
-        .menu-card-description { color: #666666; font-size: 0.95rem; line-height: 1.6; }
-        
-        .admin-toggle-btn { position: fixed; bottom: 20px; right: 20px; background: var(--dark); color: white; border: 1px solid var(--secondary); padding: 10px 15px; border-radius: 30px; font-weight: 600; z-index: 2000; cursor: pointer; font-size: 0.85rem; }
-        .admin-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 2100; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; backdrop-filter: blur(5px); }
-        .admin-modal { background: #ffffff; border-radius: var(--border-radius); max-width: 650px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 2.5rem; border-top: 4px solid var(--primary); }
-        .current-specials-list { background: #f9f9f9; border: 1px solid var(--border-color); border-radius: 4px; max-height: 180px; overflow-y: auto; padding: 10px; }
-        
         .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
         .about-text h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primary); margin-bottom: 1.5rem; font-weight: 700; }
-        .about-text p { font-size: 1.05rem; line-height: 1.9; color: #444; }
-        .about-image { height: 420px; border-radius: var(--border-radius); overflow: hidden; }
+        .about-text p { font-size: 1.05rem; line-height: 1.9; margin-bottom: 1.3rem; font-weight: 400; color: #444; }
+        .about-image { height: 420px; border-radius: var(--border-radius); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
         .about-image img { width: 100%; height: 100%; object-fit: cover; }
         
-        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
-        .gallery-item { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: var(--border-radius); border: 1px solid var(--border-color); }
-        .gallery-image { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
-        .gallery-item:hover .gallery-image { transform: scale(1.05); }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+        .menu-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden; transition: var(--transition); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column; }
+        .menu-card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); }
+        
+        .menu-card-icon-placeholder { 
+            width: 100%; 
+            height: 220px; 
+            background: #f7f4ee; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: var(--secondary);
+            font-size: 3.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .menu-card-image { width: 100%; height: 220px; object-fit: cover; display: block; border-bottom: 1px solid var(--border-color); }
+        
+        .menu-card-content { padding: 1.5rem; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-card-top { margin-bottom: 0.8rem; }
+        .menu-card-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; }
+        .menu-card-price { color: var(--secondary); font-family: 'Lato', sans-serif; font-size: 1.1rem; font-weight: 700; }
+        .menu-card-description { color: #666666; font-family: 'Lato', sans-serif; font-size: 0.95rem; line-height: 1.6; text-align: center; margin: 0 auto; max-width: 95%; }
+        
+        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .gallery-item { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: var(--border-radius); cursor: pointer; }
+        .gallery-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+        .gallery-item:hover .gallery-image { transform: scale(1.08); }
+        .gallery-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0, 0, 0, 0.7)); padding: 2rem 1.5rem; opacity: 0; transition: opacity 0.3s ease; }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        .gallery-text { color: white; font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; }
+        
+        .review-item { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid #eee; }
+        .review-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .stars { color: #FFB81C; font-size: 1.1rem; margin-bottom: 0.4rem; }
+        .review-author { font-weight: 700; color: var(--primary); margin-bottom: 0.4rem; font-size: 1.1rem; }
+        .review-text { color: #555; font-size: 1rem; line-height: 1.7; font-style: italic; }
 
-        .reservation-box { max-width: 800px; margin: 0 auto; padding: 3.5rem 2.5rem; border: 1px solid rgba(201, 169, 97, 0.2); background: #ffffff; text-align: center; border-radius: var(--border-radius); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .reservation-box { max-width: 800px; margin: 0 auto; padding: 3.5rem 2.5rem; border: 1px solid rgba(201, 169, 97, 0.2); border-radius: var(--border-radius); box-shadow: 0 15px 40px rgba(0,0,0,0.1); background: #ffffff; text-align: center; }
+        .reservation-box h3 { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--primary); margin-bottom: 0.8rem; font-weight: 700; }
+        .reservation-box p { font-size: 1.05rem; margin-bottom: 2.5rem; color: #555; line-height: 1.7; }
+        
         .booking-form { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; text-align: left; }
         .form-group-full { grid-column: span 2; }
-        .booking-form input, .booking-form select, .booking-form textarea { width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: var(--border-radius); background-color: #faf8f5; font-family: inherit; font-size: 0.95rem; }
+        .booking-form label { display: block; font-weight: 600; color: var(--dark); margin-bottom: 0.5rem; font-size: 0.95rem; }
+        .booking-form input, .booking-form select, .booking-form textarea { width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: var(--border-radius); font-family: 'Lato', sans-serif; font-size: 1rem; transition: var(--transition); background-color: #faf8f5; color: #333; }
+        .booking-form input:focus, .booking-form select:focus, .booking-form textarea:focus { outline: none; border-color: var(--primary); background-color: #ffffff; box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1); }
+        .success-message { padding: 3rem 1rem; text-align: center; }
+        .success-icon { font-size: 4rem; color: #34A853; margin-bottom: 1.5rem; }
         
-        .contact-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem; text-align: center; margin-top: 3rem; }
-        .contact-card { background: #ffffff; padding: 2rem; border-radius: var(--border-radius); border: 1px solid var(--border-color); box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
-        .contact-icon { font-size: 2.2rem; color: var(--primary); margin-bottom: 1rem; }
-        .contact-card h4 { font-family: 'Playfair Display', serif; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--primary); font-weight: 700; }
-        .contact-card p { font-size: 0.95rem; color: #555; }
+        .contact-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem; text-align: center; align-items: start; }
+        .contact-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
+        .contact-info h3 { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); margin-bottom: 0.8rem; }
+        .contact-info p { color: #444; font-weight: 400; }
+        
+        .btn-action {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--primary); color: white; border: 2px solid var(--primary); padding: 9px 18px; font-size: 0.9rem; font-weight: 600; border-radius: 6px; text-decoration: none; margin-top: 15px; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .btn-action:hover { background: var(--dark); color: #ffffff; border-color: var(--dark); transform: translateY(-2px); }
+        .btn-action.maps i { color: #4285F4; }
+        .btn-action.phone i { color: #34A853; }
+        .btn-action.email i { color: #EA4335; }
+        .btn-action:hover i { color: #ffffff !important; }
 
-        footer { background: var(--dark); color: white; padding: 3.5rem 0; text-align: center; border-top: 3px solid var(--secondary); }
-        footer p { font-size: 0.95rem; opacity: 0.85; margin-bottom: 1rem; }
-        .footer-socials a { color: white; font-size: 1.4rem; margin: 0 12px; transition: var(--transition); }
-        .footer-socials a:hover { color: var(--secondary); }
-
+        footer { background: var(--dark); color: white; padding: 3rem 0; text-align: center; border-top: 3px solid var(--secondary); }
+        .social-links { display: flex; justify-content: center; gap: 1.8rem; margin-bottom: 2rem; }
+        .social-links a { color: var(--secondary); font-size: 1.4rem; transition: var(--transition); }
+        .social-links a:hover { color: white; transform: translateY(-3px); }
+        
         @media (max-width: 768px) { 
             .about-content { grid-template-columns: 1fr; gap: 30px; } 
-            .gallery-grid { grid-template-columns: repeat(2, 1fr); } 
+            .content-card-panel { padding: 2rem 1.5rem; }
+            .hero-buttons { display: flex; flex-direction: column; gap: 10px; } 
+            .btn-secondary-custom { margin-left: 0; } 
+            .hero-title { font-size: 3rem; } 
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
             .booking-form { grid-template-columns: 1fr; }
-            .booking-form .form-group-full { grid-column: span 1; } 
+            .form-group-full { grid-column: span 1; }
         }
       `}</style>
-
-      {/* BOTTONE ACCESSO ADMIN */}
-      <button class="admin-toggle-btn" onClick={() => setIsAdminOpen(true)}>
-        <i class="fas fa-lock me-1"></i> Admin Login
-      </button>
-
-      {/* MODALE AMMINISTRATORE */}
-      {isAdminOpen() && (
-        <div class="admin-overlay">
-          <div class="admin-modal">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-              <h4 class="m-0 font-serif" style={{ color: "var(--primary)", "font-weight": "700" }}>Dolce Vita Control Panel</h4>
-              <button class="btn-close" onClick={() => setIsAdminOpen(false)}></button>
-            </div>
-
-            {!isLoggedIn() ? (
-              <form onSubmit={handleLogin}>
-                <div class="mb-3">
-                  <label class="form-label font-weight-bold">Enter Administrator Password</label>
-                  <input type="password" class="form-control" placeholder="••••••••" value={adminPassword()} onInput={(e) => setAdminPassword(e.target.value)} required />
-                </div>
-                <button type="submit" class="btn-primary-custom w-100 py-2">Login</button>
-              </form>
-            ) : (
-              <div>
-                {/* BANNER SPECIALE */}
-                <div class="p-3 mb-4 rounded" style={{ background: "#fcf8f2", border: "1px solid var(--border-color)" }}>
-                  <h5 class="font-serif mb-2" style={{ color: "var(--primary)", "font-weight": "700" }}><i class="fas fa-tv me-2"></i>1. Today's Special Banner</h5>
-                  <div class="mb-2">
-                    <label class="form-label small font-weight-bold mb-1">Banner Title</label>
-                    <input type="text" class="form-control form-control-sm" value="Tortellini panna prosciutto e piselli" />
-                  </div>
-                  <div>
-                    <label class="form-label small font-weight-bold mb-1">Banner Description</label>
-                    <textarea class="form-control form-control-sm" rows="2">Tortellini served in a rich cream sauce with cotto ham, peas, Parmigiano Reggiano and a touch of butter.</textarea>
-                  </div>
-                </div>
-
-                {/* CREAZIONE NUOVI PIATTI */}
-                <div class="p-3 rounded" style={{ background: "#f4f6f8", border: "1px solid #dcdfe6" }}>
-                  <h5 class="font-serif mb-2" style={{ color: "var(--primary)", "font-weight": "700" }}><i class="fas fa-plus-circle me-2"></i>2. Create New Special Menu Items</h5>
-                  
-                  <form onSubmit={handleAddSpecialItem} class="row g-2 mb-4">
-                    <div class="col-md-7">
-                      <label class="small font-weight-bold mb-1">Dish Name *</label>
-                      <input type="text" class="form-control form-control-sm" placeholder="e.g. Tortellini panna..." value={newSpecialTitle()} onInput={(e) => setNewSpecialTitle(e.target.value)} required />
-                    </div>
-                    <div class="col-md-5">
-                      <label class="small font-weight-bold mb-1">Price *</label>
-                      <input type="text" class="form-control form-control-sm" placeholder="e.g. 16.50" value={newSpecialPrice()} onInput={(e) => setNewSpecialPrice(e.target.value)} required />
-                    </div>
-                    <div class="col-md-12">
-                      <label class="small font-weight-bold mb-1">Category *</label>
-                      <select class="form-select form-select-sm" value={newSpecialCategory()} onChange={(e) => setNewSpecialCategory(e.target.value)}>
-                        <option value="nibbles">Nibbles</option>
-                        <option value="starters">Starters</option>
-                        <option value="pizza">Pizze & Calzoni</option>
-                        <option value="pasta">Pasta</option>
-                        <option value="risotto">Risotti</option>
-                        <option value="ravioli">Ravioli</option>
-                        <option value="mains">Mains</option>
-                        <option value="salads">Salads</option>
-                        <option value="sides">Sides</option>
-                      </select>
-                    </div>
-                    <div class="col-12">
-                      <label class="small font-weight-bold mb-1">English Description *</label>
-                      <textarea class="form-control form-control-sm" rows="2" placeholder="Description..." value={newSpecialDesc()} onInput={(e) => setNewSpecialDesc(e.target.value)} required></textarea>
-                    </div>
-                    <div class="col-12 mt-2">
-                      <button type="submit" class="btn btn-sm btn-success w-100 font-weight-bold"><i class="fas fa-check me-1"></i> Add to Specials</button>
-                    </div>
-                  </form>
-
-                  <h6 class="small font-weight-bold mb-1">Active Dynamic Specials ({dynamicSpecials().length})</h6>
-                  <div class="current-specials-list">
-                    <For each={dynamicSpecials()}>{(item) => (
-                      <div class="d-flex justify-content-between align-items-center p-2 mb-1 rounded bg-white border" style={{ "font-size": "0.85rem" }}>
-                        <div>
-                          <span class="badge bg-danger me-1 text-uppercase">Special {item.category}</span>
-                          <strong>{item.title}</strong>
-                        </div>
-                        <button class="btn btn-sm btn-outline-danger p-0 px-2" onClick={() => handleRemoveSpecialItem(item.id)}>
-                          <i class="fas fa-trash-alt"></i>
-                        </button>
-                      </div>
-                    )}</For>
-                  </div>
-                </div>
-
-                <button class="btn btn-secondary w-100 mt-4" onClick={() => { setIsLoggedIn(false); setAdminPassword(""); }}>Logout Session</button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* NAVBAR */}
       <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="#home">Dolce <span>Vita</span></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
               <li class="nav-item"><a class="nav-link" href="#about">Our Story</a></li>
               <li class="nav-item"><a class="nav-link" href="#menu">Menu</a></li>
+              <li class="nav-item"><a class="nav-link" href="#gallery">Atmosphere</a></li>
+              <li class="nav-item"><a class="nav-link" href="#reviews">Reviews</a></li>
               <li class="nav-item"><a class="nav-link" href="#reservation">Book a Table</a></li>
+              <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
             </ul>
           </div>
         </div>
@@ -511,14 +379,18 @@ function App() {
       {/* HERO SECTION */}
       <section class="hero" id="home">
         <For each={heroImages}>{(img, index) => (
-          <div class={`hero-bg-image ${index() === currentHeroIndex() ? 'active' : ''}`} style={{ "background-image": `url('${img}')`, "z-index": index() === currentHeroIndex() ? 2 : 1 }} />
+          <div 
+            class={`hero-bg-image ${index() === currentHeroIndex() ? 'active' : ''}`}
+            style={{ "background-image": `url('${img}')`, "z-index": index() === currentHeroIndex() ? 2 : 1 }}
+          />
         )}</For>
+
         <div class="hero-content" data-aos="fade-up" style={{ "z-index": 10 }}>
           <h1 class="hero-title">DOLCE VITA</h1>
           <p class="hero-subtitle">Authentic Italian dining in the heart of Wooburn Green</p>
-          <div class="d-flex justify-content-center align-items-center flex-wrap gap-2">
+          <div class="hero-buttons">
             <a href="#reservation" class="btn-primary-custom">Book Now</a>
-            <a href="#menu" class="btn-secondary-custom">Full Menu</a>
+            <a href="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/menu.pdf" target="_blank" class="btn-secondary-custom">Full Menu</a>
           </div>
         </div>
       </section>
@@ -531,35 +403,25 @@ function App() {
               <div class="about-text">
                 <h2>Our Story</h2>
                 <p><strong>Dolce Vita</strong> is more than just a restaurant; it is a true journey through traditional Italian flavours. Since 2019, we have been bringing the most genuine spirit of the peninsula to Wooburn Green.</p>
+                <p>Every dish is crafted with hand-picked ingredients, recipes passed down through generations, and the distinctive passion of real Italian cooking. Our head chef brings twenty years of experience from Italy's finest kitchens.</p>
+                <p><strong>Our commitment:</strong> Outstanding quality, a warm atmosphere, and impeccable service. We invite you to discover why we are the preferred choice for those who cherish authentic Italian cuisine.</p>
               </div>
               <div class="about-image">
-                <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/capi.jpeg" alt="Story Image" />
+                <img src="https://cdn.jsdelivr.net/gh/Alftaway/DolceVita@main/assets/capi.jpeg" alt="Dolce Vita Story Image" />
               </div>
-            </div>
-            
-            {/* GRIGLIA IMMAGINI DI GALLERIA (SEZIONE DEL PIE DI PAGINA STILE VECCHIO LAYOUT) */}
-            <div class="gallery-grid">
-              <div class="gallery-item"><img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg" class="gallery-image" alt="Interior" /></div>
-              <div class="gallery-item"><img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg" class="gallery-image" alt="Pizza Margherita" /></div>
-              <div class="gallery-item"><img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg" class="gallery-image" alt="Spaghetti Carbonara" /></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* FOOD MENU SECTION */}
+      {/* MENU HIGHLIGHTS */}
       <section class="section-padding" id="menu">
         <div class="container-custom">
           <h2 class="section-title" data-aos="fade-down">The Food Menu</h2>
           <p class="section-subtitle-custom" data-aos="fade-down">Explore our extensive and authentic Italian selections</p>
           
-          <div class="filter-container d-flex justify-content-center flex-wrap gap-2 mb-5 align-items-center" data-aos="fade-down">
+          <div class="filter-container d-flex justify-content-center flex-wrap gap-2 mb-5" data-aos="fade-down">
             <button class={`btn-filter ${selectedCategory() === 'all' ? 'active' : ''}`} onClick={() => setSelectedCategory('all')}>All Menu</button>
-            
-            <button class={`btn-comet ${selectedCategory() === 'special' ? 'active' : ''}`} onClick={() => setSelectedCategory('special')}>
-              <i class="fas fa-star me-1 text-warning"></i> Specials
-            </button>
-
             <button class={`btn-filter ${selectedCategory() === 'nibbles' ? 'active' : ''}`} onClick={() => setSelectedCategory('nibbles')}>Nibbles</button>
             <button class={`btn-filter ${selectedCategory() === 'starters' ? 'active' : ''}`} onClick={() => setSelectedCategory('starters')}>Starters</button>
             <button class={`btn-filter ${selectedCategory() === 'pizza' ? 'active' : ''}`} onClick={() => setSelectedCategory('pizza')}>Pizze & Calzoni</button>
@@ -569,14 +431,15 @@ function App() {
             <button class={`btn-filter ${selectedCategory() === 'mains' ? 'active' : ''}`} onClick={() => setSelectedCategory('mains')}>Mains</button>
             <button class={`btn-filter ${selectedCategory() === 'salads' ? 'active' : ''}`} onClick={() => setSelectedCategory('salads')}>Salads</button>
             <button class={`btn-filter ${selectedCategory() === 'sides' ? 'active' : ''}`} onClick={() => setSelectedCategory('sides')}>Sides</button>
+            
+            {/* Nuovi pulsanti speciali dedicati alle scelte alimentari */}
+            <button class={`btn-filter dietary-filter ${selectedCategory() === 'vegetarian' ? 'active' : ''}`} onClick={() => setSelectedCategory('vegetarian')}><i class="fas fa-leaf me-1"></i> Vegetarian</button>
+            <button class={`btn-filter dietary-filter ${selectedCategory() === 'vegan' ? 'active' : ''}`} onClick={() => setSelectedCategory('vegan')}><i class="fas fa-seedling me-1"></i> Vegan</button>
           </div>
 
           <div class="menu-grid">
             <For each={filteredMenu()}>{(item) => (
-              <div class={`menu-card ${item.isSpecialMenu ? 'special-highlight' : ''}`} data-aos="fade-up">
-                {item.isSpecialMenu && (
-                  <div class="special-tag-badge"><i class="fas fa-star me-1 text-warning"></i> Special Item</div>
-                )}
+              <div class="menu-card" data-aos="fade-up">
                 {item.img !== "" ? (
                   <img src={item.img} class="menu-card-image" alt={item.title} />
                 ) : (
@@ -585,9 +448,9 @@ function App() {
                   </div>
                 )}
                 <div class="menu-card-content">
-                  <div>
+                  <div class="menu-card-top">
                     <h3 class="menu-card-title">{item.title}</h3>
-                    <div class="menu-card-price mb-3">{item.price}</div>
+                    <div class="menu-card-price">{item.price}</div>
                   </div>
                   <p class="menu-card-description">{item.desc}</p>
                 </div>
@@ -597,108 +460,201 @@ function App() {
         </div>
       </section>
 
-      {/* RESERVATION SYSTEM (INTERAMENTE RIPRISTINATO E PERFETTAMENTE IN LINEA SUL BROWSER) */}
+      {/* ATMOSPHERE GALLERY */}
+      <section class="section-padding" id="gallery">
+        <div class="container-custom">
+          <h2 class="section-title" data-aos="fade-down" style={{ color: "#ffffff", "text-shadow": "1px 1px 10px rgba(0,0,0,0.5)" }}>Our Atmosphere</h2>
+          <div class="gallery-grid" data-aos="fade-up">
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery1.jpg" /><div class="gallery-overlay"><p class="gallery-text">Pasta al Pomodoro</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery2.jpg" /><div class="gallery-overlay"><p class="gallery-text">Spaghetti al Basilico</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery3.jpg" /><div class="gallery-overlay"><p class="gallery-text">Lasagna Casalinga</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery4.jpg" /><div class="gallery-overlay"><p class="gallery-text">Antipasto Italiano</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery5.jpg" /><div class="gallery-overlay"><p class="gallery-text">Pasta Fresca</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery6.jpg" /><div class="gallery-overlay"><p class="gallery-text">Fresh Ingredients</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery7.jpg" /><div class="gallery-overlay"><p class="gallery-text">Pizza Margherita</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery8.jpg" /><div class="gallery-overlay"><p class="gallery-text">Italian Wine</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery9.jpg" /><div class="gallery-overlay"><p class="gallery-text">Risotto Milanese</p></div></div>
+          </div>
+        </div>
+      </section>
+
+      <SpecialDish />
+
+      {/* REVIEWS */}
+      <section class="section-padding" id="reviews">
+        <div class="container-custom">
+          <div class="content-card-panel" data-aos="fade-up">
+            <h2 class="section-title">What Our Guests Say</h2>
+            <div class="review-item">
+              <div class="stars">★★★★★</div>
+              <div class="review-author">James Thompson</div>
+              <p class="review-text">"Absolutely authentic Italian cooking. The pasta is hand-made fresh daily and the flavours are exactly as I remember from my time in Rome. Simply outstanding."</p>
+            </div>
+            <div class="review-item">
+              <div class="stars">★★★★★</div>
+              <div class="review-author">Sarah Mitchell</div>
+              <p class="review-text">"Beautiful atmosphere, exceptional service, and the risotto was absolutely divine. We'll definitely be returning for special occasions. Highly recommended!"</p>
+            </div>
+            <div class="review-item">
+              <div class="stars">★★★★★</div>
+              <div class="review-author">Emma & David Williams</div>
+              <p class="review-text">"Family dinner was wonderful. The children loved their meals and the staff were incredibly accommodating. A real gem in Wooburn! We can't wait to come back."</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* RESERVATION SYSTEM */}
       <section class="section-padding" id="reservation">
         <div class="container-custom">
           <div class="reservation-box" data-aos="zoom-in">
             {!formSubmitted() ? (
               <>
-                <h3 class="font-serif mb-4" style={{ "font-size": "2.2rem", color: "var(--primary)", "font-weight": "700" }}>Book a Table</h3>
+                <h3>Book a Table</h3>
+                <p>Please select your preferred date and time slot. Please note we are closed on Mondays.</p>
+                
                 <form onSubmit={handleSubmit} class="booking-form">
                   <div>
-                    <label class="form-label small font-weight-bold">Full Name *</label>
-                    <input type="text" name="name" required />
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required placeholder="e.g. John Doe" />
                   </div>
                   <div>
-                    <label class="form-label small font-weight-bold">Phone Number *</label>
-                    <input type="tel" name="phone" required />
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="e.g. 07123 456789" />
                   </div>
                   <div>
-                    <label class="form-label small font-weight-bold">Guests *</label>
-                    <select name="guests">
+                    <label for="guests">Number of Guests *</label>
+                    <select id="guests" name="guests" required>
                       <option value="1">1 Person</option>
-                      <option value="2">2 People</option>
+                      <option value="2" selected>2 People</option>
                       <option value="3">3 People</option>
                       <option value="4">4 People</option>
                       <option value="5">5 People</option>
                       <option value="6">6 People</option>
                       <option value="7">7 People</option>
-                      <option value="8">8 People</option>
+                      <option value="8+">8+ People (Large Party)</option>
                     </select>
                   </div>
+                  
                   <div>
-                    <label class="form-label small font-weight-bold">Date *</label>
-                    <input type="date" min={getTodayDateString()} value={bookingDate()} onChange={handleDateChange} required />
+                    <label for="date">Date *</label>
+                    <input 
+                      type="date" 
+                      id="date" 
+                      name="date" 
+                      required 
+                      min={getTodayDateString()} 
+                      value={bookingDate()} 
+                      onChange={handleDateChange} 
+                    />
                   </div>
-                  <div>
-                    <label class="form-label small font-weight-bold">Preferred Time *</label>
-                    <select name="time" value={bookingTime()} onChange={(e) => setBookingTime(e.target.value)} required>
-                      <option value="">Select a time...</option>
-                      <option value="12:00">12:00 PM</option>
-                      <option value="12:30">12:30 PM</option>
-                      <option value="13:00">01:00 PM</option>
-                      <option value="13:30">01:30 PM</option>
-                      <option value="14:00">02:00 PM</option>
-                      <option value="17:30">05:30 PM</option>
-                      <option value="18:00">06:00 PM</option>
-                      <option value="18:30">06:30 PM</option>
-                      <option value="19:00">07:00 PM</option>
-                      <option value="19:30">07:30 PM</option>
-                      <option value="20:00">08:00 PM</option>
-                      <option value="20:30">08:30 PM</option>
-                      <option value="21:00">09:00 PM</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label class="form-label small font-weight-bold">Email Address *</label>
-                    <input type="email" name="email" required />
-                  </div>
+
                   <div class="form-group-full">
-                    <button type="submit" class="btn-primary-custom w-100 mt-2">
+                    <label for="time">Preferred Time Slot *</label>
+                    <select 
+                      id="time" 
+                      name="time" 
+                      required 
+                      value={bookingTime()} 
+                      onChange={(e) => setBookingTime(e.target.value)}
+                    >
+                      <option value="" disabled selected>-- Select an available slot --</option>
+                      
+                      <optgroup label="Lunch Service">
+                        <option value="12:00">12:00</option>
+                        <option value="12:30">12:30</option>
+                        <option value="13:00">13:00</option>
+                        <option value="13:30">13:30</option>
+                        <option value="14:00">14:00</option>
+                        <option value="14:30">14:30</option>
+                      </optgroup>
+
+                      <optgroup label="Dinner Service">
+                        <option value="19:00">19:00</option>
+                        <option value="19:30">19:30</option>
+                        <option value="20:00">20:00</option>
+                        <option value="20:30">20:30</option>
+                        <option value="21:00">21:00</option>
+                        <option value="21:30">21:30</option>
+                        <option value="22:00">22:00</option>
+                      </optgroup>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="name@example.com" />
+                  </div>
+                  
+                  <div class="form-group-full">
+                    <label for="notes">Special Requests / Allergies</label>
+                    <textarea id="notes" name="notes" rows="3" placeholder="Let us know if you have any food allergies or seating preferences..."></textarea>
+                  </div>
+
+                  <div class="form-group-full text-center mt-3">
+                    <button type="submit" disabled={isSending()} class="btn-primary-custom" style="width: 100%; padding: 16px 0; font-size: 1.1rem;">
                       {isSending() ? "Sending Request..." : "Submit Reservation Request"}
                     </button>
                   </div>
                 </form>
               </>
             ) : (
-              <div class="p-4 text-center">
-                <i class="fas fa-check-circle text-success mb-3" style={{ "font-size": "3.5rem" }}></i>
-                <h3 class="font-serif mb-2" style={{ color: "var(--primary)", "font-weight": "700" }}>Thank You!</h3>
-                <p class="text-muted">Your booking request has been sent successfully. We will get back to you shortly.</p>
+              <div class="success-message" data-aos="fade-up">
+                <i class="fas fa-check-circle success-icon"></i>
+                <h3>Thank You!</h3>
+                <p style="font-size: 1.2rem; color: #333; margin-bottom: 1rem;">Your booking request has been sent successfully.</p>
+                <button class="btn-secondary-custom" onClick={() => setFormSubmitted(false)} style={{ color: "var(--primary)", "border-color": "var(--primary)", "margin-left": "0" }}>
+                  Book Another Table
+                </button>
               </div>
             )}
           </div>
+        </div>
+      </section>
 
-          {/* CONTATTI E INFO SOTTO IL FORM */}
-          <div class="contact-info" data-aos="fade-up">
-            <div class="contact-card">
-              <i class="fas fa-map-marker-alt contact-icon"></i>
-              <h4>Our Location</h4>
-              <p>The Green, Wooburn Green, High Wycombe HP10 0EU</p>
-            </div>
-            <div class="contact-card">
-              <i class="fas fa-phone-alt contact-icon"></i>
-              <h4>Phone Number</h4>
-              <p>01628 522777</p>
-            </div>
-            <div class="contact-card">
-              <i class="fas fa-clock contact-icon"></i>
-              <h4>Opening Hours</h4>
-              <p>Tue - Sat: 12:00 - 22:00<br />Sun: 12:00 - 21:00<br /><strong>Monday: Closed</strong></p>
+      {/* CONTACTS */}
+      <section class="section-padding" id="contact">
+        <div class="container-custom">
+          <div class="content-card-panel" data-aos="fade-up">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-info">
+              <div>
+                <i class="fas fa-map-marker-alt contact-icon"></i>
+                <h3>Address</h3>
+                <p>53 The Green<br />Wooburn Green, HP10 0EU</p>
+                <a href="https://maps.google.com/?q=Dolce+Vita+Wooburn+Green" target="_blank" class="btn-action maps">
+                  <i class="fas fa-map-marked-alt"></i> Get Directions
+                </a>
+              </div>
+              <div>
+                <i class="fas fa-phone-alt contact-icon"></i>
+                <h3>Phone</h3>
+                <p>01628 527942<br />Tue-Sun: Lunch & Dinner</p>
+                <a href="tel:01628527942" class="btn-action phone">
+                  <i class="fas fa-phone"></i> Call Us
+                </a>
+              </div>
+              <div>
+                <i class="fas fa-envelope contact-icon"></i>
+                <h3>Email</h3>
+                <p>info@dolcevitawooburn.co.uk</p>
+                <a href="mailto:info@dolcevitawooburn.co.uk?subject=Inquiry%20from%20Website" class="btn-action email">
+                  <i class="fas fa-paper-plane"></i> Write Us
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* FOOTER CON SOCIAL E PULSANTI */}
+      {/* FOOTER */}
       <footer>
         <div class="container-custom">
-          <p>© 2026 <strong>Dolce Vita by Alfredo Forte</strong> - Authentic Italian Cuisine</p>
-          <div class="footer-socials">
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
-            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-            <a href="mailto:info@dolcevitarestaurant.co.uk"><i class="fas fa-envelope"></i></a>
+          <div class="social-links">
+            <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
           </div>
+          <p>© 2026 <strong>Dolce Vita by Alfredo Forte</strong> - Authentic Italian Cuisine</p>
         </div>
       </footer>
     </>
