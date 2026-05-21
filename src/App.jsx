@@ -225,7 +225,7 @@ function App() {
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
 
-  /* ===== NAVBAR CON ORO GLOSSY SUI MENU ===== */
+ /* ===== NAVBAR CON EFFETTO ORO 3D GLOSSY + SHADOW ===== */
 
 /* LOGO "Dolce Vita" - Rimane invariato (Handwriting Parisienne) */
 .navbar-brand { 
@@ -238,15 +238,15 @@ function App() {
     transition: var(--transition);
 }
 .navbar-brand span { 
-    color: #C9A961; /* Oro solido per "Vita" */
+    color: #C9A961; 
     font-style: normal;
 }
 
-/* CONNETTORI (Home, Menu, etc.) - ORO GLOSSY METALLICO */
+/* CONNETTORI (Home, Menu, etc.) - ORO 3D GLOSSY CON SHADOW PROFONDA */
 .nav-link { 
     font-family: 'Bodoni Moda', serif !important; /* Font elegante tipo Voga */
     font-size: 1.4rem !important; 
-    font-weight: 700 !important; /* Più spesso per far risaltare l'effetto metallo */
+    font-weight: 700 !important; /* Grassetto per far risaltare l'effetto 3D */
     margin: 0 20px !important; 
     padding: 10px 15px !important;
     transition: all 0.3s ease !important;
@@ -254,24 +254,34 @@ function App() {
     letter-spacing: 1.5px;
     text-transform: none;
     
-    /* EFFETTO ORO GLOSSY: Gradiente chiaro-scuro-chiaro per simulare il riflesso */
-    background: linear-gradient(to bottom, #FFE5B4 0%, #C9A961 50%, #8a6e28 51%, #C9A961 100%);
+    /* 1. COLORE BASE ORO BRILLANTE (Gradiente chiaro per simulare la luce) */
+    background: linear-gradient(to bottom, #FFF8DC 0%, #FFD700 40%, #DAA520 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
     
-    /* Ombra esterna dorata per staccare dallo sfondo scuro */
-    filter: drop-shadow(0px 1px 2px rgba(201, 169, 97, 0.4));
+    /* 2. SHADOW PROFONDA E GLOW (Replica l'effetto dell'immagine) */
+    /* Layer 1: Ombra nera profonda sotto (distanza) */
+    /* Layer 2: Glow dorato diffuso (luce ambientale) */
+    /* Layer 3: Ombra netta vicina (contorno) */
+    filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.6)) 
+            drop-shadow(0px 0px 10px rgba(255, 215, 0, 0.4));
+            
+    /* Opzionale: Text-shadow interno per dare volume se il browser lo supporta bene */
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.4), 
+                 0px 2px 0px rgba(218, 165, 32, 0.8),
+                 0px 3px 5px rgba(0, 0, 0, 0.5);
 }
 
 .nav-link:hover { 
     transform: translateY(-3px) scale(1.05);
-    /* All'hover diventa più brillante/chiaro */
-    background: linear-gradient(to bottom, #FFF0D0 0%, #FFD700 50%, #C9A961 51%, #FFD700 100%);
+    /* All'hover diventa più luminoso e l'ombra si alza */
+    background: linear-gradient(to bottom, #FFFFFF 0%, #FFE44D 40%, #FFD700 100%);
     -webkit-background-clip: text;
     background-clip: text;
-    filter: drop-shadow(0px 2px 4px rgba(255, 215, 0, 0.6));
+    filter: drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.7)) 
+            drop-shadow(0px 0px 15px rgba(255, 215, 0, 0.7));
 }
 
 .nav-link::after {
@@ -281,10 +291,10 @@ function App() {
     left: 50%;
     width: 0;
     height: 2px;
-    background: #C9A961; /* Linea oro solido sotto */
+    background: #FFD700; /* Linea oro brillante */
+    box-shadow: 0 0 8px #FFD700; /* Glow sulla linea */
     transition: all 0.3s ease;
     transform: translateX(-50%);
-    box-shadow: 0 0 5px #C9A961; /* Leggero glow sulla linea */
 }
 .nav-link:hover::after {
     width: 70%;
