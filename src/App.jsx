@@ -225,9 +225,9 @@ function App() {
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
 
- /* ===== NAVBAR CON EFFETTO ORO 3D GLOSSY + SHADOW ===== */
+ /* ===== NAVBAR CON EFFETTO ORO GLOW (COME NELL'IMMAGINE) ===== */
 
-/* LOGO "Dolce Vita" - Rimane invariato (Handwriting Parisienne) */
+/* LOGO "Dolce Vita" - Rimane invariato */
 .navbar-brand { 
     font-family: 'Parisienne', cursive !important; 
     font-size: 3.2rem !important; 
@@ -242,11 +242,11 @@ function App() {
     font-style: normal;
 }
 
-/* CONNETTORI (Home, Menu, etc.) - ORO 3D GLOSSY CON SHADOW PROFONDA */
+/* CONNETTORI (Home, Menu, etc.) - ORO GLOW LUMINOSO */
 .nav-link { 
     font-family: 'Bodoni Moda', serif !important; /* Font elegante tipo Voga */
     font-size: 1.4rem !important; 
-    font-weight: 700 !important; /* Grassetto per far risaltare l'effetto 3D */
+    font-weight: 700 !important; 
     margin: 0 20px !important; 
     padding: 10px 15px !important;
     transition: all 0.3s ease !important;
@@ -254,34 +254,34 @@ function App() {
     letter-spacing: 1.5px;
     text-transform: none;
     
-    /* 1. COLORE BASE ORO BRILLANTE (Gradiente chiaro per simulare la luce) */
-    background: linear-gradient(to bottom, #FFF8DC 0%, #FFD700 40%, #DAA520 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
+    /* 1. COLORE BASE: Oro uniforme e brillante */
+    color: #FFD700 !important; /* Oro puro */
+    background: none !important; /* Rimuoviamo eventuali gradienti precedenti */
+    -webkit-text-fill-color: initial !important;
     
-    /* 2. SHADOW PROFONDA E GLOW (Replica l'effetto dell'immagine) */
-    /* Layer 1: Ombra nera profonda sotto (distanza) */
-    /* Layer 2: Glow dorato diffuso (luce ambientale) */
-    /* Layer 3: Ombra netta vicina (contorno) */
-    filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.6)) 
-            drop-shadow(0px 0px 10px rgba(255, 215, 0, 0.4));
-            
-    /* Opzionale: Text-shadow interno per dare volume se il browser lo supporta bene */
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.4), 
-                 0px 2px 0px rgba(218, 165, 32, 0.8),
-                 0px 3px 5px rgba(0, 0, 0, 0.5);
+    /* 2. EFFETTO GLOW/ALONE: Stratificazione di ombre dorate */
+    /* Layer 1: Contorno netto */
+    /* Layer 2: Alone vicino diffuso */
+    /* Layer 3: Alone lontano diffuso (la "nebbia" dorata) */
+    text-shadow: 
+        0 0 2px #FFE55C,
+        0 0 8px #FFD700,
+        0 0 15px #C9A961,
+        0 0 25px rgba(201, 169, 97, 0.6);
+        
+    filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.5)); /* Ombra nera sotto per staccare dallo sfondo */
 }
 
 .nav-link:hover { 
     transform: translateY(-3px) scale(1.05);
-    /* All'hover diventa più luminoso e l'ombra si alza */
-    background: linear-gradient(to bottom, #FFFFFF 0%, #FFE44D 40%, #FFD700 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    filter: drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.7)) 
-            drop-shadow(0px 0px 15px rgba(255, 215, 0, 0.7));
+    /* All'hover l'alone diventa più intenso e bianco-dorato */
+    color: #FFFACD !important; /* LemonChiffon (più chiaro) */
+    text-shadow: 
+        0 0 5px #FFFFFF,
+        0 0 10px #FFD700,
+        0 0 20px #FFD700,
+        0 0 30px #C9A961;
+    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.6));
 }
 
 .nav-link::after {
@@ -291,8 +291,8 @@ function App() {
     left: 50%;
     width: 0;
     height: 2px;
-    background: #FFD700; /* Linea oro brillante */
-    box-shadow: 0 0 8px #FFD700; /* Glow sulla linea */
+    background: #FFD700;
+    box-shadow: 0 0 10px #FFD700; /* Anche la linea ha glow */
     transition: all 0.3s ease;
     transform: translateX(-50%);
 }
