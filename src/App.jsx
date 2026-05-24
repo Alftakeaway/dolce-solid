@@ -386,12 +386,6 @@ function App() {
   .menu-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden; transition: var(--transition); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column; position: relative; }
   .menu-card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); }
   
-  .menu-card.single-center {
-  margin: 0 auto !important;
-  max-width: 350px !important;
-  width: 100% !important;
-}
-
   .menu-card-icon-placeholder { 
       width: 100%; 
       height: 220px; 
@@ -578,7 +572,7 @@ function App() {
 
           <div class="menu-grid" style={{ display: "flex", "justify-content": "center", "flex-wrap": "wrap" }}>
             <For each={filteredMenu()}>{(item) => (
-              <div class="menu-card single-center" data-aos="fade-up">
+              <div class="menu-card" data-aos="fade-up">
                 {item.category === 'specials' && (
                   <div class="special-badge">
                     <i class="fas fa-star"></i> Specials
