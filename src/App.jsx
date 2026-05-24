@@ -8,7 +8,7 @@ function App() {
     AOS.init({ duration: 800, once: true });
   });
 
-  const [selectedCategory, setSelectedCategory] = createSignal("all");
+  const [selectedCategory, setSelectedCategory] = createSignal("starters");
   const [formSubmitted, setFormSubmitted] = createSignal(false);
   const [isSending, setIsSending] = createSignal(false);
 
