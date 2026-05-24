@@ -576,7 +576,7 @@ function App() {
             <button class={`btn-filter dietary-filter ${selectedCategory() === 'vegan' ? 'active' : ''}`} onClick={() => setSelectedCategory('vegan')}><i class="fas fa-seedling me-1"></i> Vegan</button>
           </div>
 
-          <div class="menu-grid" style={{ display: "grid", "justify-content": "center" }}>
+          <div class="menu-grid" style={{ display: "flex", "justify-content": "center", "flex-wrap": "wrap" }}>
             <For each={filteredMenu()}>{(item) => (
               <div class="menu-card single-center" data-aos="fade-up">
                 {item.category === 'specials' && (
