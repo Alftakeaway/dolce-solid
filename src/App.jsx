@@ -385,13 +385,6 @@ function App() {
   .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); justify-content: center; gap: 2rem; margin-bottom: 3rem; }
   .menu-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden; transition: var(--transition); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column; position: relative; }
   .menu-card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); }
-  
-  .menu-card.single-center {
-  margin: 0 auto !important;
-  max-width: 350px !important;
-  width: 100% !important;
-}
-
   .menu-card-icon-placeholder { 
       width: 100%; 
       height: 220px; 
