@@ -96,7 +96,7 @@ function App() {
 
     // STARTERS
     { id: 4, title: "Focaccia all'aglio", category: "starters", price: "£7.00", desc: "Homemade pizza bread with garlic butter, oregano and rosemary.", img: "", isVegetarian: true, isVegan: true },
-    { id: 5, title: "Bruschetta", category: "starters", price: "£8.50", desc: "Toasted bread topped with fresh chopped tomatoes, oregano, garlic, basil, balsamic glaze and extra virgin olive oil.", img: "", isVegetarian: true, isVegan: true },
+    { id: 5, title: "Bruschetta", category: "starters", price: "£8.50", desc: "Toasted bread topped with fresh chopped tomatoes, oregano, garlic, basil, balsamic glaze and extra virgin olive oil.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/bruschetta.webp", isVegetarian: true, isVegan: true },
     { id: 6, title: "Arancini", category: "starters", price: "£10.00", desc: "Crispy rice balls filled with peas, tomato sauce and mozzarella. Served with tomato sauce.", img: "", isVegetarian: true, isVegan: false },
     { id: 7, title: "Calamari", category: "starters", price: "£10.00", desc: "Deep-fried squid rings, served with tartare sauce.", img: "", isVegetarian: false, isVegan: false },
     { id: 8, title: "Bianchetti", category: "starters", price: "£11.00", desc: "Deep-fried whitebait, served with tartare sauce.", img: "", isVegetarian: false, isVegan: false },
@@ -126,42 +126,42 @@ function App() {
     { id: 30, title: "Rustica Assassina", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, spicy chicken, fresh chilli, nduja and salame piccante.", img: "", isVegetarian: false, isVegan: false },
 
     // PASTA
-    { id: 31, title: "Penne Arrabbiata", category: "pasta", price: "£16.00", desc: "Penne in a spicy tomato sauce with chilli, basil, onion and garlic.", img: "", isVegetarian: true, isVegan: true },
+    { id: 31, title: "Penne Arrabbiata", category: "pasta", price: "£16.00", desc: "Penne in a spicy tomato sauce with chilli, basil, onion and garlic.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/penne arrabbiata.webp", isVegetarian: true, isVegan: true },
     { id: 32, title: "Linguine Bolognese", category: "pasta", price: "£18.00", desc: "Linguine with a traditional homemade beef Bolognese sauce.", img: "", isVegetarian: false, isVegan: false },
     { id: 33, title: "Penne alla Boscaiola", category: "pasta", price: "£20.00", desc: "Penne in a rich creamy tomato sauce with crumbled Italian pork sausage, mushrooms and Calabrian nduja.", img: "", isVegetarian: false, isVegan: false },
     { id: 34, title: "Spaghetti Carbonara", category: "pasta", price: "£18.00", desc: "Spaghetti with Italian guanciale, Parmesan, black pepper and egg.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg", isVegetarian: false, isVegan: false },
     { id: 35, title: "Linguine al Granchio", category: "pasta", price: "£22.00", desc: "Linguine with crab meat, cherry tomato sauce, chilli, garlic, parsley, white wine and extra virgin olive oil.", img: "", isVegetarian: false, isVegan: false },
-    { id: 36, title: "Spaghetti Gamberi & Acciughe", category: "pasta", price: "£20.00", desc: "Spaghetti with prawns and anchovies in a garlic, cherry tomato and white wine sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 36, title: "Spaghetti Gamberi & Acciughe", category: "pasta", price: "£20.00", desc: "Spaghetti with prawns and anchovies in a garlic, cherry tomato and white wine sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/spaghetti gamberi e acciughe.webp", isVegetarian: false, isVegan: false },
     { id: 37, title: "Linguine Salmone", category: "pasta", price: "£17.50", desc: "Linguine with smoked salmon, onion, cherry tomatoes, cream, parsley and a touch of tomato sauce.", img: "", isVegetarian: false, isVegan: false },
-    { id: 38, title: "Spaghetti Pescatore", category: "pasta", price: "£21.00", desc: "Spaghetti with mixed seafood, prawns, squid, mussels and octopus in a garlic, white wine and tomato sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 38, title: "Spaghetti Pescatore", category: "pasta", price: "£21.00", desc: "Spaghetti with mixed seafood, prawns, squid, mussels and octopus in a garlic, white wine and tomato sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/spaghetti pescatore.webp", isVegetarian: false, isVegan: false },
     { id: 39, title: "Linguine ai Gamberi & Pesto", category: "pasta", price: "£19.00", desc: "Linguine with homemade basil pesto, tiger prawns, cherry tomatoes and a touch of cream.", img: "", isVegetarian: false, isVegan: false },
     { id: 40, title: "Penne al Forno", category: "pasta", price: "£19.00", desc: "Penne with mushrooms, crispy guanciale, spinach, garlic and parsley, baked with breadcrumbs and Parmigiano Reggiano.", img: "", isVegetarian: false, isVegan: false },
 
     // RISOTTI
     { id: 41, title: "Risotto Gorgonzola & Salsiccia", category: "risotto", price: "£19.00", desc: "Carnaroli rice with crumbled Italian pork sausage and spinach, creamed with gorgonzola and Parmigiano Reggiano.", img: "", isVegetarian: false, isVegan: false },
     { id: 42, title: "Risotto Asparagi & Funghi", category: "risotto", price: "£18.00", desc: "Carnaroli rice with mushrooms, asparagus, onion and parsley, creamed with Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false },
-    { id: 43, title: "Risotto Frutti di Mare", category: "risotto", price: "£21.00", desc: "Carnaroli rice with mixed seafood, prawns, squid, mussels and octopus cooked in a white wine, garlic and tomato sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 43, title: "Risotto Frutti di Mare", category: "risotto", price: "£21.00", desc: "Carnaroli rice with mixed seafood, prawns, squid, mussels and octopus cooked in a white wine, garlic and tomato sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/Risotto Frutti Di Mare.webp", isVegetarian: false, isVegan: false },
 
     // RAVIOLI
     { id: 44, title: "Ravioli ai Porcini", category: "ravioli", price: "£23.00", desc: "Porcini mushroom-filled ravioli, sautéed in a fragrant butter and sage sauce, finished with Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false },
-    { id: 45, title: "Ravioli Astice & Granchio", category: "ravioli", price: "£26.00", desc: "Lobster filled-ravioli toasted in a rich velvety crab sauce, with cherry tomatoes, citrus hints and aromatic herbs.", img: "", isVegetarian: false, isVegan: false },
+    { id: 45, title: "Ravioli Astice & Granchio", category: "ravioli", price: "£26.00", desc: "Lobster filled-ravioli toasted in a rich velvety crab sauce, with cherry tomatoes, citrus hints and aromatic herbs.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/ravioli astice granchio.webp", isVegetarian: false, isVegan: false },
     { id: 46, title: "Ravioli Ricotta & Spinaci", category: "ravioli", price: "£20.00", desc: "Spinach and ricotta-filled ravioli cooked with crumbled Italian pork sausage and finished with shaved Parmigiano Reggiano.", img: "", isVegetarian: false, isVegan: false },
 
     // MAINS (SECONDI)
     { id: 47, title: "Pollo Sambuca", category: "mains", price: "£25.00", desc: "Chicken breast cooked in a creamy sambuca sauce with red onions. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false },
     { id: 48, title: "Pollo Cacciatore", category: "mains", price: "£25.00", desc: "Chicken breast cooked in a spicy tomato sauce with onions, mixed peppers, mushrooms, black olives and white wine. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false },
-    { id: 49, title: "Vitello ai Funghi", category: "mains", price: "£30.00", desc: "Thinly sliced veal cooked with onions and wild mushrooms in a rich white wine, parsley and cream sauce. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false },
+    { id: 49, title: "Vitello ai Funghi", category: "mains", price: "£30.00", desc: "Thinly sliced veal cooked with onions and wild mushrooms in a rich white wine, parsley and cream sauce. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/vitello ai funghi.webp", isVegetarian: false, isVegan: false },
     { id: 50, title: "Spigola al Limone", category: "mains", price: "£26.00", desc: "Pan-fried sea bass fillets cooked in a rich lemon butter and white wine sauce. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false },
     { id: 51, title: "Zuppa di Pesce", category: "mains", price: "£28.00", desc: "Seafood selection, including prawns, squid, octopus and mussels, cooked in a spicy tomato sauce with white wine, garlic and parsley. Served with toasted bread.", img: "", isVegetarian: false, isVegan: false },
-    { id: 52, title: "Baccalà in Umido", category: "mains", price: "£29.00", desc: "Cod loin cooked in a Mediterranean tomato sauce with red onions, black olives, capers, garlic and parsley. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false },
-    { id: 53, title: "Bistecca", category: "mains", price: "£34.00", desc: "28 days ribeye, freshly cut and cooked to your preference. Served with Tuscan potatoes, side salad and homemade peppercorn sauce.", img: "", isVegetarian: false, isVegan: false },
-    { id: 54, title: "Tagliata di Manzo", category: "mains", price: "£32.00", desc: "28 days aged sliced ribeye served on a bed of rocket, topped with shaved Parmigiano Reggiano and a drizzle of balsamic glaze, extra virgin olive oil and Maldon sea salt.", img: "", isVegetarian: false, isVegan: false },
+    { id: 52, title: "Baccalà in Umido", category: "mains", price: "£29.00", desc: "Cod loin cooked in a Mediterranean tomato sauce with red onions, black olives, capers, garlic and parsley. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/baccala.webp", isVegetarian: false, isVegan: false },
+    { id: 53, title: "Bistecca", category: "mains", price: "£34.00", desc: "28 days ribeye, freshly cut and cooked to your preference. Served with Tuscan potatoes, side salad and homemade peppercorn sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/bistecca.webp", isVegetarian: false, isVegan: false },
+    { id: 54, title: "Tagliata di Manzo", category: "mains", price: "£32.00", desc: "28 days aged sliced ribeye served on a bed of rocket, topped with shaved Parmigiano Reggiano and a drizzle of balsamic glaze, extra virgin olive oil and Maldon sea salt.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/tagliata.webp", isVegetarian: false, isVegan: false },
 
     // SALADS
     { id: 55, title: "Classic Salad", category: "salads", price: "£14.00", desc: "Baby leaf and rocket salad with avocado, mixed peppers, red onion, cucumber, cherry tomatoes and olives, dressed with balsamic vinegar and extra virgin olive oil.", img: "", isVegetarian: true, isVegan: true },
 
     // SIDES
-    { id: 56, title: "Dolce Vita Sides", category: "sides", price: "£5.00", desc: "French fries, Tuscan potatoes, Rocket and Parmesan, Garlic spinach, Sautéed mushrooms, Mixed vegetables, Side salad, or Tomatoes & red onions. (Side bread £4.00)", img: "", isVegetarian: true, isVegan: false }
+    { id: 56, title: "Dolce Vita Sides", category: "sides", price: "£5.00", desc: "French fries, Tuscan potatoes, Rocket and Parmesan, Garlic spinach, Sautéed mushrooms, Mixed vegetables, Side salad, or Tomatoes & red onions. (Side bread £4.00)", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/side1.webp", isVegetarian: true, isVegan: false }
   ];
 
   const filteredMenu = createMemo(() => {
