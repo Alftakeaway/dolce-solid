@@ -30,18 +30,50 @@ function App() {
   const [bookingDate, setBookingDate] = createSignal("");
   const [bookingTime, setBookingTime] = createSignal("");
 
+  // Gestione cambio data con validazione e reset orario
   const handleDateChange = (e) => {
     const dateVal = e.target.value;
-    if (!dateVal) return;
-    
-    const day = new Date(dateVal).getDay();
-    if (day === 1) { 
-      alert("Dolce Vita is closed on Mondays. Please select another day.");
+    if (!dateVal) {
       setBookingDate("");
+      setBookingTime("");
       return;
     }
+    
+    const day = new Date(dateVal).getDay();
+    if (day === 1) { // 1 = Lunedì
+      alert("Dolce Vita is closed on Mondays. Please select another day.");
+      setBookingDate("");
+      setBookingTime("");
+      return;
+    }
+    
     setBookingDate(dateVal);
+    setBookingTime(""); // Resetta l'orario se l'utente cambia giorno
   };
+
+  // Calcolo dinamico degli orari in base al giorno della settimana scelto
+  const availableTimeSlots = createMemo(() => {
+    const date = bookingDate();
+    if (!date) return { lunch: [], dinner: [], allDay: [] };
+
+    const day = new Date(date).getDay();
+
+    // DOMENICA (Day 0): Orario speciale domenicale continuato
+    if (day === 0) {
+      return {
+        lunch: [],
+        dinner: [],
+        allDay: ["12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00"]
+      };
+    }
+
+    // MARTEDÌ - SABATO: Orari standard spezzati
+    return {
+      lunch: ["12:00", "12:30", "13:00", "13:30", "14:00", "14:30"],
+      dinner: ["19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"],
+      allDay: []
+    };
+  });
 
   const getTodayDateString = () => {
     const today = new Date();
@@ -52,11 +84,8 @@ function App() {
   };
 
   // --- ARRAY DI TUTTI I PIATTI DAL MENU REALE ---
-  // Nota: ho rimosso lo special hardcoded (id:99) e mantenuto solo il menu statico
   const menuItems = [
-
     // SPECIALS  
-
     { id: 100, title: "Tortellini Panna Prosciutto e Piselli", category: "specials", price: "£28.00", desc: "Delicate meat-filled tortellini tossed in a rich, velvety heavy cream sauce with savory diced ham and sweet spring peas, finished with aged Parmigiano Reggiano.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/tortellinip.jpg", isVegetarian: false, isVegan: false },
 
     // NIBBLES
@@ -141,7 +170,6 @@ function App() {
     return menuItems.filter(item => item.category === selectedCategory());
   });
 
-  // Conta piatti special - bottone scompare se 0
   const specials = createMemo(() => {
     return menuItems.filter(item => item.category === "specials");
   });
@@ -212,9 +240,7 @@ function App() {
       font-size: 16px !important;
   }
   
-  /* ===== NAVBAR - FONT HANDWRITING E MENU GRANDE ===== */
-  /* ===== NAVBAR CORRETTA: Logo Handwriting + Menu Serif Elegante ===== */
-.navbar {
+  .navbar {
       background: rgba(42, 42, 42, 0.98) !important;
       backdrop-filter: blur(15px);
       border-bottom: 2px solid var(--secondary);
@@ -225,9 +251,6 @@ function App() {
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
 
- /* ===== NAVBAR CON ORO SATINATO ELEGANTE ===== */
-
-/* LOGO "Dolce Vita" - Rimane invariato (Handwriting Parisienne) */
 .navbar-brand { 
     font-family: 'Parisienne', cursive !important; 
     font-size: 3.2rem !important; 
@@ -244,7 +267,6 @@ function App() {
 
 @import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
 
-/* CONNETTORI (Home, Menu, etc.) - PARISIENNE */
 .nav-link { 
     font-family: 'Parisienne', cursive !important;
     font-size: 2rem !important; 
@@ -284,7 +306,6 @@ function App() {
     width: 70%;
     background: #FFD700;
 }
-/* ========================================== */
   
   .hero {
       min-height: 100vh;
@@ -619,7 +640,7 @@ function App() {
             <div class="stars">★★★★★</div>
               <div class="review-author">Marco Bianchi</div>
               <p class="review-text">"As an Italian living abroad, I'm very picky about authentic cuisine. Dolce Vita exceeded all my expectations – the ingredients, the recipes, the warmth... it truly feels like home. Bravi!"</p>
-      </div>
+            </div>
           </div>
         </div>
       </section>
@@ -675,29 +696,42 @@ function App() {
                       id="time" 
                       name="time" 
                       required 
+                      disabled={!bookingDate()}
                       value={bookingTime()} 
                       onChange={(e) => setBookingTime(e.target.value)}
                     >
-                      <option value="" disabled selected>-- Select an available slot --</option>
+                      {!bookingDate() ? (
+                        <option value="" disabled selected>Please select a date first</option>
+                      ) : (
+                        <option value="" disabled selected>-- Select an available slot --</option>
+                      )}
                       
-                      <optgroup label="Lunch Service">
-                        <option value="12:00">12:00</option>
-                        <option value="12:30">12:30</option>
-                        <option value="13:00">13:00</option>
-                        <option value="13:30">13:30</option>
-                        <option value="14:00">14:00</option>
-                        <option value="14:30">14:30</option>
-                      </optgroup>
+                      {/* Servizio Pranzo Standard (Martedì - Sabato) */}
+                      {availableTimeSlots().lunch.length > 0 && (
+                        <optgroup label="Lunch Service">
+                          <For each={availableTimeSlots().lunch}>{(slot) => (
+                            <option value={slot}>{slot}</option>
+                          )}</For>
+                        </optgroup>
+                      )}
 
-                      <optgroup label="Dinner Service">
-                        <option value="19:00">19:00</option>
-                        <option value="19:30">19:30</option>
-                        <option value="20:00">20:00</option>
-                        <option value="20:30">20:30</option>
-                        <option value="21:00">21:00</option>
-                        <option value="21:30">21:30</option>
-                        <option value="22:00">22:00</option>
-                      </optgroup>
+                      {/* Servizio Cena Standard (Martedì - Sabato) */}
+                      {availableTimeSlots().dinner.length > 0 && (
+                        <optgroup label="Dinner Service">
+                          <For each={availableTimeSlots().dinner}>{(slot) => (
+                            <option value={slot}>{slot}</option>
+                          )}</For>
+                        </optgroup>
+                      )}
+
+                      {/* Servizio Continuato Speciale della Domenica */}
+                      {availableTimeSlots().allDay.length > 0 && (
+                        <optgroup label="Sunday All-Day Service">
+                          <For each={availableTimeSlots().allDay}>{(slot) => (
+                            <option value={slot}>{slot}</option>
+                          )}</For>
+                        </optgroup>
+                      )}
                     </select>
                   </div>
 
