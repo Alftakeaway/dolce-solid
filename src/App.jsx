@@ -29,6 +29,7 @@ function App() {
   // --- LOGICA PRENOTAZIONI ---
   const [bookingDate, setBookingDate] = createSignal("");
   const [bookingTime, setBookingTime] = createSignal("");
+  const [bookingService, setBookingService] = createSignal("");
 
   // Gestione cambio data con validazione e reset orario
   const handleDateChange = (e) => {
@@ -201,6 +202,7 @@ function App() {
         setFormSubmitted(true);
         setBookingDate("");
         setBookingTime("");
+        setBookingService("");
         e.target.reset();
       } else {
         alert("Ops! Something went wrong. Please try again or call us directly.");
@@ -690,47 +692,67 @@ function App() {
                     />
                   </div>
 
-                  <div class="form-group-full">
+                  {/* Selezione del Servizio (Pranzo o Cena) - Mostrato solo se NON è domenica */}
+                  {bookingDate() && availableTimeSlots().allDay.length === 0 && (
+                    <div>
+                      <label for="service">Service *</label>
+                      <select 
+                        id="service" 
+                        name="service" 
+                        required 
+                        value={bookingService()} 
+                        onChange={(e) => {
+                          setBookingService(e.target.value);
+                          setBookingTime(""); 
+                        }}
+                      >
+                        <option value="" disabled selected>-- Select Lunch or Dinner --</option>
+                        <option value="lunch">Lunch Service</option>
+                        <option value="dinner">Dinner Service</option>
+                      </select>
+                    </div>
+                  )}
+
+                  {/* Selezione dell'Orario */}
+                  <div class={availableTimeSlots().allDay.length > 0 ? "form-group-full" : ""}>
                     <label for="time">Preferred Time Slot *</label>
                     <select 
                       id="time" 
                       name="time" 
                       required 
-                      disabled={!bookingDate()}
+                      disabled={!bookingDate() || (availableTimeSlots().allDay.length === 0 && !bookingService())}
                       value={bookingTime()} 
                       onChange={(e) => setBookingTime(e.target.value)}
                     >
                       {!bookingDate() ? (
                         <option value="" disabled selected>Please select a date first</option>
+                      ) : availableTimeSlots().allDay.length > 0 ? (
+                        <option value="" disabled selected>-- Select Sunday Time Slot --</option>
+                      ) : !bookingService() ? (
+                        <option value="" disabled selected>-- Select service first --</option>
                       ) : (
-                        <option value="" disabled selected>-- Select an available slot --</option>
+                        <option value="" disabled selected>-- Select time slot --</option>
                       )}
                       
-                      {/* Servizio Pranzo Standard (Martedì - Sabato) */}
-                      {availableTimeSlots().lunch.length > 0 && (
-                        <optgroup label="Lunch Service">
-                          <For each={availableTimeSlots().lunch}>{(slot) => (
-                            <option value={slot}>{slot}</option>
-                          )}</For>
-                        </optgroup>
+                      {/* Se è un giorno standard ed è selezionato il Pranzo */}
+                      {availableTimeSlots().allDay.length === 0 && bookingService() === "lunch" && (
+                        <For each={availableTimeSlots().lunch}>{(slot) => (
+                          <option value={slot}>{slot}</option>
+                        )}</For>
                       )}
 
-                      {/* Servizio Cena Standard (Martedì - Sabato) */}
-                      {availableTimeSlots().dinner.length > 0 && (
-                        <optgroup label="Dinner Service">
-                          <For each={availableTimeSlots().dinner}>{(slot) => (
-                            <option value={slot}>{slot}</option>
-                          )}</For>
-                        </optgroup>
+                      {/* Se è un giorno standard ed è selezionato la Cena */}
+                      {availableTimeSlots().allDay.length === 0 && bookingService() === "dinner" && (
+                        <For each={availableTimeSlots().dinner}>{(slot) => (
+                          <option value={slot}>{slot}</option>
+                        )}</For>
                       )}
 
-                      {/* Servizio Continuato Speciale della Domenica */}
+                      {/* Se è domenica (Servizio Continuato) */}
                       {availableTimeSlots().allDay.length > 0 && (
-                        <optgroup label="Sunday All-Day Service">
-                          <For each={availableTimeSlots().allDay}>{(slot) => (
-                            <option value={slot}>{slot}</option>
-                          )}</For>
-                        </optgroup>
+                        <For each={availableTimeSlots().allDay}>{(slot) => (
+                          <option value={slot}>{slot}</option>
+                        )}</For>
                       )}
                     </select>
                   </div>
