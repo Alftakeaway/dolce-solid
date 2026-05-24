@@ -572,7 +572,7 @@ function App() {
 
           <div class="menu-grid" style={{ display: "grid", "justify-content": "center", "justify-items": "center" }}>
             <For each={filteredMenu()}>{(item) => (
-              <div class="menu-card" data-aos="fade-up">
+              <div class="menu-card" data-aos="fade-up" style={{ margin: "0 auto", "max-width": "350px", width: "100%" }}>
                 {item.category === 'specials' && (
                   <div class="special-badge">
                     <i class="fas fa-star"></i> Specials
