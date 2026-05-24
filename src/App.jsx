@@ -320,9 +320,11 @@ function App() {
       overflow: hidden;
       background: #000000;
   }
-  .hero-bg-image {
+ .hero-bg-image {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%;
+      height: 100%;
       background-size: cover;
       background-position: center;
       opacity: 0;
