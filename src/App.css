@@ -68,7 +68,7 @@ body {
     background: rgba(42, 42, 42, 0.98) !important;
     backdrop-filter: blur(15px);
     border-bottom: 2px solid var(--secondary);
-    padding: 0.5rem 1rem 0.5rem 5.5rem !important;
+    padding: 0.5rem 1rem 0.5rem 0.5rem !important;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -331,7 +331,7 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
     }
     
     .navbar {
-        padding: 0.5rem 1rem 0.5rem 3.5rem !important;
+        padding: 0.5rem 1rem 0.5rem 0.5rem !important;
     }
     
     .parallax-band {
