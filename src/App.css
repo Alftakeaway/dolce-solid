@@ -33,6 +33,10 @@
       top: 0;
       z-index: 1000;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-wrap: wrap; /* Permette alla navbar di adattarsi */
+      justify-content: center; /* Centra gli elementi */
+      align-items: center;
   }
 
 .navbar-brand { 
