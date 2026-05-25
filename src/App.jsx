@@ -285,10 +285,16 @@ function App() {
 
       {/* PARALLAX SEPARATOR 1 */}
       <div 
-        class="relative w-full h-80 bg-fixed bg-cover bg-center flex flex-col items-center justify-center"
-        style={{ "background-image": "url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg')" }}
+        class="relative w-full h-[400px] overflow-hidden"
       >
-        <div class="absolute inset-0 bg-black/40"></div>
+        <div 
+          class="absolute inset-0 bg-fixed bg-cover bg-center"
+          style={{ "background-image": "url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg')" }}
+        ></div>
+        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+          <h3 class="text-white text-4xl font-serif">Tradizione & Passione</h3>
+        </div>
+      </div>
         <div class="relative z-10 text-center p-4">
           <h3 class="text-white text-3xl md:text-4xl font-serif tracking-wide mb-2" data-aos="fade-up">Tradizione & Passione</h3>
           <div class="w-16 h-0.5 bg-amber-500 mx-auto" data-aos="fade-up" data-aos-delay="100"></div>
@@ -372,10 +378,16 @@ function App() {
 
       {/* PARALLAX SEPARATOR 2 */}
       <div 
-        class="relative w-full h-80 bg-fixed bg-cover bg-center flex flex-col items-center justify-center"
-        style={{ "background-image": "url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg')" }}
+        class="relative w-full h-[400px] overflow-hidden"
       >
-        <div class="absolute inset-0 bg-black/40"></div>
+        <div 
+          class="absolute inset-0 bg-fixed bg-cover bg-center"
+          style={{ "background-image": "url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg')" }}
+        ></div>
+        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+          <h3 class="text-white text-4xl font-serif">Cotto nel Forno a Legna</h3>
+        </div>
+      </div>
         <div class="relative z-10 text-center p-4">
           <h3 class="text-white text-3xl md:text-4xl font-serif tracking-wide mb-2" data-aos="fade-up">Cotto nel Forno a Legna</h3>
           <div class="w-16 h-0.5 bg-amber-500 mx-auto" data-aos="fade-up" data-aos-delay="100"></div>
