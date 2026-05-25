@@ -283,6 +283,23 @@ function App() {
         </div>
       </section>
 
+      {/* PARALLAX SEPARATOR 1 */}
+      <div class="relative w-full h-80 overflow-hidden" style={{ "clip-path": "inset(0 0 0 0)" }}>
+        <div 
+          class="sticky top-0 left-0 w-full bg-cover bg-center"
+          style={{ 
+            "background-image": "url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg')",
+            "height": "100vh",
+            "margin-top": "-30vh",
+            "z-index": "-1"
+          }}
+        />
+        <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-center p-4">
+          <h3 class="text-white text-3xl md:text-4xl font-serif tracking-wide mb-2" data-aos="fade-up">Tradizione & Passione</h3>
+          <div class="w-16 h-0.5 bg-amber-500" data-aos="fade-up" data-aos-delay="100"></div>
+        </div>
+      </div>
+
       {/* MENU HIGHLIGHTS */}
       <section class="section-padding" id="menu">
         <div class="container-custom">
@@ -357,6 +374,23 @@ function App() {
           </div>
         </div>
       </section>
+
+      {/* PARALLAX SEPARATOR 2 */}
+      <div class="relative w-full h-80 overflow-hidden" style={{ "clip-path": "inset(0 0 0 0)" }}>
+        <div 
+          class="sticky top-0 left-0 w-full bg-cover bg-center"
+          style={{ 
+            "background-image": "url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg')",
+            "height": "100vh",
+            "margin-top": "-30vh",
+            "z-index": "-1"
+          }}
+        />
+        <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-center p-4">
+          <h3 class="text-white text-3xl md:text-4xl font-serif tracking-wide mb-2" data-aos="fade-up">Cotto nel Forno a Legna</h3>
+          <div class="w-16 h-0.5 bg-amber-500" data-aos="fade-up" data-aos-delay="100"></div>
+        </div>
+      </div>
 
       <SpecialDish />
 
