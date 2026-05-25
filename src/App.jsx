@@ -1,4 +1,4 @@
-import { createSignal, createMemo, onMount, For } from "solid-js";
+import { createSignal, createMemo, onMount, For, Show } from "solid-js";
 import AOS from "aos";
 import emailjs from "@emailjs/browser"; 
 import SpecialDish from "./components/SpecialDish";
@@ -72,6 +72,7 @@ function App() {
         allDay: ["12:00", "12:30", "13:00", "13:30", "14:00", "14:30"]
       };
     }
+
     // MARTEDÌ - SABATO: Orari standard spezzati
     return {
       lunch: ["12:00", "12:30", "13:00", "13:30", "14:00", "14:30"],
@@ -434,7 +435,7 @@ function App() {
                   </div>
 
                   {/* Selezione del Servizio (Pranzo o Cena) - Mostrato solo se NON è domenica */}
-                  {bookingDate() && availableTimeSlots().allDay.length === 0 && (
+                  <Show when={bookingDate() && availableTimeSlots().allDay.length === 0}>
                     <div>
                       <label for="service">Service *</label>
                       <select 
@@ -452,7 +453,7 @@ function App() {
                         <option value="dinner">Dinner Service</option>
                       </select>
                     </div>
-                  )}
+                  </Show>
 
                   {/* Selezione dell'Orario */}
                   <div class={availableTimeSlots().allDay.length > 0 ? "form-group-full" : ""}>
