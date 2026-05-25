@@ -87,16 +87,14 @@ body {
 /* LOGO / BRAND */
 .navbar-brand { 
     font-family: 'Parisienne', cursive !important; 
-    font-size: clamp(2rem, 3.5vw, 3.2rem) !important; /* Reso fluido anche il brand */
+    font-size: clamp(2rem, 3.5vw, 3.2rem) !important;
     font-weight: 400 !important; 
     color: #ffffff !important; 
     letter-spacing: 2px !important;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
     transition: var(--transition);
     white-space: nowrap !important;
-    
-    /* TRUCCO MAGICO: Spinge tutti i link successivi a destra senza bisogno di un container */
-    margin-right: auto !important; 
+    margin-right: 5rem !important; 
 }
 
 .navbar-brand span { 
@@ -334,6 +332,10 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
     
     .navbar {
         padding: 0.5rem 2.5rem !important;
+    }
+    
+    .navbar-brand {
+        margin-right: 3rem !important;
     }
     
     .parallax-band {
