@@ -1,4 +1,4 @@
-import { createSignal, createMemo, onMount, For, Show } from "solid-js";
+import { createSignal, createMemo, onMount, For } from "solid-js";
 import AOS from "aos";
 import emailjs from "@emailjs/browser"; 
 import SpecialDish from "./components/SpecialDish";
@@ -72,7 +72,6 @@ function App() {
         allDay: ["12:00", "12:30", "13:00", "13:30", "14:00", "14:30"]
       };
     }
-
     // MARTEDÌ - SABATO: Orari standard spezzati
     return {
       lunch: ["12:00", "12:30", "13:00", "13:30", "14:00", "14:30"],
@@ -283,34 +282,6 @@ function App() {
         </div>
       </section>
 
-      {/* PARALLAX SEPARATOR 1 */}
-      <div 
-        class="relative w-full h-[400px] overflow-hidden"
-      >
-        <div 
-          class="absolute inset-0 bg-fixed bg-cover bg-center"
-          style={{ "background-image": "url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg')" }}
-        ></div>
-        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-          <h3 class="text-white text-4xl font-serif">Tradizione & Passione</h3>
-        </div>
-      </div>
-        <div class="relative z-10 text-center p-4">
-          <h3 class="text-white text-3xl md:text-4xl font-serif tracking-wide mb-2" data-aos="fade-up">Tradizione & Passione</h3>
-          <div class="w-16 h-0.5 bg-amber-500 mx-auto" data-aos="fade-up" data-aos-delay="100"></div>
-        </div>
-      </div>
-
-      {/* PARALLAX SEPARATOR 1 */}
-      <div class="relative w-full h-[400px] overflow-hidden">
-        <div 
-          class="absolute inset-0 bg-fixed bg-cover bg-center"
-          style={{ "background-image": "url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg')" }}
-        ></div>
-        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-          <h3 class="text-white text-4xl font-serif">Tradizione &amp; Passione</h3>
-        </div>
-      </div>
       {/* MENU HIGHLIGHTS */}
       <section class="section-padding" id="menu">
         <div class="container-custom">
@@ -386,34 +357,6 @@ function App() {
         </div>
       </section>
 
-      {/* PARALLAX SEPARATOR 2 */}
-      <div 
-        class="relative w-full h-[400px] overflow-hidden"
-      >
-        <div 
-          class="absolute inset-0 bg-fixed bg-cover bg-center"
-          style={{ "background-image": "url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg')" }}
-        ></div>
-        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-          <h3 class="text-white text-4xl font-serif">Cotto nel Forno a Legna</h3>
-        </div>
-      </div>
-        <div class="relative z-10 text-center p-4">
-          <h3 class="text-white text-3xl md:text-4xl font-serif tracking-wide mb-2" data-aos="fade-up">Cotto nel Forno a Legna</h3>
-          <div class="w-16 h-0.5 bg-amber-500 mx-auto" data-aos="fade-up" data-aos-delay="100"></div>
-        </div>
-      </div>
-
-      {/* PARALLAX SEPARATOR 2 */}
-      <div class="relative w-full h-[400px] overflow-hidden">
-        <div 
-          class="absolute inset-0 bg-fixed bg-cover bg-center"
-          style={{ "background-image": "url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg')" }}
-        ></div>
-        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-          <h3 class="text-white text-4xl font-serif">Cotto nel Forno a Legna</h3>
-        </div>
-      </div>
       <SpecialDish />
 
       {/* REVIEWS */}
@@ -491,7 +434,7 @@ function App() {
                   </div>
 
                   {/* Selezione del Servizio (Pranzo o Cena) - Mostrato solo se NON è domenica */}
-                  <Show when={bookingDate() && availableTimeSlots().allDay.length === 0}>
+                  {bookingDate() && availableTimeSlots().allDay.length === 0 && (
                     <div>
                       <label for="service">Service *</label>
                       <select 
@@ -509,7 +452,7 @@ function App() {
                         <option value="dinner">Dinner Service</option>
                       </select>
                     </div>
-                  </Show>
+                  )}
 
                   {/* Selezione dell'Orario */}
                   <div class={availableTimeSlots().allDay.length > 0 ? "form-group-full" : ""}>
