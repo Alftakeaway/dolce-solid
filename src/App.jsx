@@ -301,6 +301,16 @@ function App() {
         </div>
       </div>
 
+      {/* PARALLAX SEPARATOR 1 */}
+      <div class="relative w-full h-[400px] overflow-hidden">
+        <div 
+          class="absolute inset-0 bg-fixed bg-cover bg-center"
+          style={{ "background-image": "url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg')" }}
+        ></div>
+        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+          <h3 class="text-white text-4xl font-serif">Tradizione &amp; Passione</h3>
+        </div>
+      </div>
       {/* MENU HIGHLIGHTS */}
       <section class="section-padding" id="menu">
         <div class="container-custom">
@@ -394,6 +404,16 @@ function App() {
         </div>
       </div>
 
+      {/* PARALLAX SEPARATOR 2 */}
+      <div class="relative w-full h-[400px] overflow-hidden">
+        <div 
+          class="absolute inset-0 bg-fixed bg-cover bg-center"
+          style={{ "background-image": "url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg')" }}
+        ></div>
+        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+          <h3 class="text-white text-4xl font-serif">Cotto nel Forno a Legna</h3>
+        </div>
+      </div>
       <SpecialDish />
 
       {/* REVIEWS */}
