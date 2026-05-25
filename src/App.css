@@ -68,7 +68,7 @@ body {
     background: rgba(42, 42, 42, 0.98) !important;
     backdrop-filter: blur(15px);
     border-bottom: 2px solid var(--secondary);
-    padding: 0.5rem 2rem !important;
+    padding: 0.5rem 1rem 0.5rem 3rem !important;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -107,7 +107,7 @@ body {
     font-family: 'Parisienne', cursive !important;
     font-size: clamp(1.1rem, 1.8vw, 2rem) !important;
     font-weight: 400 !important;
-    margin: 0 clamp(4px, 1.2vw, 15px) !important;
+    margin: 0 0.15rem !important;
     padding: 8px 12px !important;
     transition: all 0.3s ease !important;
     position: relative;
@@ -118,7 +118,6 @@ body {
     
     white-space: nowrap !important;
     display: inline-block !important;
-    margin-left: 1.5rem !important;
 }
 
 .nav-link:hover { 
@@ -327,9 +326,12 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
     /* Ottimizzazione navbar per schermi intermedi/14 pollici con zoom elevato */
     .nav-link {
         font-size: clamp(1rem, 1.5vw, 1.4rem) !important;
-        margin: 0 clamp(2px, 0.8vw, 10px) !important;
-        margin-left: 1rem !important;
+        margin: 0 0.1rem !important;
         padding: 6px 10px !important;
+    }
+    
+    .navbar {
+        padding: 0.5rem 1rem 0.5rem 2rem !important;
     }
     
     .parallax-band {
@@ -367,7 +369,7 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
     }
     .nav-link { 
         font-size: clamp(0.9rem, 2.5vw, 1.1rem) !important; 
-        margin: 0 4px !important; 
+        margin: 0 0.1rem !important; 
         padding: 6px 8px !important;
     }
 }
