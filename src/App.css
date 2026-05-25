@@ -68,7 +68,7 @@ body {
     background: rgba(42, 42, 42, 0.98) !important;
     backdrop-filter: blur(15px);
     border-bottom: 2px solid var(--secondary);
-    padding: 0.5rem 4rem !important; /* Spazio interno aumentato */
+    padding: 0.5rem 2rem !important;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -94,7 +94,7 @@ body {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
     transition: var(--transition);
     white-space: nowrap !important;
-    margin-right: 5rem !important; 
+    margin-right: auto !important; 
 }
 
 .navbar-brand span { 
@@ -105,10 +105,10 @@ body {
 /* LINK DELLA NAVBAR */
 .nav-link { 
     font-family: 'Parisienne', cursive !important;
-    font-size: clamp(1.1rem, 1.8vw, 2rem) !important; /* Ottimizzato il range del font fluido */
+    font-size: clamp(1.1rem, 1.8vw, 2rem) !important;
     font-weight: 400 !important;
-    margin: 0 clamp(4px, 1.2vw, 15px) !important; /* Margini fluidi per schermi intermedi */
-    padding: 8px 12px !important;                 /* Padding leggermente ridotto per salvare spazio */
+    margin: 0 clamp(4px, 1.2vw, 15px) !important;
+    padding: 8px 12px !important;
     transition: all 0.3s ease !important;
     position: relative;
     color: #D4AF37 !important; 
@@ -116,8 +116,9 @@ body {
         0px 1px 2px rgba(0, 0, 0, 0.9),
         0px 0px 8px rgba(212, 175, 55, 0.3); 
     
-    white-space: nowrap !important; /* Blocca il testo su una sola riga */
+    white-space: nowrap !important;
     display: inline-block !important;
+    margin-left: 1.5rem !important;
 }
 
 .nav-link:hover { 
@@ -327,15 +328,8 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
     .nav-link {
         font-size: clamp(1rem, 1.5vw, 1.4rem) !important;
         margin: 0 clamp(2px, 0.8vw, 10px) !important;
+        margin-left: 1rem !important;
         padding: 6px 10px !important;
-    }
-    
-    .navbar {
-        padding: 0.5rem 2.5rem !important;
-    }
-    
-    .navbar-brand {
-        margin-right: 3rem !important;
     }
     
     .parallax-band {
