@@ -33,6 +33,36 @@ body {
     font-size: 16px !important;
 }
 
+/* PARALLAX BANDS */
+.parallax-band {
+    width: 100%;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.parallax-band-1 {
+    background-image: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg');
+}
+
+.parallax-band-2 {
+    background-image: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior%202.webp');
+}
+
+.parallax-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(42, 42, 42, 0.4);
+}
+
 /* NAVBAR GENERALE */
 .navbar {
     background: rgba(42, 42, 42, 0.98) !important;
@@ -301,6 +331,10 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
         margin: 0 clamp(2px, 0.8vw, 10px) !important;
         padding: 6px 10px !important;
     }
+    
+    .parallax-band {
+        height: 200px;
+    }
 }
 
 @media (max-width: 768px) { 
@@ -312,6 +346,11 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
     .gallery-grid { grid-template-columns: repeat(2, 1fr); }
     .booking-form { grid-template-columns: 1fr; }
     .form-group-full { grid-column: span 1; }
+    
+    .parallax-band {
+        height: 150px;
+        background-attachment: scroll;
+    }
     
     /* Gestione Navbar su Mobile */
     .navbar {

@@ -339,6 +339,11 @@ function App() {
         </div>
       </section>
 
+      {/* PARALLAX BAND 1 */}
+      <div class="parallax-band parallax-band-1">
+        <div class="parallax-overlay"></div>
+      </div>
+
       {/* ATMOSPHERE GALLERY */}
       <section class="section-padding" id="gallery">
         <div class="container-custom">
@@ -356,6 +361,11 @@ function App() {
           </div>
         </div>
       </section>
+
+      {/* PARALLAX BAND 2 */}
+      <div class="parallax-band parallax-band-2">
+        <div class="parallax-overlay"></div>
+      </div>
 
       <SpecialDish />
 
