@@ -68,7 +68,7 @@ body {
     background: rgba(42, 42, 42, 0.98) !important;
     backdrop-filter: blur(15px);
     border-bottom: 2px solid var(--secondary);
-    padding: 0.5rem 2rem !important; /* Spazio interno ottimizzato */
+    padding: 0.5rem 4rem !important; /* Spazio interno aumentato */
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -332,6 +332,10 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
         padding: 6px 10px !important;
     }
     
+    .navbar {
+        padding: 0.5rem 2.5rem !important;
+    }
+    
     .parallax-band {
         height: 200px;
     }
@@ -354,13 +358,13 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
     
     /* Gestione Navbar su Mobile */
     .navbar {
-        flex-wrap: wrap !important; /* Su mobile permettiamo di andare sotto il logo se lo spazio è davvero minimo */
+        flex-wrap: wrap !important;
         justify-content: center !important;
-        padding: 1rem !important;
+        padding: 1rem 1.5rem !important;
     }
     .navbar-brand { 
         font-size: 2.2rem !important; 
-        margin-right: 0 !important; /* Centra il brand su mobile */
+        margin-right: 0 !important;
         margin-bottom: 0.5rem;
         width: 100%;
         text-align: center;
