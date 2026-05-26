@@ -2,6 +2,7 @@ import { createSignal, createMemo, onMount, For } from "solid-js";
 import AOS from "aos";
 import emailjs from "@emailjs/browser"; 
 import SpecialDish from "./components/SpecialDish";
+import CateringPackages from "./components/CateringPackages";
 
 import "./App.css";
 
@@ -366,6 +367,8 @@ function App() {
       <div class="parallax-band parallax-band-2">
         <div class="parallax-overlay"></div>
       </div>
+
+      <CateringPackages />
 
       <SpecialDish />
 
