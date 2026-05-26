@@ -5,51 +5,33 @@ export default function CateringPackages() {
     {
       id: 1,
       title: "Buffet Compleanno",
-      price: "£349",
-      description: "Celebra con stile con il nostro buffet completo, perfetto per feste indimenticabili",
+      price: "349",
+      currency: "£",
+      description: "Celebra con stile con il nostro buffet completo",
       image: "https://static.wixstatic.com/media/11062b_cc718cb2696e41cc8e76a4715c50cf7f~mv2.jpg/v1/fill/w_670,h_440,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/11062b_cc718cb2696e41cc8e76a4715c50cf7f~mv2.jpg",
-      includes: [
-        "Antipasti assortiti",
-        "Piatti caldi selezionati",
-        "Dolci e torte",
-        "Bevande incluse",
-        "Decorazioni tavoli",
-        "Tavoli e sedie"
-      ],
+      includes: ["Antipasti assortiti", "Piatti caldi", "Dolci e torte", "Bevande", "Decorazioni", "Tavoli e sedie"],
       serves: "20-40 persone",
       popular: false
     },
     {
       id: 2,
       title: "Pacchetto Matrimonio",
-      price: "£699",
-      description: "Il giorno più importante merita il nostro servizio catering gourmet esclusivo",
+      price: "699",
+      currency: "£",
+      description: "Il giorno piu importante merita il nostro servizio gourmet",
       image: "https://prontocateringsd.com/wp-content/uploads/DISPLAY-1-768x512.jpg",
-      includes: [
-        "Antipasti gourmet",
-        "Piatti principali premium",
-        "Contorni raffinati",
-        "Vini selezionati",
-        "Torta nuziale personalizzata",
-        "Servizio camerieri completo"
-      ],
+      includes: ["Antipasti gourmet", "Piatti principali premium", "Contorni", "Vini selezionati", "Torta nuziale", "Camerieri"],
       serves: "50-100 persone",
       popular: false
     },
     {
       id: 3,
       title: "Buffet Serata",
-      price: "£499",
-      description: "Serate eleganti e conviviali con il nostro buffet raffinato e servizio professionale",
+      price: "499",
+      currency: "£",
+      description: "Serate eleganti con il nostro buffet raffinato",
       image: "https://www.culinaryproductionsbr.com/wp-content/uploads/2020/08/Catering-Display-for-Birthday-Party-Baton-Rouge.jpg",
-      includes: [
-        "Antipasti e stuzzichini",
-        "Piatti caldi premium",
-        "Selezione formaggi e salumi",
-        "Vini e bevande",
-        "Dolci assortiti",
-        "Camerieri dedicati"
-      ],
+      includes: ["Antipasti e stuzzichini", "Piatti caldi premium", "Formaggi e salumi", "Vini e bevande", "Dolci assortiti", "Camerieri"],
       serves: "30-60 persone",
       popular: true
     }
@@ -59,7 +41,7 @@ export default function CateringPackages() {
     <section class="section-padding" id="catering">
       <div class="container-custom">
         <h2 class="section-title" data-aos="fade-down">Servizi Catering</h2>
-        <p class="section-subtitle-custom" data-aos="fade-down">Rendi memorabile il tuo evento con i nostri pacchetti catering esclusivi</p>
+        <p class="section-subtitle-custom" data-aos="fade-down">Rendi memorabile il tuo evento con i nostri pacchetti esclusivi</p>
         
         <div class="catering-grid" data-aos="fade-up">
           <For each={cateringPackages}>
@@ -73,7 +55,7 @@ export default function CateringPackages() {
                 
                 <div class="catering-content">
                   <h3 class="catering-title">{pkg.title}</h3>
-                  <div class="catering-price">{pkg.price}</div>
+                  <div class="catering-price">{pkg.currency}{pkg.price}</div>
                   <p class="catering-description">{pkg.description}</p>
                   
                   <div class="catering-includes">
