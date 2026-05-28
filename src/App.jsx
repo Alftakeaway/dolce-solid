@@ -408,7 +408,8 @@ function App() {
             {!formSubmitted() ? (
               <>
                 <h3>Book a Table</h3>
-                <p>Please select your preferred date and time slot. Please note we are closed on Mondays.</p>
+                <p>Please select your preferred date and time slot. Please note we are closed on Mondays.<br />
+                <span style="color: var(--primary); font-weight: 600;">Note: Tables are held for a maximum of 15-20 minutes and each reservation has a 2.5-hour seating limit.</span></p>
                 
                 <form onSubmit={handleSubmit} class="booking-form">
                   <div>
@@ -421,7 +422,11 @@ function App() {
                   </div>
                   <div>
                     <label for="guests">Number of Guests *</label>
-                    <select id="guests" name="guests" required>
+                    <select id="guests" name="guests" required onChange={(e) => {
+                      if(e.target.value === "11+") {
+                        alert("For groups larger than 10 people, please contact the restaurant directly by phone to confirm. A deposit will be required to secure your booking.");
+                      }
+                    }}>
                       <option value="1">1 Person</option>
                       <option value="2" selected>2 People</option>
                       <option value="3">3 People</option>
@@ -429,7 +434,10 @@ function App() {
                       <option value="5">5 People</option>
                       <option value="6">6 People</option>
                       <option value="7">7 People</option>
-                      <option value="8+">8+ People (Large Party)</option>
+                      <option value="8">8 People</option>
+                      <option value="9">9 People</option>
+                      <option value="10">10 People</option>
+                      <option value="11+">More than 10 People (Call Us)</option>
                     </select>
                   </div>
                   
