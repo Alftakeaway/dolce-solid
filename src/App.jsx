@@ -550,6 +550,62 @@ function App() {
         </div>
       </section>
 
+      {/* OUR GROUP VENUES */}
+      <section class="section-padding" id="our-group">
+        <div class="container-custom">
+          <div class="content-card-panel" data-aos="fade-up">
+            <h2 class="section-title">The Dolce Vita Family</h2>
+            <p class="section-subtitle-custom">Discover our other premium venues in Wooburn Green</p>
+            
+            <div class="venues-grid">
+              {/* THE CORK WINE BAR */}
+              <div class="venue-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="venue-image-wrapper">
+                  <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/the-cork.webp" class="venue-image" alt="The Cork Wine Bar" />
+                  <span class="venue-badge">Wine & Cocktails</span>
+                </div>
+                <div class="venue-info">
+                  <div>
+                    <h3 class="venue-title">The Cork Wine Bar</h3>
+                    <p class="venue-tagline">Elegant & Intimate</p>
+                    <p class="venue-desc">
+                      Located just steps away, The Cork is the perfect spot for a pre-dinner aperitivo or a sophisticated evening out. Explore a curated selection of fine wines, artisanal cocktails, and premium spirits in a warm, welcoming atmosphere.
+                    </p>
+                  </div>
+                  <div>
+                    <a href="https://www.instagram.com" target="_blank" class="btn-action email" style="margin-top: 0;">
+                      <i class="fab fa-instagram"></i> Follow on Instagram
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* GREEN DELIGHT */}
+              <div class="venue-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="venue-image-wrapper">
+                  <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/green-delight.webp" class="venue-image" alt="Green Delight" />
+                  <span class="venue-badge">Breakfast & Healthy Bar</span>
+                </div>
+                <div class="venue-info">
+                  <div>
+                    <h3 class="venue-title">Green Delight</h3>
+                    <p class="venue-tagline">Fresh & Vibrant</p>
+                    <p class="venue-desc">
+                      Your daily destination for wellness on The Green. From rich barista coffee and freshly baked morning pastries to vibrant healthy juices, premium salads, and artisanal light bites, everything is prepared fresh daily.
+                    </p>
+                  </div>
+                  <div>
+                    <a href="https://www.instagram.com" target="_blank" class="btn-action email" style="margin-top: 0;">
+                      <i class="fab fa-instagram"></i> Follow on Instagram
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CONTACTS */}
       <section class="section-padding" id="contact">
         <div class="container-custom">
