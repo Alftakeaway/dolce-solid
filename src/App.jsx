@@ -284,6 +284,8 @@ function App() {
       </section>
 
       {/* MENU HIGHLIGHTS */}
+      {/* Temporarily hidden until photographer photos are ready. Change false to true to show */}
+      {false && (
       <section class="section-padding" id="menu">
         <div class="container-custom">
           <h2 class="section-title" data-aos="fade-down">The Food Menu</h2>
@@ -339,6 +341,7 @@ function App() {
           </div>
         </div>
       </section>
+      )}
 
       {/* PARALLAX BAND 1 */}
       <div class="parallax-band parallax-band-1">
