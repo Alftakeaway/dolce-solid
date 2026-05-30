@@ -1,4 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+/* Lucida Unicode Calligraphy via jsDelivr CDN */
+@font-face {
+    font-family: 'Lucida Calligraphy';
+    src: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/LucidaUnicodeCalligraphy.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Lucida Calligraphy';
+    src: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/LucidaUnicodeCalligraphyBold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
 
 * { 
     margin: 0; 
@@ -95,7 +110,7 @@ body {
 
 /* LOGO / BRAND */
 .navbar-brand { 
-    font-family: 'Parisienne', cursive !important; 
+    font-family: 'Lucida Calligraphy', cursive !important; 
     font-size: clamp(2rem, 3.5vw, 3.2rem) !important;
     font-weight: 400 !important; 
     color: #ffffff !important; 
@@ -113,7 +128,7 @@ body {
 
 /* LINK DELLA NAVBAR */
 .nav-link { 
-    font-family: 'Parisienne', cursive !important;
+    font-family: 'Lucida Calligraphy', cursive !important;
     font-size: clamp(1.1rem, 1.8vw, 2rem) !important;
     font-weight: 400 !important;
     margin: 0 0.15rem !important;
