@@ -114,7 +114,7 @@ body {
     font-size: clamp(2rem, 3.5vw, 3.2rem) !important;
     font-weight: 400 !important; 
     color: #ffffff !important; 
-    letter-spacing: 2px !important;
+    letter-spacing: 0.5px !important;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
     transition: color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
     white-space: nowrap !important;
@@ -497,7 +497,6 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
         margin-bottom: 0.5rem;
         width: 100%;
         text-align: center;
-        letter-spacing: 0.5px !important;
     }
     .nav-link { 
         font-size: clamp(0.9rem, 2.5vw, 1.1rem) !important; 
