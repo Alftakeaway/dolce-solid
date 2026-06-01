@@ -92,7 +92,7 @@ body {
     background: rgba(42, 42, 42, 0.98) !important;
     backdrop-filter: blur(15px);
     border-bottom: 2px solid var(--secondary);
-    padding: 0.3rem 1rem 0.3rem 0.5rem !important;  /* Ridotto da 0.5rem */
+    padding: 0.2rem 1rem 0.2rem 0.5rem !important;  /* Ridotto da 0.5rem */
     position: sticky;
     top: 0;
     z-index: 1000;
