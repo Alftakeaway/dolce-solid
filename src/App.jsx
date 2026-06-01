@@ -253,7 +253,9 @@ function App() {
             style={{ "background-image": `url('${img}')`, "z-index": index() === currentHeroIndex() ? 2 : 1 }}
           />
         )}</For>
-
+        <div class="hero-logo">
+    <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/dolce_vita_logo_no_bg.png" alt="Dolce Vita Logo" />
+</div>
         <div class="hero-content" data-aos="fade-up" style={{ "z-index": 10 }}>
           <h1 class="hero-title">DOLCE VITA</h1>
           <p class="hero-subtitle">Authentic Italian dining in the heart of Wooburn Green</p>
