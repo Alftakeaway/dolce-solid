@@ -452,7 +452,7 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
 .catering-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primary); font-weight: 700; margin-bottom: 0.8rem; }
 .catering-price { 
     font-size: 1.8rem !important; 
-    color: #E8D5B7 !important; 
+    color: #8B6F47 !important; 
     font-weight: 700 !important; 
     margin-bottom: 0.8rem !important; 
 }
