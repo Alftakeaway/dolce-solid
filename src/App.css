@@ -137,7 +137,7 @@ body {
 /* LINK DELLA NAVBAR */
 .nav-link { 
     font-family: 'Lucida Calligraphy', cursive !important;
-    font-size: clamp(0.77rem, 1.26vw, 1.4rem) !important;  /* -30% da 1.1rem, 1.8vw, 2rem */
+    font-size: clamp(0.85rem, 1.4vw, 1.54rem) !important;  /* -20% da 1.1rem, 1.8vw, 2rem */
     font-weight: 400 !important;
     margin: 0 0.15rem !important;
     padding: 8px 12px !important;
