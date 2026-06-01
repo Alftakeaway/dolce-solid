@@ -227,7 +227,9 @@ function App() {
       {/* NAVBAR */}
       <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#home">Dolce <span>Vita</span></a>
+          <a class="navbar-brand" href="#home">
+            <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/dolce_vita_logo_no_bg.png" alt="Dolce Vita" class="navbar-logo" />
+          </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -246,9 +248,7 @@ function App() {
       </nav>
 
       {/* HERO SECTION */}
-       <div class="hero-logo">
-    <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/dolce_vita_logo_no_bg.png" alt="Dolce Vita Logo" />
-</div>
+       
       <section class="hero" id="home">
         <For each={heroImages}>{(img, index) => (
           <div 

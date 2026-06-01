@@ -120,7 +120,16 @@ body {
     white-space: nowrap !important;
     margin-right: auto !important; 
 }
+.navbar-logo {
+    height: 50px;
+    width: auto;
+    filter: drop-shadow(0 0 10px rgba(201, 169, 97, 0.4));
+    transition: all 0.3s ease;
+}
 
+.navbar-logo:hover {
+    filter: drop-shadow(0 0 15px rgba(201, 169, 97, 0.6));
+}
 .navbar-brand span { 
     color: #C9A961; 
     font-style: normal;
@@ -191,36 +200,7 @@ body {
     transition: opacity 1.5s ease-in-out;
     z-index: 1;
 }
-.hero-logo {
-    margin-bottom: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    animation: fadeInDown 1s ease-out 0.3s forwards;
-}
 
-.hero-logo img {
-    width: 140px;
-    height: auto;
-    filter: drop-shadow(0 0 20px rgba(201, 169, 97, 0.3));
-    transition: all 0.3s ease;
-}
-
-.hero-logo img:hover {
-    filter: drop-shadow(0 0 30px rgba(201, 169, 97, 0.5));
-}
-
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 .hero-bg-image.active {
     opacity: 0.3;
     animation: subtle-zoom 20s ease-in-out infinite;
