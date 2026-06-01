@@ -450,7 +450,12 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
 
 .catering-content { padding: 2rem; display: flex; flex-direction: column; flex-grow: 1; }
 .catering-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primary); font-weight: 700; margin-bottom: 0.8rem; }
-.catering-price { font-size: 1.8rem; color: var(--secondary); font-weight: 700; margin-bottom: 0.8rem; }
+.catering-price { 
+    font-size: 1.8rem; 
+    color: #E8D5B7 !important; 
+    font-weight: 700; 
+    margin-bottom: 0.8rem; 
+}
 .catering-description { color: #666666; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; }
 
 .catering-includes { margin-bottom: 1.5rem; }
@@ -597,7 +602,7 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
 
 .venue-tagline {
     font-size: 0.95rem;
-    color: var(--secondary);
+    color: #E8D5B7 !important;
     font-style: italic;
     font-weight: 600;
     margin-bottom: 1rem;
