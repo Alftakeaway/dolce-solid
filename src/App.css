@@ -121,7 +121,7 @@ body {
     margin-right: auto !important; 
 }
 .navbar-logo {
-    height: 100px;
+    height: 120px;
     width: auto;
     filter: drop-shadow(0 0 10px rgba(201, 169, 97, 0.4));
     transition: all 0.3s ease;
