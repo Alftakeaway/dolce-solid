@@ -26,8 +26,8 @@ html {
 }
 
 :root {
-    --primary: #2F1810;
-    --secondary: #faf9f7;
+    --primary: #4A2F1A;
+    --secondary: #E8D5B7;
     --dark: #2a2a2a;
     --border-radius: 4px;
     --border-color: #e0d9ce;
@@ -215,7 +215,7 @@ body {
     font-weight: 600; 
     cursor: pointer; 
     transition: background var(--duration-normal) var(--ease-out), transform var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out);
-    border: none;
+    border: 3px solid rgba(201, 169, 97, 0.8);
 }
 .btn-primary-custom:hover:not(:disabled) { 
     background: #6b0000; 
@@ -264,7 +264,9 @@ body {
     border: 1px solid rgba(255,255,255,0.2);
 }
 
-.section-title { font-family: 'Playfair Display', serif; font-size: 2.8rem; text-align: center; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 0.5px; }
+.section-title { font-family: 'Playfair Display', serif; font-size: 2.8rem; text-align: center; color: var(--primary); font-weight: 700;
+    -webkit-text-stroke: 1px rgba(201, 169, 97, 0.6);
+    text-stroke: 1px rgba(201, 169, 97, 0.6); margin-bottom: 0.5rem; letter-spacing: 0.5px; }
 .section-title::after { content: ''; display: block; width: 60px; height: 2px; background: var(--secondary); margin: 1rem auto 0; }
 .section-subtitle-custom { text-align: center; font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primary); font-style: italic; margin-bottom: 3rem; font-weight: 600; }
 
