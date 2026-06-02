@@ -589,7 +589,7 @@ function App() {
               {/* GREEN DELIGHT */}
               <div class="venue-card" data-aos="fade-up" data-aos-delay="200">
                 <div class="venue-image-wrapper">
-                  <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/green-delight.webp" class="venue-image" alt="Green Delight" />
+                  <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/green.jpg" class="venue-image" alt="Green Delight" />
                   <span class="venue-badge">Breakfast & Healthy Bar</span>
                 </div>
                 <div class="venue-info">
