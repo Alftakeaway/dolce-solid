@@ -3,7 +3,6 @@ import AOS from "aos";
 import emailjs from "@emailjs/browser"; 
 import SpecialDish from "./components/SpecialDish";
 import CateringPackages from "./components/CateringPackages";
-import HeroSection from "./components/HeroSection";
 
 import "./App.css";
 
@@ -13,7 +12,11 @@ function App() {
     AOS.init({ duration: 800, once: true });
   });
 
-  // --- HERO CAROUSEL DATA (passed to HeroSection component) ---
+  const [selectedCategory, setSelectedCategory] = createSignal("starters");
+  const [formSubmitted, setFormSubmitted] = createSignal(false);
+  const [isSending, setIsSending] = createSignal(false);
+
+  // --- HERO CAROUSEL ---
   const heroImages = [
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/hero_bg.jpg",
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg", 
@@ -21,11 +24,13 @@ function App() {
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior%202.webp",
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior3.webp"
   ];
-  const menuLink = "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/menu.pdf";
-
-  const [selectedCategory, setSelectedCategory] = createSignal("starters");
-  const [formSubmitted, setFormSubmitted] = createSignal(false);
-  const [isSending, setIsSending] = createSignal(false);
+  const [currentHeroIndex, setCurrentHeroIndex] = createSignal(0);
+  onMount(() => {
+    const timer = setInterval(() => {
+      setCurrentHeroIndex((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  });
 
   // --- LOGICA PRENOTAZIONI ---
   const [bookingDate, setBookingDate] = createSignal("");
@@ -121,166 +126,75 @@ function App() {
     { id: 25, title: "Sant'Elia", category: "pizza", price: "£18.00", desc: "Tomato, mozzarella, salami chorizo, gorgonzola, mushrooms and red onion.", img: "", isVegetarian: false, isVegan: false },
     { id: 26, title: "Ferrandina", category: "pizza", price: "£18.50", desc: "Tomato, mozzarella, crumbled Italian pork sausage, cherry tomatoes, black olives and basil pesto.", img: "", isVegetarian: false, isVegan: false },
     { id: 27, title: "Calzone di Carne", category: "pizza", price: "£19.00", desc: "Folded pizza brushed with garlic butter, filled with tomato, mozzarella, pepperoni, crumbled Italian pork sausage and chicken. Served with a pot of tomato sauce.", img: "", isVegetarian: false, isVegan: false },
-    { id: 28, title: "Calzone Vegetariano", category: "pizza", price: "£16.00", desc: "Folded pizza brushed with garlic butter, filled with tomato, mozzarella, mushrooms, mixed peppers and black olives. Served with a pot of tomato sauce.", img: "", isVegetarian: true, isVegan: false },
-    { id: 29, title: "Pissaladière Dolce Vita", category: "pizza", price: "£14.50", desc: "Thin, crispy bread topped with caramelized red onions, black olives, anchovies and a light drizzle of extra virgin olive oil.", img: "", isVegetarian: false, isVegan: false },
+    { id: 28, title: "Calzone Piccante", category: "pizza", price: "£18.00", desc: "Folded pizza brushed with garlic butter, filled with tomato, mozzarella, chicken, chilli, nduja and mushrooms. Served with a pot of tomato sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 29, title: "Rustica Dolce Vita", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, salami chorizo, roasted peppers, black olives and rocket.", img: "", isVegetarian: false, isVegan: false },
+    { id: 30, title: "Rustica Assassina", category: "pizza", price: "£18.50", desc: "Long-shaped pizza served on a board with tomato, mozzarella, spicy chicken, fresh chilli, nduja and salame piccante.", img: "", isVegetarian: false, isVegan: false },
 
-    // PASTA E RISOTTO
-    { id: 30, title: "Spaghetti Carbonara", category: "pasta", price: "£15.50", desc: "Spaghetti tossed with a creamy sauce made from egg yolks, Pecorino Romano cheese, guanciale pancetta and cracked black pepper.", img: "", isVegetarian: false, isVegan: false },
-    { id: 31, title: "Tagliatelle Bolognese", category: "pasta", price: "£15.00", desc: "Wide ribbon pasta covered in a slow-cooked ragù of ground beef, vegetables and tomatoes.", img: "", isVegetarian: false, isVegan: false },
-    { id: 32, title: "Fettuccine Alfredo", category: "pasta", price: "£14.00", desc: "Fettuccine in a rich, creamy sauce made with butter and Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false },
-    { id: 33, title: "Penne all'Arrabbiata", category: "pasta", price: "£13.00", desc: "Penne coated in a spicy sauce of tomatoes, garlic and red chilli peppers.", img: "", isVegetarian: true, isVegan: true },
-    { id: 34, title: "Lasagna della Nonna", category: "pasta", price: "£16.00", desc: "Layers of pasta sheets, rich Bolognese ragù, béchamel sauce and melted mozzarella, baked until golden.", img: "", isVegetarian: false, isVegan: false },
-    { id: 35, title: "Ravioli Ricotta e Spinaci", category: "pasta", price: "£16.50", desc: "Handmade ravioli filled with creamy ricotta and fresh spinach, served with butter and sage.", img: "", isVegetarian: true, isVegan: false },
-    { id: 36, title: "Tortellini Panna e Prosciutto", category: "pasta", price: "£16.00", desc: "Delicate meat-filled tortellini tossed in a rich, velvety heavy cream sauce with diced ham and fresh parsley.", img: "", isVegetarian: false, isVegan: false },
-    { id: 37, title: "Spaghetti Amatriciana", category: "pasta", price: "£14.50", desc: "Spaghetti in a tomato-based sauce with guanciale, pecorino romano and a hint of chilli.", img: "", isVegetarian: false, isVegan: false },
-    { id: 38, title: "Pappardelle al Ragù di Cinghiale", category: "pasta", price: "£18.00", desc: "Wide ribbon pasta tossed with a slow-cooked wild boar ragù.", img: "", isVegetarian: false, isVegan: false },
-    { id: 39, title: "Fusilli Pesto Genovese", category: "pasta", price: "£15.00", desc: "Fusilli pasta coated with a vibrant basil pesto, pine nuts, garlic and Pecorino Romano.", img: "", isVegetarian: true, isVegan: true },
-    { id: 40, title: "Risotto ai Funghi Porcini", category: "pasta", price: "£16.50", desc: "Creamy Arborio rice cooked with porcini mushrooms, white wine, broth and finished with butter and Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false },
-    { id: 41, title: "Risotto al Tartufo", category: "pasta", price: "£22.00", desc: "Creamy Arborio rice infused with black truffle, white wine, broth and finished with butter and Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false },
+    // PASTA
+    { id: 31, title: "Penne Arrabbiata", category: "pasta", price: "£16.00", desc: "Penne in a spicy tomato sauce with chilli, fresh basil, onion and garlic, full of authentic southern flavours.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/penne%20arrabbiata.webp", isVegetarian: true, isVegan: true },
+    { id: 32, title: "Linguine Bolognese", category: "pasta", price: "£18.00", desc: "Linguine with a traditional homemade beef Bolognese sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 33, title: "Penne alla Boscaiola", category: "pasta", price: "£20.00", desc: "Penne in a rich creamy tomato sauce with crumbled Italian pork sausage, mushrooms and Calabrian nduja.", img: "", isVegetarian: false, isVegan: false },
+    { id: 34, title: "Spaghetti Carbonara", category: "pasta", price: "£18.00", desc: "Spaghetti with Italian guanciale, Parmesan, black pepper and egg.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/carbonara.jpg", isVegetarian: false, isVegan: false },
+    { id: 35, title: "Linguine al Granchio", category: "pasta", price: "£22.00", desc: "Linguine with crab meat, cherry tomato sauce, chilli, garlic, parsley, white wine and extra virgin olive oil.", img: "", isVegetarian: false, isVegan: false },
+    { id: 36, title: "Spaghetti Gamberi & Acciughe", category: "pasta", price: "£20.00", desc: "Spaghetti with prawns and anchovies in a garlic, cherry tomato and white wine sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/spaghetti%20gamberi%20e%20acciughe.webp", isVegetarian: false, isVegan: false },
+    { id: 37, title: "Linguine Salmone", category: "pasta", price: "£17.50", desc: "Linguine with smoked salmon, onion, cherry tomatoes, cream, parsley and a touch of tomato sauce.", img: "", isVegetarian: false, isVegan: false },
+    { id: 38, title: "Spaghetti Pescatore", category: "pasta", price: "£21.00", desc: "Spaghetti with mixed seafood, prawns, squid, mussels and octopus in a garlic, white wine and tomato sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/spaghetti pescatore.webp", isVegetarian: false, isVegan: false },
+    { id: 39, title: "Linguine ai Gamberi & Pesto", category: "pasta", price: "£19.00", desc: "Linguine with homemade basil pesto, tiger prawns, cherry tomatoes and a touch of cream.", img: "", isVegetarian: false, isVegan: false },
+    { id: 40, title: "Penne al Forno", category: "pasta", price: "£19.00", desc: "Penne with mushrooms, crispy guanciale, spinach, garlic and parsley, baked with breadcrumbs and Parmigiano Reggiano.", img: "", isVegetarian: false, isVegan: false },
 
-    // CARNE
-    { id: 42, title: "Osso Buco alla Milanese", category: "carne", price: "£28.00", desc: "Braised veal shank with vegetables, white wine and broth, topped with gremolata and served with saffron risotto.", img: "", isVegetarian: false, isVegan: false },
-    { id: 43, title: "Saltimbocca alla Romana", category: "carne", price: "£24.00", desc: "Thin slices of veal topped with fresh sage and Parma ham, pan-fried and finished with white wine sauce.", img: "", isVegetarian: false, isVegan: false },
-    { id: 44, title: "Piccata al Limone", category: "carne", price: "£20.00", desc: "Tender veal cutlets pan-fried and served in a light lemon and white wine sauce.", img: "", isVegetarian: false, isVegan: false },
-    { id: 45, title: "Cotoletta alla Milanese", category: "carne", price: "£19.00", desc: "Breadcrumbed veal cutlet, fried until golden and crispy, served with fresh lemon.", img: "", isVegetarian: false, isVegan: false },
-    { id: 46, title: "Vitello Tonnato", category: "carne", price: "£18.00", desc: "Sliced veal served cold with a creamy tuna and caper sauce.", img: "", isVegetarian: false, isVegan: false },
-    { id: 47, title: "Chicken Parmigiana", category: "carne", price: "£18.00", desc: "Breaded chicken breasts layered with tomato sauce and melted mozzarella, baked until bubbly.", img: "", isVegetarian: false, isVegan: false },
-    { id: 48, title: "Chicken Marsala", category: "carne", price: "£18.00", desc: "Tender chicken breasts cooked in a rich Marsala wine sauce with mushrooms.", img: "", isVegetarian: false, isVegan: false },
-    { id: 49, title: "Chicken Piccata", category: "carne", price: "£17.00", desc: "Pan-fried chicken breast in a light lemon and white wine sauce.", img: "", isVegetarian: false, isVegan: false },
-    { id: 50, title: "Lamb Chops Grilled", category: "carne", price: "£26.00", desc: "Tender lamb chops marinated in herbs, grilled to perfection and served with roasted vegetables.", img: "", isVegetarian: false, isVegan: false },
-    { id: 51, title: "Beef Ragu (Tagliatelle)", category: "carne", price: "£16.00", desc: "Rich, slow-cooked beef ragù served over fresh tagliatelle pasta.", img: "", isVegetarian: false, isVegan: false },
-    { id: 52, title: "Ribeye Steak", category: "carne", price: "£34.00", desc: "Succulent 10oz ribeye steak, grilled to your liking and finished with butter, garlic and rosemary.", img: "", isVegetarian: false, isVegan: false },
-    { id: 53, title: "Fiorentina", category: "carne", price: "£38.00", desc: "Thick-cut T-bone steak, grilled rare and served with fresh lemon and Tuscan olive oil.", img: "", isVegetarian: false, isVegan: false },
-    { id: 54, title: "Pork Chop Milanese", category: "carne", price: "£18.00", desc: "Breadcrumbed pork chop, fried until golden and crispy.", img: "", isVegetarian: false, isVegan: false },
-    { id: 55, title: "Sausage and Broccoli", category: "carne", price: "£15.00", desc: "Italian sausage served with sautéed broccoli and a light garlic sauce.", img: "", isVegetarian: false, isVegan: false },
+    // RISOTTI
+    { id: 41, title: "Risotto Gorgonzola & Salsiccia", category: "risotto", price: "£19.00", desc: "Carnaroli rice with crumbled Italian pork sausage and spinach, creamed with gorgonzola and Parmigiano Reggiano.", img: "", isVegetarian: false, isVegan: false },
+    { id: 42, title: "Risotto Asparagi & Funghi", category: "risotto", price: "£18.00", desc: "Carnaroli rice with mushrooms, asparagus, onion and parsley, creamed with Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false },
+    { id: 43, title: "Risotto Frutti di Mare", category: "risotto", price: "£21.00", desc: "Carnaroli rice with mixed seafood, prawns, squid, mussels and octopus cooked in a white wine, garlic and tomato sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/Risotto%20Frutti%20Di%20Mare.webp", isVegetarian: false, isVegan: false },
 
-    // PESCE
-    { id: 56, title: "Branzino al Forno", category: "pesce", price: "£26.00", desc: "Whole sea bass baked in the oven with lemon, herbs and extra virgin olive oil.", img: "", isVegetarian: false, isVegan: false },
-    { id: 57, title: "Salmon Piccata", category: "pesce", price: "£24.00", desc: "Pan-fried salmon fillet served in a light lemon and white wine sauce.", img: "", isVegetarian: false, isVegan: false },
-    { id: 58, title: "Swordfish Grilled", category: "pesce", price: "£26.00", desc: "Grilled swordfish steak served with fresh lemon and roasted vegetables.", img: "", isVegetarian: false, isVegan: false },
-    { id: 59, title: "Calamari Fritti", category: "pesce", price: "£16.00", desc: "Deep-fried squid rings served with tartare sauce and fresh lemon.", img: "", isVegetarian: false, isVegan: false },
-    { id: 60, title: "Shrimp Scampi", category: "pesce", price: "£20.00", desc: "Succulent shrimp sautéed in garlic, white wine, parsley and a touch of chilli, served with crusty bread.", img: "", isVegetarian: false, isVegan: false },
-    { id: 61, title: "Mussels Marinara", category: "pesce", price: "£17.00", desc: "Fresh mussels in a tomato-based sauce with garlic and white wine, served with crusty bread.", img: "", isVegetarian: false, isVegan: false },
-    { id: 62, title: "Mixed Seafood Pasta", category: "pesce", price: "£19.00", desc: "A medley of shrimp, mussels, calamari and clams tossed with spaghetti in a light tomato sauce.", img: "", isVegetarian: false, isVegan: false },
-    { id: 63, title: "Clams Linguine", category: "pesce", price: "£17.50", desc: "Fresh linguine pasta with littleneck clams in a white wine and garlic sauce.", img: "", isVegetarian: false, isVegan: false },
+    // RAVIOLI
+    { id: 44, title: "Ravioli ai Porcini", category: "ravioli", price: "£23.00", desc: "Porcini mushroom-filled ravioli, sautéed in a fragrant butter and sage sauce, finished with Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false },
+    { id: 45, title: "Ravioli Astice & Granchio", category: "ravioli", price: "£26.00", desc: "Lobster filled-ravioli toasted in a rich velvety crab sauce, with cherry tomatoes, citrus hints and aromatic herbs.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/ravioli astice granchio.webp", isVegetarian: false, isVegan: false },
+    { id: 46, title: "Ravioli Ricotta & Spinaci", category: "ravioli", price: "£20.00", desc: "Spinach and ricotta-filled ravioli cooked with crumbled Italian pork sausage and finished with shaved Parmigiano Reggiano.", img: "", isVegetarian: false, isVegan: false },
 
-    // VEGETARIAN
-    { id: 64, title: "Eggplant Parmigiana", category: "vegetarian", price: "£13.50", desc: "Sliced eggplant layered with tomato sauce, mozzarella and Parmesan, baked until golden.", img: "", isVegetarian: true, isVegan: false },
-    { id: 65, title: "Risotto ai Funghi Porcini", category: "vegetarian", price: "£16.50", desc: "Creamy Arborio rice with porcini mushrooms, white wine and Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false },
-    { id: 66, title: "Risotto al Tartufo", category: "vegetarian", price: "£22.00", desc: "Creamy Arborio rice infused with black truffle, white wine and Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false },
-    { id: 67, title: "Vegetable Lasagna", category: "vegetarian", price: "£15.00", desc: "Layers of pasta sheets, seasonal vegetables, béchamel sauce and melted mozzarella.", img: "", isVegetarian: true, isVegan: false },
-    { id: 68, title: "Ravioli Ricotta e Spinaci", category: "vegetarian", price: "£16.50", desc: "Handmade ravioli filled with creamy ricotta and fresh spinach, served with butter and sage.", img: "", isVegetarian: true, isVegan: false },
-    { id: 69, title: "Penne all'Arrabbiata", category: "vegetarian", price: "£13.00", desc: "Penne in a spicy sauce of tomatoes, garlic and red chilli peppers.", img: "", isVegetarian: true, isVegan: true },
-    { id: 70, title: "Fusilli Pesto Genovese", category: "vegetarian", price: "£15.00", desc: "Fusilli pasta coated with basil pesto, pine nuts, garlic and Pecorino Romano.", img: "", isVegetarian: true, isVegan: true },
-    { id: 71, title: "Fettuccine Alfredo", category: "vegetarian", price: "£14.00", desc: "Fettuccine in a rich, creamy sauce made with butter and Parmigiano Reggiano.", img: "", isVegetarian: true, isVegan: false },
-    { id: 72, title: "Vegetable Soup", category: "vegetarian", price: "£8.00", desc: "Hearty soup with seasonal vegetables in a light broth.", img: "", isVegetarian: true, isVegan: true },
-    { id: 73, title: "Caprese Salad", category: "vegetarian", price: "£11.00", desc: "Fresh mozzarella, ripe tomatoes and basil dressed with extra virgin olive oil and balsamic glaze.", img: "", isVegetarian: true, isVegan: false },
+    // MAINS (SECONDI)
+    { id: 47, title: "Pollo Sambuca", category: "mains", price: "£25.00", desc: "Chicken breast cooked in a creamy sambuca sauce with red onions. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false },
+    { id: 48, title: "Pollo Cacciatore", category: "mains", price: "£25.00", desc: "Chicken breast cooked in a spicy tomato sauce with onions, mixed peppers, mushrooms, black olives and white wine. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false },
+    { id: 49, title: "Vitello ai Funghi", category: "mains", price: "£30.00", desc: "Thinly sliced veal cooked with onions and wild mushrooms in a rich white wine, parsley and cream sauce. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/vitello%20ai%20funghi.webp", isVegetarian: false, isVegan: false },
+    { id: 50, title: "Spigola al Limone", category: "mains", price: "£26.00", desc: "Pan-fried sea bass fillets cooked in a rich lemon butter and white wine sauce. Served with Tuscan potatoes and garlic spinach.", img: "", isVegetarian: false, isVegan: false },
+    { id: 51, title: "Zuppa di Pesce", category: "mains", price: "£28.00", desc: "Seafood selection, including prawns, squid, octopus and mussels, cooked in a spicy tomato sauce with white wine, garlic and parsley. Served with toasted bread.", img: "", isVegetarian: false, isVegan: false },
+    { id: 52, title: "Baccalà in Umido", category: "mains", price: "£29.00", desc: "Cod loin cooked in a Mediterranean tomato sauce with red onions, black olives, capers, garlic and parsley. Served with Tuscan potatoes and garlic spinach.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/baccala.webp", isVegetarian: false, isVegan: false },
+    { id: 53, title: "Bistecca", category: "mains", price: "£34.00", desc: "28 days ribeye, freshly cut and cooked to your preference. Served with Tuscan potatoes, side salad and homemade peppercorn sauce.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/bistecca.webp", isVegetarian: false, isVegan: false },
+    { id: 54, title: "Tagliata di Manzo", category: "mains", price: "£32.00", desc: "28 days aged sliced ribeye served on a bed of rocket, topped with shaved Parmigiano Reggiano and a drizzle of balsamic glaze, extra virgin olive oil and Maldon sea salt.", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/tagliata.webp", isVegetarian: false, isVegan: false },
 
-    // SIDES / CONTORNI
-    { id: 74, title: "Roasted Vegetables", category: "sides", price: "£6.50", desc: "Mixed roasted seasonal vegetables with garlic and herbs.", img: "", isVegetarian: true, isVegan: true },
-    { id: 75, title: "Sautéed Spinach", category: "sides", price: "£5.50", desc: "Fresh spinach sautéed with garlic and a touch of extra virgin olive oil.", img: "", isVegetarian: true, isVegan: true },
-    { id: 76, title: "Truffle Fries", category: "sides", price: "£7.00", desc: "Crispy hand-cut fries tossed with truffle oil and Parmesan.", img: "", isVegetarian: true, isVegan: false },
-    { id: 77, title: "Garlic Bread", category: "sides", price: "£5.00", desc: "Crispy bread brushed with garlic, butter and parsley.", img: "", isVegetarian: true, isVegan: false },
-    { id: 78, title: "Mashed Potatoes", category: "sides", price: "£5.50", desc: "Creamy mashed potatoes made with butter and a hint of garlic.", img: "", isVegetarian: true, isVegan: false },
+    // SALADS
+    { id: 55, title: "Classic Salad", category: "salads", price: "£14.00", desc: "Baby leaf and rocket salad with avocado, mixed peppers, red onion, cucumber, cherry tomatoes and olives, dressed with balsamic vinegar and extra virgin olive oil.", img: "", isVegetarian: true, isVegan: true },
 
-    // SALADS / ENSALADAS
-    { id: 79, title: "Caesar Salad", category: "salads", price: "£12.00", desc: "Crisp romaine lettuce, homemade Caesar dressing, croutons and Parmesan shavings.", img: "", isVegetarian: false, isVegan: false },
-    { id: 80, title: "Caprese Salad", category: "salads", price: "£11.00", desc: "Fresh mozzarella, ripe tomatoes and basil dressed with extra virgin olive oil and balsamic glaze.", img: "", isVegetarian: true, isVegan: false },
-    { id: 81, title: "Greek Salad", category: "salads", price: "£11.50", desc: "Mixed greens, feta cheese, tomatoes, cucumbers, red onion, olives and a zesty vinaigrette.", img: "", isVegetarian: true, isVegan: false },
-    { id: 82, title: "Arugula Salad", category: "salads", price: "£13.00", desc: "Peppery arugula, shaved Parmesan, cherry tomatoes, croutons and a light lemon vinaigrette.", img: "", isVegetarian: true, isVegan: false },
-
-    // DESSERTS
-    { id: 83, title: "Tiramisu", category: "desserts", price: "£7.00", desc: "Classic Italian dessert made with espresso-soaked ladyfingers, mascarpone cream and cocoa powder.", img: "", isVegetarian: true, isVegan: false },
-    { id: 84, title: "Panna Cotta", category: "desserts", price: "£6.50", desc: "Silky-smooth Italian cream dessert served with fresh berry coulis.", img: "", isVegetarian: true, isVegan: false },
-    { id: 85, title: "Zabaglione", category: "desserts", price: "£6.00", desc: "Light, fluffy Italian custard dessert made with egg yolks, sugar and Marsala wine.", img: "", isVegetarian: true, isVegan: false },
-    { id: 86, title: "Gelato", category: "desserts", price: "£5.00", desc: "Authentic Italian gelato in a choice of flavors: vanilla, chocolate, pistachio, hazelnut or strawberry.", img: "", isVegetarian: true, isVegan: false },
-    { id: 87, title: "Panna Cotta al Pistacchio", category: "desserts", price: "£7.00", desc: "Creamy panna cotta infused with pistachio, topped with crushed pistachios.", img: "", isVegetarian: true, isVegan: false },
-    { id: 88, title: "Spumoni", category: "desserts", price: "£5.50", desc: "Traditional Italian three-flavor gelato with layers of pistachio, chocolate and cherry.", img: "", isVegetarian: true, isVegan: false },
+    // SIDES
+    { id: 56, title: "Dolce Vita Sides", category: "sides", price: "£5.00", desc: "French fries, Tuscan potatoes, Rocket and Parmesan, Garlic spinach, Sautéed mushrooms, Mixed vegetables, Side salad, or Tomatoes & red onions. (Side bread £4.00)", img: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/side1.webp", isVegetarian: true, isVegan: false }
   ];
 
-  // Categorizzazione
-  const categories = [
-    { id: "specials", label: "Specials", icon: "fas fa-star" },
-    { id: "nibbles", label: "Nibbles", icon: "fas fa-gem" },
-    { id: "starters", label: "Starters", icon: "fas fa-apple-alt" },
-    { id: "pizza", label: "Pizze", icon: "fas fa-pizza-slice" },
-    { id: "pasta", label: "Pasta & Risotto", icon: "fas fa-bowl-food" },
-    { id: "carne", label: "Carne", icon: "fas fa-drumstick-bite" },
-    { id: "pesce", label: "Pesce", icon: "fas fa-fish" },
-    { id: "vegetarian", label: "Vegetarian", icon: "fas fa-leaf" },
-    { id: "sides", label: "Contorni", icon: "fas fa-french-fries" },
-    { id: "salads", label: "Salads", icon: "fas fa-salad" },
-    { id: "desserts", label: "Desserts", icon: "fas fa-cake-slice" }
-  ];
-
-  // --- GALLERIA ---
-  const galleryImages = [
-    {
-      src: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery1.jpg",
-      alt: "Dolce Vita Dining Experience",
-      text: "Elegant Dining"
-    },
-    {
-      src: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery2.jpg",
-      alt: "Italian Cuisine",
-      text: "Authentic Italian"
-    },
-    {
-      src: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery3.jpg",
-      alt: "Wine Selection",
-      text: "Fine Wines"
-    }
-  ];
-
-  // --- VENUES ---
-  const venues = [
-    {
-      id: 1,
-      title: "The Cork Wine Bar",
-      tagline: "Elegant & Intimate",
-      badge: "Wine & Cocktails",
-      image: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/the-cork.webp",
-      description: "Located just steps away, The Cork is the perfect spot for a pre-dinner aperitivo or a sophisticated evening out. Explore a curated selection of fine wines, artisanal cocktails, and premium spirits in a warm, welcoming atmosphere.",
-      instagramLink: "https://www.instagram.com"
-    },
-    {
-      id: 2,
-      title: "Green Delight",
-      tagline: "Fresh & Vibrant",
-      badge: "Breakfast & Healthy Bar",
-      image: "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/green.jpg",
-      description: "Your daily destination for wellness on The Green. From rich barista coffee and freshly baked morning pastries to vibrant healthy juices, premium salads, and artisanal light bites, everything is prepared fresh daily.",
-      instagramLink: "https://www.instagram.com"
-    }
-  ];
-
-  // --- REVIEWS ---
-  const reviews = [
-    {
-      stars: "★★★★★",
-      author: "Sarah M.",
-      text: "Absolutely stunning food and impeccable service. The ambiance is perfect for a special evening. Highly recommend!"
-    },
-    {
-      stars: "★★★★★",
-      author: "James K.",
-      text: "The pasta is divine. Every dish feels like a journey through Italy. Will definitely be back!"
-    },
-    {
-      stars: "★★★★★",
-      author: "Emma L.",
-      text: "Best Italian restaurant in the area. Fresh ingredients, authentic recipes, and wonderful staff."
-    }
-  ];
-
-  // --- LOGICA MENU FILTER ---
   const filteredMenu = createMemo(() => {
     if (selectedCategory() === "all") return menuItems;
+    if (selectedCategory() === "vegetarian") return menuItems.filter(item => item.isVegetarian);
     if (selectedCategory() === "vegan") return menuItems.filter(item => item.isVegan);
     return menuItems.filter(item => item.category === selectedCategory());
   });
 
-  // --- EMAIL JS FORM HANDLER ---
+  const specials = createMemo(() => {
+    return menuItems.filter(item => item.category === "specials");
+  });
+
+  const getCategoryIcon = (category) => {
+    switch(category) {
+      case "nibbles": return "fas fa-cookie-bite";
+      case "starters": return "fas fa-utensils";
+      case "pizza": return "fas fa-pizza-slice";
+      case "pasta": return "fas fa-utensils";
+      case "risotto": case "ravioli": return "fas fa-utensils";
+      case "mains": return "fas fa-drumstick-bite";
+      case "salads": return "fas fa-seedling";
+      case "sides": return "fas fa-bread-slice";
+      case "specials": return "fas fa-star";
+      default: return "fas fa-utensils";
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
@@ -306,17 +220,11 @@ function App() {
     }
   };
 
-  // --- HELPER FUNCTION ---
-  const getCategoryIcon = (categoryId) => {
-    const cat = categories.find(c => c.id === categoryId);
-    return cat ? cat.icon : "fas fa-utensils";
-  };
-
   return (
     <>
-      {/* ====================================
-          NAVBAR
-          ==================================== */}
+      
+
+      {/* NAVBAR */}
       <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="#home">
@@ -339,14 +247,27 @@ function App() {
         </div>
       </nav>
 
-      {/* ====================================
-          HERO SECTION - EXTRACTED COMPONENT
-          ==================================== */}
-      <HeroSection heroImages={heroImages} menuLink={menuLink} />
+      {/* HERO SECTION */}
+       
+      <section class="hero" id="home">
+        <For each={heroImages}>{(img, index) => (
+          <div 
+            class={`hero-bg-image ${index() === currentHeroIndex() ? 'active' : ''}`}
+            style={{ "background-image": `url('${img}')`, "z-index": index() === currentHeroIndex() ? 2 : 1 }}
+          />
+        )}</For>
+       
+        <div class="hero-content" data-aos="fade-up" style={{ "z-index": 10 }}>
+          <h1 class="hero-title">DOLCE VITA</h1>
+          <p class="hero-subtitle">Authentic Italian dining in the heart of Wooburn Green</p>
+          <div class="hero-buttons">
+            <a href="#reservation" class="btn-primary-custom">Book Now</a>
+            <a href="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/menu.pdf" target="_blank" class="btn-secondary-custom">Full Menu</a>
+          </div>
+        </div>
+      </section>
 
-      {/* ====================================
-          OUR STORY SECTION
-          ==================================== */}
+      {/* OUR STORY */}
       <section class="section-padding" id="about">
         <div class="container-custom">
           <div class="content-card-panel" data-aos="fade-up">
@@ -358,234 +279,260 @@ function App() {
                 <p><strong>Our commitment:</strong> Outstanding quality, a warm atmosphere, and impeccable service. We invite you to discover why we are the preferred choice for those who cherish authentic Italian cuisine.</p>
               </div>
               <div class="about-image">
-                <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/capi.jpeg" alt="Dolce Vita Story Image" loading="lazy" />
+                <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/capi.jpeg" alt="Dolce Vita Story Image" />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ====================================
-          MENU SECTION
-          ==================================== */}
+      {/* MENU HIGHLIGHTS */}
+      {/* Temporarily hidden until photographer photos are ready. Change false to true to show */}
+      {false && (
       <section class="section-padding" id="menu">
         <div class="container-custom">
           <h2 class="section-title" data-aos="fade-down">The Food Menu</h2>
           <p class="section-subtitle-custom" data-aos="fade-down">Explore our extensive and authentic Italian selections</p>
           
-          {/* Filter buttons */}
           <div class="filter-container d-flex justify-content-center flex-wrap gap-2 mb-5" data-aos="fade-down">
-            <button 
-              class={`btn-filter ${selectedCategory() === 'all' ? 'active' : ''}`}
-              onClick={() => setSelectedCategory('all')}
-            >
-              All Menu
-            </button>
+            <button class={`btn-filter ${selectedCategory() === 'all' ? 'active' : ''}`} onClick={() => setSelectedCategory('all')}>All Menu</button>
             
-            <For each={categories}>
-              {(cat) => (
-                <button
-                  class={`btn-filter ${selectedCategory() === cat.id ? 'active' : ''}`}
-                  onClick={() => setSelectedCategory(cat.id)}
-                >
-                  <i class={cat.icon}></i> {cat.label}
-                </button>
-              )}
-            </For>
-
-            <button 
-              class={`btn-filter ${selectedCategory() === 'vegan' ? 'active' : ''}`}
-              onClick={() => setSelectedCategory('vegan')}
-            >
-              <i class="fas fa-sprout"></i> Vegan
-            </button>
+            {specials().length > 0 && (
+              <button class={`btn-filter specials ${selectedCategory() === 'specials' ? 'active' : ''}`} onClick={() => setSelectedCategory('specials')}>
+                <i class="fas fa-star" style="margin-right: 6px;"></i> Specials
+              </button>
+            )}
+            
+            <button class={`btn-filter ${selectedCategory() === 'nibbles' ? 'active' : ''}`} onClick={() => setSelectedCategory('nibbles')}>Nibbles</button>
+            <button class={`btn-filter ${selectedCategory() === 'starters' ? 'active' : ''}`} onClick={() => setSelectedCategory('starters')}>Starters</button>
+            <button class={`btn-filter ${selectedCategory() === 'pizza' ? 'active' : ''}`} onClick={() => setSelectedCategory('pizza')}>Pizze & Calzoni</button>
+            <button class={`btn-filter ${selectedCategory() === 'pasta' ? 'active' : ''}`} onClick={() => setSelectedCategory('pasta')}>Pasta</button>
+            <button class={`btn-filter ${selectedCategory() === 'risotto' ? 'active' : ''}`} onClick={() => setSelectedCategory('risotto')}>Risotti</button>
+            <button class={`btn-filter ${selectedCategory() === 'ravioli' ? 'active' : ''}`} onClick={() => setSelectedCategory('ravioli')}>Ravioli</button>
+            <button class={`btn-filter ${selectedCategory() === 'mains' ? 'active' : ''}`} onClick={() => setSelectedCategory('mains')}>Mains</button>
+            <button class={`btn-filter ${selectedCategory() === 'salads' ? 'active' : ''}`} onClick={() => setSelectedCategory('salads')}>Salads</button>
+            <button class={`btn-filter ${selectedCategory() === 'sides' ? 'active' : ''}`} onClick={() => setSelectedCategory('sides')}>Sides</button>
+            
+            <button class={`btn-filter dietary-filter ${selectedCategory() === 'vegetarian' ? 'active' : ''}`} onClick={() => setSelectedCategory('vegetarian')}><i class="fas fa-leaf me-1"></i> Vegetarian</button>
+            <button class={`btn-filter dietary-filter ${selectedCategory() === 'vegan' ? 'active' : ''}`} onClick={() => setSelectedCategory('vegan')}><i class="fas fa-seedling me-1"></i> Vegan</button>
           </div>
 
-          {/* Menu grid */}
-          <div class="menu-grid">
-            <For each={filteredMenu()}>
-              {(item) => (
-                <div class="menu-card" data-aos="fade-up">
-                  {item.img ? (
-                    <img src={item.img} alt={item.title} loading="lazy" class="menu-card-image" />
-                  ) : (
-                    <div class="menu-card-placeholder">
-                      <i class={getCategoryIcon(item.category)}></i>
-                    </div>
-                  )}
-                  
-                  <div class="menu-card-content">
-                    <h3 class="menu-title">{item.title}</h3>
-                    <p class="menu-desc">{item.desc}</p>
-                    
-                    <div class="menu-footer">
-                      <p class="menu-price">{item.price}</p>
-                      <div class="dietary-badges">
-                        {item.isVegan && <span class="badge-vegan">Vegan</span>}
-                        {item.isVegetarian && !item.isVegan && <span class="badge-veg">Vegetarian</span>}
-                      </div>
-                    </div>
+          <div class="menu-grid" style={{ display: "flex", "justify-content": "center", "flex-wrap": "wrap" }}>
+            <For each={filteredMenu()}>{(item) => (
+              <div class="menu-card single-center" data-aos="fade-up">
+                {item.category === 'specials' && (
+                  <div class="special-badge">
+                    <i class="fas fa-star"></i> Specials
                   </div>
+                )}
+                {item.img !== "" ? (
+                  <img src={item.img} class="menu-card-image" alt={item.title} />
+                ) : (
+                  <div class="menu-card-icon-placeholder">
+                    <i class={getCategoryIcon(item.category)}></i>
+                  </div>
+                )}
+                <div class="menu-card-content">
+                  <div class="menu-card-top">
+                    <h3 class="menu-card-title">{item.title}</h3>
+                    <div class="menu-card-price">{item.price}</div>
+                  </div>
+                  <p class="menu-card-description">{item.desc}</p>
                 </div>
-              )}
-            </For>
+              </div>
+            )}</For>
+          </div>
+        </div>
+      </section>
+      )}
+
+      {/* PARALLAX BAND 1 */}
+      <div class="parallax-band parallax-band-1">
+        <div class="parallax-overlay"></div>
+      </div>
+
+      {/* ATMOSPHERE GALLERY */}
+      <section class="section-padding" id="gallery">
+        <div class="container-custom">
+          <h2 class="section-title" data-aos="fade-down" style={{ color: "#ffffff", "text-shadow": "1px 1px 10px rgba(0,0,0,0.5)" }}>Our Atmosphere</h2>
+          <div class="gallery-grid" data-aos="fade-up">
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery1.jpg" /><div class="gallery-overlay"><p class="gallery-text">Pasta al Pomodoro</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery2.jpg" /><div class="gallery-overlay"><p class="gallery-text">Spaghetti al Basilico</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery3.jpg" /><div class="gallery-overlay"><p class="gallery-text">Lasagna Casalinga</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery4.jpg" /><div class="gallery-overlay"><p class="gallery-text">Antipasto Italiano</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery5.jpg" /><div class="gallery-overlay"><p class="gallery-text">Pasta Fresca</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery6.jpg" /><div class="gallery-overlay"><p class="gallery-text">Fresh Ingredients</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery7.jpg" /><div class="gallery-overlay"><p class="gallery-text">Pizza Margherita</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery8.jpg" /><div class="gallery-overlay"><p class="gallery-text">Dining Experience</p></div></div>
+            <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery9.jpg" /><div class="gallery-overlay"><p class="gallery-text">Risotto alla Milanese</p></div></div>
           </div>
         </div>
       </section>
 
-      {/* ====================================
-          SPECIAL DISH (optional)
-          ==================================== */}
+      {/* PARALLAX BAND 2 */}
+      <div class="parallax-band parallax-band-2">
+        <div class="parallax-overlay"></div>
+      </div>
+
+      <CateringPackages />
+
       <SpecialDish />
 
-      {/* ====================================
-          ATMOSPHERE / GALLERY
-          ==================================== */}
-      <section class="section-padding parallax-band parallax-band-2" id="gallery">
-        <div class="parallax-overlay"></div>
-        <div class="container-custom" style={{ position: "relative", "z-index": 10 }}>
-          <h2 class="section-title" style={{ color: "white" }} data-aos="fade-down">
-            Our Atmosphere
-          </h2>
-          <p class="section-subtitle-custom" style={{ color: "var(--secondary)" }} data-aos="fade-down">
-            Experience the warmth and elegance of Dolce Vita
-          </p>
-          
-          <div class="gallery-grid">
-            <For each={galleryImages}>
-              {(img, idx) => (
-                <div class="gallery-item" data-aos="fade-up" data-aos-delay={`${(idx() + 1) * 100}`}>
-                  <img src={img.src} alt={img.alt} loading="lazy" />
-                </div>
-              )}
-            </For>
-          </div>
-        </div>
-      </section>
-
-      {/* ====================================
-          CUSTOMER REVIEWS
-          ==================================== */}
+      {/* REVIEWS */}
       <section class="section-padding" id="reviews">
         <div class="container-custom">
           <div class="content-card-panel" data-aos="fade-up">
             <h2 class="section-title">What Our Guests Say</h2>
-            <p class="section-subtitle-custom">Hear from those who have experienced Dolce Vita</p>
-            
-            <div class="reviews-grid">
-              <For each={reviews}>
-                {(review, idx) => (
-                  <div class="review-card" data-aos="fade-up" data-aos-delay={`${(idx() + 1) * 100}`}>
-                    <p class="stars">{review.stars}</p>
-                    <p class="review-author">{review.author}</p>
-                    <p class="review-text">{review.text}</p>
-                  </div>
-                )}
-              </For>
+            <div class="review-item">
+              <div class="stars">★★★★★</div>
+              <div class="review-author">James Thompson</div>
+              <p class="review-text">"Absolutely authentic Italian cooking. The pasta is hand-made fresh daily and the flavours are exactly as I remember from my time in Rome. Simply outstanding."</p>
+            </div>
+            <div class="review-item">
+              <div class="stars">★★★★★</div>
+              <div class="review-author">Sarah Mitchell</div>
+              <p class="review-text">"Beautiful atmosphere, exceptional service, and the risotto was absolutely divine. We'll definitely be returning for special occasions. Highly recommended!"</p>
+            </div>
+            <div class="review-item">
+              <div class="stars">★★★★★</div>
+              <div class="review-author">Emma & David Williams</div>
+              <p class="review-text">"Family dinner was wonderful. The children loved their meals and the staff were incredibly accommodating. A real gem in Wooburn! We can't wait to come back."</p>
+            </div>
+            <div class="review-item">
+            <div class="stars">★★★★★</div>
+              <div class="review-author">Marco Bianchi</div>
+              <p class="review-text">"As an Italian living abroad, I'm very picky about authentic cuisine. Dolce Vita exceeded all my expectations – the ingredients, the recipes, the warmth... it truly feels like home. Bravi!"</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ====================================
-          CATERING PACKAGES
-          ==================================== */}
-      <section class="section-padding" id="catering">
-        <div class="container-custom">
-          <div class="content-card-panel" data-aos="fade-up">
-            <h2 class="section-title">Catering Packages</h2>
-            <p class="section-subtitle-custom">Bring Dolce Vita to your special event</p>
-            <CateringPackages />
-          </div>
-        </div>
-      </section>
-
-      {/* ====================================
-          RESERVATION FORM
-          ==================================== */}
+      {/* RESERVATION SYSTEM */}
       <section class="section-padding" id="reservation">
         <div class="container-custom">
-          <div class="reservation-box">
-            <h3>Reserve Your Table</h3>
-            <p>Book a table at Dolce Vita and enjoy authentic Italian cuisine in an elegant atmosphere.</p>
-            
+          <div class="reservation-box" data-aos="zoom-in">
             {!formSubmitted() ? (
               <>
+                <h3>Book a Table</h3>
+                <p>Please select your preferred date and time slot. Please note we are closed on Mondays.<br />
+                <span style="color: var(--primary); font-weight: 600;">Note: Tables are held for a maximum of 15-20 minutes and each reservation has a 2.5-hour seating limit.</span></p>
+                
                 <form onSubmit={handleSubmit} class="booking-form">
-                  <div class="form-group">
+                  <div>
                     <label for="name">Full Name *</label>
-                    <input id="name" type="text" name="user_name" required />
+                    <input type="text" id="name" name="name" required placeholder="e.g. John Doe" />
                   </div>
-
-                  <div class="form-group">
-                    <label for="email">Email *</label>
-                    <input id="email" type="email" name="user_email" required />
-                  </div>
-
-                  <div class="form-group">
+                  <div>
                     <label for="phone">Phone Number *</label>
-                    <input id="phone" type="tel" name="user_phone" required />
+                    <input type="tel" id="phone" name="phone" required placeholder="e.g. 07123 456789" />
                   </div>
-
-                  <div class="form-group">
+                  <div>
                     <label for="guests">Number of Guests *</label>
-                    <select id="guests" name="guests" required>
-                      <option value="">Select number of guests</option>
-                      {[...Array(12)].map((_, i) => (
-                        <option value={i + 1}>{i + 1} Guest{i !== 0 ? 's' : ''}</option>
-                      ))}
+                    <select id="guests" name="guests" required onChange={(e) => {
+                      if(e.target.value === "11+") {
+                        alert("For groups larger than 10 people, please contact the restaurant directly by phone to confirm. A deposit will be required to secure your booking.");
+                      }
+                    }}>
+                      <option value="1">1 Person</option>
+                      <option value="2" selected>2 People</option>
+                      <option value="3">3 People</option>
+                      <option value="4">4 People</option>
+                      <option value="5">5 People</option>
+                      <option value="6">6 People</option>
+                      <option value="7">7 People</option>
+                      <option value="8">8 People</option>
+                      <option value="9">9 People</option>
+                      <option value="10">10 People</option>
+                      <option value="11+">More than 10 People (Call Us)</option>
                     </select>
                   </div>
-
-                  <div class="form-group">
-                    <label for="date">Preferred Date *</label>
-                    <input id="date" type="date" name="booking_date" min={getTodayDateString()} required onChange={handleDateChange} />
+                  
+                  <div>
+                    <label for="date">Date *</label>
+                    <input 
+                      type="date" 
+                      id="date" 
+                      name="date" 
+                      required 
+                      min={getTodayDateString()} 
+                      value={bookingDate()} 
+                      onChange={handleDateChange} 
+                    />
                   </div>
 
-                  <div class="form-group">
-                    <label for="time">Preferred Time *</label>
-                    <select id="time" name="booking_time" required disabled={!bookingDate()} onChange={(e) => setBookingTime(e.target.value)}>
-                      <option value="">Select time</option>
+                  {/* Selezione del Servizio (Pranzo o Cena) - Mostrato solo se NON è domenica */}
+                  {bookingDate() && availableTimeSlots().allDay.length === 0 && (
+                    <div>
+                      <label for="service">Service *</label>
+                      <select 
+                        id="service" 
+                        name="service" 
+                        required 
+                        value={bookingService()} 
+                        onChange={(e) => {
+                          setBookingService(e.target.value);
+                          setBookingTime(""); 
+                        }}
+                      >
+                        <option value="" disabled selected>-- Select Lunch or Dinner --</option>
+                        <option value="lunch">Lunch Service</option>
+                        <option value="dinner">Dinner Service</option>
+                      </select>
+                    </div>
+                  )}
+
+                  {/* Selezione dell'Orario */}
+                  <div class={availableTimeSlots().allDay.length > 0 ? "form-group-full" : ""}>
+                    <label for="time">Preferred Time Slot *</label>
+                    <select 
+                      id="time" 
+                      name="time" 
+                      required 
+                      disabled={!bookingDate() || (availableTimeSlots().allDay.length === 0 && !bookingService())}
+                      value={bookingTime()} 
+                      onChange={(e) => setBookingTime(e.target.value)}
+                    >
+                      {!bookingDate() ? (
+                        <option value="" disabled selected>Please select a date first</option>
+                      ) : availableTimeSlots().allDay.length > 0 ? (
+                        <option value="" disabled selected>-- Select Sunday Time Slot --</option>
+                      ) : !bookingService() ? (
+                        <option value="" disabled selected>-- Select service first --</option>
+                      ) : (
+                        <option value="" disabled selected>-- Select time slot --</option>
+                      )}
+                      
+                      {/* Se è un giorno standard ed è selezionato il Pranzo */}
+                      {availableTimeSlots().allDay.length === 0 && bookingService() === "lunch" && (
+                        <For each={availableTimeSlots().lunch}>{(slot) => (
+                          <option value={slot}>{slot}</option>
+                        )}</For>
+                      )}
+
+                      {/* Se è un giorno standard ed è selezionato la Cena */}
+                      {availableTimeSlots().allDay.length === 0 && bookingService() === "dinner" && (
+                        <For each={availableTimeSlots().dinner}>{(slot) => (
+                          <option value={slot}>{slot}</option>
+                        )}</For>
+                      )}
+
+                      {/* Se è domenica (Servizio Continuato) */}
                       {availableTimeSlots().allDay.length > 0 && (
-                        <>
-                          {availableTimeSlots().allDay.map((time) => (
-                            <option value={time}>{time}</option>
-                          ))}
-                        </>
-                      )}
-                      {availableTimeSlots().lunch.length > 0 && (
-                        <>
-                          <optgroup label="Lunch">
-                            {availableTimeSlots().lunch.map((time) => (
-                              <option value={time}>{time}</option>
-                            ))}
-                          </optgroup>
-                        </>
-                      )}
-                      {availableTimeSlots().dinner.length > 0 && (
-                        <>
-                          <optgroup label="Dinner">
-                            {availableTimeSlots().dinner.map((time) => (
-                              <option value={time}>{time}</option>
-                            ))}
-                          </optgroup>
-                        </>
+                        <For each={availableTimeSlots().allDay}>{(slot) => (
+                          <option value={slot}>{slot}</option>
+                        )}</For>
                       )}
                     </select>
                   </div>
 
-                  <div class="form-group">
-                    <label for="service">Service Type *</label>
-                    <select id="service" name="booking_service" required onChange={(e) => setBookingService(e.target.value)}>
-                      <option value="">Select service type</option>
-                      <option value="dine-in">Dine In</option>
-                      <option value="takeaway">Takeaway</option>
-                    </select>
+                  <div>
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="name@example.com" />
                   </div>
-
+                  
                   <div class="form-group-full">
-                    <label for="requests">Special Requests (Optional)</label>
-                    <textarea id="requests" name="special_requests" rows="4" placeholder="Any special requests, allergies, or dietary requirements?"></textarea>
+                    <label for="notes">Special Requests / Allergies</label>
+                    <textarea id="notes" name="notes" rows="3" placeholder="Let us know if you have any food allergies or seating preferences..."></textarea>
                   </div>
 
                   <div class="form-group-full text-center mt-3">
@@ -609,9 +556,7 @@ function App() {
         </div>
       </section>
 
-      {/* ====================================
-          OUR GROUP VENUES
-          ==================================== */}
+      {/* OUR GROUP VENUES */}
       <section class="section-padding" id="our-group">
         <div class="container-custom">
           <div class="content-card-panel" data-aos="fade-up">
@@ -619,36 +564,55 @@ function App() {
             <p class="section-subtitle-custom">Discover our other premium venues in Wooburn Green</p>
             
             <div class="venues-grid">
-              <For each={venues}>
-                {(venue, idx) => (
-                  <div class="venue-card" data-aos="fade-up" data-aos-delay={`${(idx() + 1) * 100}`}>
-                    <div class="venue-image-wrapper">
-                      <img src={venue.image} class="venue-image" alt={venue.title} loading="lazy" />
-                      <span class="venue-badge">{venue.badge}</span>
-                    </div>
-                    <div class="venue-info">
-                      <div>
-                        <h3 class="venue-title">{venue.title}</h3>
-                        <p class="venue-tagline">{venue.tagline}</p>
-                        <p class="venue-desc">{venue.description}</p>
-                      </div>
-                      <div>
-                        <a href={venue.instagramLink} target="_blank" class="btn-action email" style="margin-top: 0;">
-                          <i class="fab fa-instagram"></i> Follow on Instagram
-                        </a>
-                      </div>
-                    </div>
+              {/* THE CORK WINE BAR */}
+              <div class="venue-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="venue-image-wrapper">
+                  <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/the-cork.webp" class="venue-image" alt="The Cork Wine Bar" />
+                  <span class="venue-badge">Wine & Cocktails</span>
+                </div>
+                <div class="venue-info">
+                  <div>
+                    <h3 class="venue-title">The Cork Wine Bar</h3>
+                    <p class="venue-tagline">Elegant & Intimate</p>
+                    <p class="venue-desc">
+                      Located just steps away, The Cork is the perfect spot for a pre-dinner aperitivo or a sophisticated evening out. Explore a curated selection of fine wines, artisanal cocktails, and premium spirits in a warm, welcoming atmosphere.
+                    </p>
                   </div>
-                )}
-              </For>
+                  <div>
+                    <a href="https://www.instagram.com" target="_blank" class="btn-action email" style="margin-top: 0;">
+                      <i class="fab fa-instagram"></i> Follow on Instagram
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* GREEN DELIGHT */}
+              <div class="venue-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="venue-image-wrapper">
+                  <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/green.jpg" class="venue-image" alt="Green Delight" />
+                  <span class="venue-badge">Breakfast & Healthy Bar</span>
+                </div>
+                <div class="venue-info">
+                  <div>
+                    <h3 class="venue-title">Green Delight</h3>
+                    <p class="venue-tagline">Fresh & Vibrant</p>
+                    <p class="venue-desc">
+                      Your daily destination for wellness on The Green. From rich barista coffee and freshly baked morning pastries to vibrant healthy juices, premium salads, and artisanal light bites, everything is prepared fresh daily.
+                    </p>
+                  </div>
+                  <div>
+                    <a href="https://www.instagram.com" target="_blank" class="btn-action email" style="margin-top: 0;">
+                      <i class="fab fa-instagram"></i> Follow on Instagram
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ====================================
-          CONTACT SECTION
-          ==================================== */}
+      {/* CONTACTS */}
       <section class="section-padding" id="contact">
         <div class="container-custom">
           <div class="content-card-panel" data-aos="fade-up">
@@ -657,7 +621,7 @@ function App() {
               <div>
                 <i class="fas fa-map-marker-alt contact-icon"></i>
                 <h3>Address</h3>
-                <p>53 The Green, Wooburn Green, HP10 0EU</p>
+                <p>53 The Green<br />Wooburn Green, HP10 0EU</p>
                 <a href="https://maps.google.com/?q=Dolce+Vita+Wooburn+Green" target="_blank" class="btn-action maps">
                   <i class="fas fa-map-marked-alt"></i> Get Directions
                 </a>
@@ -683,18 +647,12 @@ function App() {
         </div>
       </section>
 
-      {/* ====================================
-          FOOTER
-          ==================================== */}
+      {/* FOOTER */}
       <footer>
         <div class="container-custom">
           <div class="social-links">
-            <a href="https://www.facebook.com" target="_blank">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="https://www.instagram.com/dolcevita_wooburn_green/" target="_blank">
-              <i class="fab fa-instagram"></i>
-            </a>
+            <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/dolcevita_wooburn_green/" target="_blank"><i class="fab fa-instagram"></i></a>
           </div>
           <p>© 2026 <strong>Dolce Vita by Alfredo Forte</strong> - Authentic Italian Cuisine</p>
         </div>
