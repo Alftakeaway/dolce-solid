@@ -3,7 +3,7 @@ import AOS from "aos";
 import emailjs from "@emailjs/browser"; 
 import SpecialDish from "./components/SpecialDish";
 import CateringPackages from "./components/CateringPackages";
-
+import HeroSection from "./components/HeroSection";
 import "./App.css";
 
 
@@ -16,7 +16,7 @@ function App() {
   const [formSubmitted, setFormSubmitted] = createSignal(false);
   const [isSending, setIsSending] = createSignal(false);
 
-  // --- HERO CAROUSEL ---
+  // --- HERO DATA (passed to HeroSection component) ---
   const heroImages = [
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/hero_bg.jpg",
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg", 
@@ -24,14 +24,6 @@ function App() {
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior%202.webp",
     "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior3.webp"
   ];
-  const [currentHeroIndex, setCurrentHeroIndex] = createSignal(0);
-  onMount(() => {
-    const timer = setInterval(() => {
-      setCurrentHeroIndex((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  });
-
   // --- LOGICA PRENOTAZIONI ---
   const [bookingDate, setBookingDate] = createSignal("");
   const [bookingTime, setBookingTime] = createSignal("");
@@ -249,23 +241,11 @@ function App() {
 
       {/* HERO SECTION */}
        
-      <section class="hero" id="home">
-        <For each={heroImages}>{(img, index) => (
-          <div 
-            class={`hero-bg-image ${index() === currentHeroIndex() ? 'active' : ''}`}
-            style={{ "background-image": `url('${img}')`, "z-index": index() === currentHeroIndex() ? 2 : 1 }}
-          />
-        )}</For>
-       
-        <div class="hero-content" data-aos="fade-up" style={{ "z-index": 10 }}>
-          <h1 class="hero-title">DOLCE VITA</h1>
-          <p class="hero-subtitle">Authentic Italian dining in the heart of Wooburn Green</p>
-          <div class="hero-buttons">
-            <a href="#reservation" class="btn-primary-custom">Book Now</a>
-            <a href="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/menu.pdf" target="_blank" class="btn-secondary-custom">Full Menu</a>
-          </div>
-        </div>
-      </section>
+      {/* HERO SECTION - EXTRACTED COMPONENT */}
+      <HeroSection 
+        heroImages={heroImages} 
+        menuLink="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/menu.pdf"
+      />
 
       {/* OUR STORY */}
       <section class="section-padding" id="about">
