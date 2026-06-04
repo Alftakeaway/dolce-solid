@@ -76,6 +76,7 @@ body {
 
 .parallax-band-2 {
     background-image: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior%202.webp');
+    background-position: center bottom;
 }
 
 .parallax-overlay {
