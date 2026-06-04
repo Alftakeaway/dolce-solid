@@ -14,9 +14,22 @@ import "./App.css";
 
 function App() {
   onMount(() => {
-    AOS.init({ duration: 800, once: true });
+  AOS.init({ duration: 800, once: true });
+  
+  // Parallax JS effect
+  const parallaxBands = document.querySelectorAll('.parallax-band');
+  
+  window.addEventListener('scroll', () => {
+    parallaxBands.forEach(band => {
+      const rect = band.getBoundingClientRect();
+      const scrollPercent = (window.innerHeight - rect.top) / (window.innerHeight + band.clientHeight);
+      const yOffset = scrollPercent * 50; // Ajusta 50 per intensità
+      band.style.backgroundPosition = `center calc(center + ${yOffset}px)`;
+    });
   });
+});
 
+  
   
   const [formSubmitted, setFormSubmitted] = createSignal(false);
   const [isSending, setIsSending] = createSignal(false);
