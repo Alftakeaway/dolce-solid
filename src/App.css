@@ -626,3 +626,82 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
         height: 220px;
     }
 }
+/* ============================================
+   INTERSECTION OBSERVER ANIMATIONS (NATIVE)
+   ============================================ */
+
+/* Fade Up */
+.animate-fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out);
+}
+.animate-fade-up.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Fade Down */
+.animate-fade-down {
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: opacity var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out);
+}
+.animate-fade-down.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Fade In (no movement) */
+.animate-fade-in {
+    opacity: 0;
+    transition: opacity var(--duration-slow) var(--ease-out);
+}
+.animate-fade-in.animate-in {
+    opacity: 1;
+}
+
+/* Scale Up (zoom in) */
+.animate-scale-up {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out);
+}
+.animate-scale-up.animate-in {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Slide In Left */
+.animate-slide-in-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out);
+}
+.animate-slide-in-left.animate-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Slide In Right */
+.animate-slide-in-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out);
+}
+.animate-slide-in-right.animate-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Bounce In */
+.animate-bounce-in {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity var(--duration-slow) cubic-bezier(0.68, -0.55, 0.265, 1.55), 
+                transform var(--duration-slow) cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.animate-bounce-in.animate-in {
+    opacity: 1;
+    transform: scale(1);
+}
