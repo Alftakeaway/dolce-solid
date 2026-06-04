@@ -63,7 +63,7 @@ body {
     height: 405px;
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
+    background-attachment: scroll;
     position: relative;
     display: flex;
     align-items: center;
