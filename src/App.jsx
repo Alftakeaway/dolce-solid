@@ -92,7 +92,7 @@ function App() {
       {false && <MenuSection menuItems={menuItems} />}
 
       {/* PARALLAX BAND 1 */}
-      <div class="parallax-band parallax-band-1">
+      <div class="parallax-band parallax-band-1" style={{ "background-position": `center calc(50% + ${scrollY() * 0.5}px)` }}>
         <div class="parallax-overlay"></div>
       </div>
 
@@ -115,7 +115,7 @@ function App() {
       </section>
 
       {/* PARALLAX BAND 2 */}
-      <div class="parallax-band parallax-band-2">
+      <div class="parallax-band parallax-band-2" style={{ "background-position": `center calc(50% + ${scrollY() * 0.5}px)` }}>
         <div class="parallax-overlay"></div>
       </div>
 
