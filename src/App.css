@@ -60,9 +60,8 @@ body {
 /* PARALLAX BANDS */
 .parallax-band {
     width: 100%;
-    height: 600px;
-    background-size: contain;
-    background-repeat: no-repeat;
+    height: 700px;
+    background-size: cover;
     background-position: center;
     background-attachment: fixed;
     position: relative;
