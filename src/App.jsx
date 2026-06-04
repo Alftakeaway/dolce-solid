@@ -76,7 +76,7 @@ function App() {
       <AboutSection />
 
       {/* MENU SECTION - EXTRACTED COMPONENT - DORMIENTE FINCHÉ NON ARRIVANO LE FOTO */}
-      {false && <MenuSection menuItems={menuItems} />}
+      {true && <MenuSection menuItems={menuItems} />}
 
       {/* PARALLAX BAND 1 */}
       <div class="parallax-band parallax-band-1">
