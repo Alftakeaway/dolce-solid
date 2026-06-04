@@ -70,6 +70,17 @@ body {
     justify-content: center;
 }
 
+@media (min-width: 1024px) {
+    .parallax-band {
+        animation: parallax-move 20s ease-in-out infinite;
+    }
+    
+    @keyframes parallax-move {
+        0%, 100% { background-position: center 0px; }
+        50% { background-position: center -50px; }
+    }
+}
+
 .parallax-band-1 {
     background-image: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg');
 }
