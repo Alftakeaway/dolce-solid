@@ -14,20 +14,8 @@ import "./App.css";
 
 function App() {
   onMount(() => {
-  AOS.init({ duration: 800, once: true });
-  
-  // Parallax JS effect
-  const parallaxBands = document.querySelectorAll('.parallax-band');
-  
-  window.addEventListener('scroll', () => {
-    parallaxBands.forEach(band => {
-      const rect = band.getBoundingClientRect();
-      const scrollPercent = (window.innerHeight - rect.top) / (window.innerHeight + band.clientHeight);
-      const yOffset = scrollPercent * 50; // Ajusta 50 per intensità
-      band.style.backgroundPosition = `center calc(center + ${yOffset}px)`;
-    });
+    AOS.init({ duration: 800, once: true });
   });
-});
 
   
   
@@ -92,7 +80,7 @@ function App() {
       {false && <MenuSection menuItems={menuItems} />}
 
       {/* PARALLAX BAND 1 */}
-      <div class="parallax-band parallax-band-1" style={{ "background-position": `center calc(50% + ${scrollY() * 0.5}px)` }}>
+      <div class="parallax-band parallax-band-1">
         <div class="parallax-overlay"></div>
       </div>
 
@@ -115,7 +103,7 @@ function App() {
       </section>
 
       {/* PARALLAX BAND 2 */}
-      <div class="parallax-band parallax-band-2" style={{ "background-position": `center calc(50% + ${scrollY() * 0.5}px)` }}>
+      <div class="parallax-band parallax-band-2">
         <div class="parallax-overlay"></div>
       </div>
 
