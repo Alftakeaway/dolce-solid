@@ -1,11 +1,16 @@
 import { render } from 'solid-js/web';
 import App from './App';
 import { withAnimations } from './withAnimations';
-import { initParallax } from './parallax';  // ← AGGIUNGI
 
 const AnimatedApp = withAnimations(App);
 
-initParallax();  // ← AGGIUNGI
+// Parallax inline
+window.addEventListener('scroll', () => {
+  const parallaxBands = document.querySelectorAll('.parallax-band');
+  parallaxBands.forEach(band => {
+    band.style.backgroundPosition = `center ${window.scrollY * 0.5}px`;
+  });
+});
 
 const root = document.getElementById('root');
 render(() => <AnimatedApp />, root);
