@@ -11,11 +11,13 @@ import { menuItems } from "./menuData";
 import AboutSection from "./components/AboutSection";
 import "./App.css";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 
 function App() {
   onMount(() => {
     AOS.init({ duration: 800, once: true });
+    gsap.registerPlugin(ScrollTrigger);
     // Rotazione a 360 gradi solo per l'icona Instagram in loop
     gsap.to(".instagram-anim", {
       rotation: 360,
@@ -24,6 +26,22 @@ function App() {
       repeat: -1,
       repeatDelay: 1.5
     });
+
+    // Ritardo per permettere al DOM di espandersi completamente prima di calcolare lo scroll
+    setTimeout(() => {
+      gsap.from("footer", {
+        y: 60,
+        scaleY: 0.8,
+        opacity: 0,
+        duration: 1.5,
+        ease: "elastic.out(1, 0.5)",
+        scrollTrigger: {
+          trigger: "footer",
+          start: "top 95%",
+        }
+      });
+      ScrollTrigger.refresh(); // Forza GSAP a ricalcolare tutte le altezze reali
+    }, 500);
   });
 
   
