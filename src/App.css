@@ -45,8 +45,8 @@ html {
 
 body { 
     font-family: 'Lato', sans-serif; 
-    background: linear-gradient(135deg, #4a3b32 0%, #8c7a6b 50%, #cfc3b3 100%) !important;
-    background-attachment: fixed !important;
+    /* Rimuoviamo il fixed qui e usiamo background-size: cover per mantenere il gradiente esteso */
+    background: linear-gradient(135deg, #4a3b32 0%, #8c7a6b 50%, #cfc3b3 100%) no-repeat fixed !important;
     color: #333; 
     overflow-x: hidden; 
     line-height: 1.6;
@@ -55,8 +55,9 @@ body {
     width: 100% !important;
     min-width: 100% !important;
     font-size: 16px !important;
+    /* Assicuriamoci che il body occupi sempre tutta l'altezza */
+    min-height: 100vh;
 }
-
 /* PARALLAX BANDS */
 .parallax-band {
     width: 100%;
