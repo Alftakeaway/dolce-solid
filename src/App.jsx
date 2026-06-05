@@ -10,11 +10,20 @@ import ContactSection from "./components/ContactSection";
 import { menuItems } from "./menuData";
 import AboutSection from "./components/AboutSection";
 import "./App.css";
+import { gsap } from "gsap";
 
 
 function App() {
   onMount(() => {
     AOS.init({ duration: 800, once: true });
+    // Rotazione a 360 gradi solo per l'icona Instagram in loop
+    gsap.to(".instagram-anim", {
+      rotation: 360,
+      duration: 2,
+      ease: "bounce.out",
+      repeat: -1,
+      repeatDelay: 1.5
+    });
   });
 
   
@@ -207,7 +216,7 @@ function App() {
         <div class="container-custom">
           <div class="social-links">
             <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://www.instagram.com/dolcevita_wooburn_green/" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.instagram.com/dolcevita_wooburn_green/" target="_blank"><i class="fab fa-instagram instagram-anim" style={{ display: "inline-block" }}></i></a>
           </div>
           <p>© 2026 <strong>Dolce Vita by Alfredo Forte</strong> - Authentic Italian Cuisine</p>
         </div>
