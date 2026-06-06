@@ -329,8 +329,21 @@ body {
 .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
 .about-text h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primary); margin-bottom: 1.5rem; font-weight: 700; }
 .about-text p { font-size: 1.05rem; line-height: 1.9; margin-bottom: 1.3rem; font-weight: 400; color: #444; }
-.about-image { height: 420px; border-radius: var(--border-radius); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-.about-image img { width: 100%; height: 100%; object-fit: cover; }
+.about-image {
+  height: 420px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  position: relative;  /* ← AGGIUNGI QUESTA */
+}
+.about-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;  /* ← AGGIUNGI QUESTA RIGA */
+  top: 0;
+  left: 0;
+}
 
 .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); justify-content: center; gap: 2rem; margin-bottom: 3rem; }
 .menu-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden; transition: all var(--duration-normal) var(--ease-out); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column; position: relative; }
