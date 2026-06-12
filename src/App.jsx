@@ -135,12 +135,13 @@ function App() {
       </section>
 
       {/* PARALLAX BAND 2 */}
-      <div class="parallax-band parallax-band-2">
-        <div class="parallax-overlay"></div>
-      </div>
 
       <div style={{ position: "relative", "z-index": 1 }}>
         <CateringPackages />
+      </div>
+
+      <div class="parallax-band parallax-band-2">
+        <div class="parallax-overlay"></div>
       </div>
 
       <SpecialDish />
