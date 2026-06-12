@@ -28,25 +28,19 @@ function App() {
       repeatDelay: 1.5
     });
 
-    // PARALLAX JS PURO - sostituisce background-attachment
+    // PARALLAX JS PURO CON SCROLL LISTENER - funziona su Cloudflare
     const parallaxBands = document.querySelectorAll('.parallax-band');
-    parallaxBands.forEach((band) => {
-      gsap.fromTo(band, 
-        { backgroundPosition: "center 0px" },
-        {
-          backgroundPosition: "center -200px",
-          scrollTrigger: {
-            trigger: band,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-            onUpdate: (self) => {
-              const offset = self.getProgress() * -200;
-              band.style.backgroundPosition = `center ${offset}px`;
-            }
-          }
-        }
-      );
+    
+    window.addEventListener('scroll', () => {
+      parallaxBands.forEach((band) => {
+        const rect = band.getBoundingClientRect();
+        const scrollY = window.scrollY;
+        const bandTop = band.offsetTop;
+        
+        // Calcola offset basato su posizione dello scroll
+        const offset = (scrollY - bandTop + window.innerHeight) * 0.3;
+        band.style.backgroundPosition = `center ${offset}px`;
+      });
     });
 
     // FIX CRUCIALE PER CLOUDFLARE OVERLAP
