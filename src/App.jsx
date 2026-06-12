@@ -139,7 +139,9 @@ function App() {
         <div class="parallax-overlay"></div>
       </div>
 
-      <CateringPackages />
+      <div style={{ position: "relative", "z-index": 1 }}>
+        <CateringPackages />
+      </div>
 
       <SpecialDish />
 
