@@ -16,18 +16,20 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 function App() {
   onMount(() => {
-    AOS.init({ duration: 800, once: true });
-    gsap.registerPlugin(ScrollTrigger);
-    // Rotazione a 360 gradi solo per l'icona Instagram in loop
-    gsap.to(".instagram-anim", {
-      rotation: 360,
-      duration: 2,
-      ease: "bounce.out",
-      repeat: -1,
-      repeatDelay: 1.5
-    });
+  AOS.init({ duration: 800, once: true });
+  gsap.registerPlugin(ScrollTrigger);
 
-    // Ritardo per permettere al DOM di espandersi completamente prima di calcolare lo scroll
+  // Rotazione Instagram
+  gsap.to(".instagram-anim", {
+    rotation: 360,
+    duration: 2,
+    ease: "bounce.out",
+    repeat: -1,
+    repeatDelay: 1.5
+  });
+
+  // Aspetta che tutto sia caricato (immagini incluse) prima di inizializzare GSAP
+  window.addEventListener('load', () => {
     setTimeout(() => {
       gsap.from("footer", {
         y: 60,
@@ -40,9 +42,12 @@ function App() {
           start: "top 95%",
         }
       });
-      ScrollTrigger.refresh(); // Forza GSAP a ricalcolare tutte le altezze reali
-    }, 500);
+      
+      // Forza il ricalcolo di TUTTI i trigger
+      ScrollTrigger.refresh();
+    }, 300);
   });
+});
 
   
   
