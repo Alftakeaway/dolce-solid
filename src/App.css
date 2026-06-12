@@ -66,34 +66,25 @@ body {
     background-position: center;
     background-attachment: scroll;
     position: relative;
-    display: block !important;
-    z-index: 1;
-    margin: 0;
-    padding: 0;
+    display: grid;
+    place-items: center;
+    z-index: auto;
+    overflow: visible;
 }
 
 .parallax-band-1 {
     background-image: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg');
-    z-index: 1;
 }
 
 .parallax-band-2 {
     background-image: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior%202.webp');
     background-position: center;
-    z-index: 2;
-    position: relative !important;
-    clear: both;
-    isolation: isolate;
 }
 
 .parallax-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: rgba(42, 42, 42, 0.4);
-    z-index: -1;
     pointer-events: none;
 }
 
