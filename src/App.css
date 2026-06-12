@@ -59,21 +59,34 @@ body {
     min-height: 100vh;
 }
 /* PARALLAX BANDS */
-/* PARALLAX BANDS - REMOVED (causing Cloudflare stacking issues) */
 .parallax-band {
-    display: none !important;
+    width: 100%;
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+    background-attachment: scroll;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .parallax-band-1 {
-    display: none !important;
+    background-image: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg');
 }
 
 .parallax-band-2 {
-    display: none !important;
+    background-image: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior%202.webp');
+    background-position: center;
 }
 
 .parallax-overlay {
-    display: none !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(42, 42, 42, 0.4);
 }
 
 /* NAVBAR GENERALE */
@@ -249,11 +262,7 @@ body {
 .btn-secondary-custom:active { 
     transform: scale(0.97);
 }
-.section-padding { 
-    padding: 100px 0; 
-    position: relative;
-    z-index: 1;
-}
+.section-padding { padding: 100px 0; }
 .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
 .content-card-panel {
@@ -384,7 +393,7 @@ body {
 }
 
 .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-.gallery-item { position: relative; z-index: 0; width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: var(--border-radius); cursor: pointer; }
+.gallery-item { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; border-radius: var(--border-radius); cursor: pointer; }
 .gallery-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
 .gallery-item:hover .gallery-image { transform: scale(1.08); }
 .gallery-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0, 0, 0, 0.7)); padding: 2rem 1.5rem; opacity: 0; transition: opacity 0.3s ease; }

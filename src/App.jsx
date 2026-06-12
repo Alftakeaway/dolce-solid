@@ -106,21 +106,16 @@ function App() {
       {/* MENU SECTION - EXTRACTED COMPONENT - DORMIENTE FINCHÉ NON ARRIVANO LE FOTO */}
       {false && <MenuSection menuItems={menuItems} />}
 
-      {/* PARALLAX BAND 1 - REMOVED (use background-image on gallery section) */}
+      {/* PARALLAX BAND 1 */}
+      <div class="parallax-band parallax-band-1">
+        <div class="parallax-overlay"></div>
+      </div>
 
       {/* ATMOSPHERE GALLERY */}
-      <section class="section-padding" id="gallery" style={{ 
-        backgroundImage: `url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'scroll',
-        position: 'relative'
-      }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(42, 42, 42, 0.3)', pointerEvents: 'none', zIndex: 0 }}></div>
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          <div class="container-custom">
-            <h2 class="section-title" data-aos="fade-down" style={{ color: "#ffffff", "text-shadow": "1px 1px 10px rgba(0,0,0,0.5)" }}>Our Atmosphere</h2>
-            <div class="gallery-grid animate-fade-up">
+      <section class="section-padding" id="gallery">
+        <div class="container-custom">
+          <h2 class="section-title" data-aos="fade-down" style={{ color: "#ffffff", "text-shadow": "1px 1px 10px rgba(0,0,0,0.5)" }}>Our Atmosphere</h2>
+          <div class="gallery-grid animate-fade-up">
           <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery1.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Pasta al Pomodoro</p></div></div>
           <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery2.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Spaghetti al Basilico</p></div></div>
           <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery3.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Lasagna Casalinga</p></div></div>
@@ -132,23 +127,14 @@ function App() {
           <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery9.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Risotto alla Milanese</p></div></div>
 </div>
         </div>
-        </div>
       </section>
 
-      {/* PARALLAX BAND 2 - REMOVED */}
-
-      <div style={{
-        backgroundImage: `url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior%202.webp')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'scroll',
-        position: 'relative'
-      }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(42, 42, 42, 0.3)', pointerEvents: 'none', zIndex: 0 }}></div>
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <CateringPackages />
-        </div>
+      {/* PARALLAX BAND 2 */}
+      <div class="parallax-band parallax-band-2">
+        <div class="parallax-overlay"></div>
       </div>
+
+      <CateringPackages />
 
       <SpecialDish />
 
