@@ -66,23 +66,24 @@ body {
     background-position: center;
     background-attachment: scroll;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block !important;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
 }
 
 .parallax-band-1 {
     background-image: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg');
+    z-index: 1;
 }
 
 .parallax-band-2 {
     background-image: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior%202.webp');
     background-position: center;
+    z-index: 2;
     position: relative !important;
     clear: both;
-    z-index: 5;
-    margin-top: 0;
-    overflow: hidden;
+    isolation: isolate;
 }
 
 .parallax-overlay {
@@ -92,6 +93,8 @@ body {
     right: 0;
     bottom: 0;
     background: rgba(42, 42, 42, 0.4);
+    z-index: -1;
+    pointer-events: none;
 }
 
 /* NAVBAR GENERALE */
@@ -267,7 +270,11 @@ body {
 .btn-secondary-custom:active { 
     transform: scale(0.97);
 }
-.section-padding { padding: 100px 0; }
+.section-padding { 
+    padding: 100px 0; 
+    position: relative;
+    z-index: 3;
+}
 .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
 .content-card-panel {
