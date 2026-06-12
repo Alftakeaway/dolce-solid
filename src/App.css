@@ -54,24 +54,32 @@ body {
   min-height: 100vh;
 }
 
-/* PARALLAX BANDS - FIX DEFINITIVO PER OVERLAP */
+/* PARALLAX BANDS - FIX DEFINITIVO PER RENDERING CLOUDFLARE */
 .parallax-band {
   width: 100%;
   height: 500px;
   background-size: cover;
   background-position: center;
-  /* CAMBIATO DA scroll A fixed: Crea la separazione ottica necessaria */
-  background-attachment: fixed; 
+  
+  /* MANTIENI FIXED MA AGGIUNGI QUESTE PROPRIETÀ CRITICHE */
+  background-attachment: fixed;
+  
+  /* CREA UN CONTESTO DI IMPILAMENTO CHE FORZA IL BROWSER A RENDERE CORRETTAMENTE IL LIVELLO */
   position: relative;
+  z-index: 1;
+  isolation: isolate; /* ← QUESTA È LA CHIAVE: ISOLA IL LIVELLO PARALLAX */
+  
+  /* PREVIENE TAGLI E GLITCH DI RENDERING SU CDN */
+  contain: layout style paint;
+  will-change: transform;
+  transform: translateZ(0); /* FORZA ACCELERAZIONE HARDWARE */
+  
   display: flex;
   align-items: center;
   justify-content: center;
-  /* MARGINI ESPLICITI: Prevengono il collasso dei bordi con le sezioni bianche */
-  margin: 60px 0; 
-  z-index: 1;
-  /* Isola il rendering per evitare glitch su CDN aggressive */
-  contain: layout style;
-  will-change: transform;
+  
+  /* MARGINI FISICI PER EVITARE SOVRAPPOSIZIONI CON LE SEZIONI BIANCHE */
+  margin: 60px 0;
 }
 
 .parallax-band-1 {
