@@ -31,20 +31,22 @@ function App() {
     // PARALLAX JS PURO - sostituisce background-attachment
     const parallaxBands = document.querySelectorAll('.parallax-band');
     parallaxBands.forEach((band) => {
-      gsap.to(band, {
-        backgroundPosition: "center 0px",
-        scrollTrigger: {
-          trigger: band,
-          start: "top center",
-          end: "bottom center",
-          scrub: 1, // smooth parallax effect
-          markers: false,
-        },
-        onUpdate: (self) => {
-          const offset = self.getProgress() * 100;
-          band.style.backgroundPosition = `center ${offset * 0.3}px`;
+      gsap.fromTo(band, 
+        { backgroundPosition: "center 0px" },
+        {
+          backgroundPosition: "center -200px",
+          scrollTrigger: {
+            trigger: band,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+            onUpdate: (self) => {
+              const offset = self.getProgress() * -200;
+              band.style.backgroundPosition = `center ${offset}px`;
+            }
+          }
         }
-      });
+      );
     });
 
     // FIX CRUCIALE PER CLOUDFLARE OVERLAP
