@@ -135,7 +135,7 @@ function App() {
       </section>
 
       {/* PARALLAX BAND 2 */}
-      <div class="parallax-band-2" style={{ position: "relative", "z-index": "10", "clear": "both", "margin-top": "0", "margin-bottom": "0" }}>
+      <div class="parallax-band-2" style={{ "margin-top": "0", "margin-bottom": "0" }}>
         <div class="parallax-overlay"></div>
       </div>
 
