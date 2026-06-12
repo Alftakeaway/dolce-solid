@@ -59,34 +59,21 @@ body {
     min-height: 100vh;
 }
 /* PARALLAX BANDS */
+/* PARALLAX BANDS - REMOVED (causing Cloudflare stacking issues) */
 .parallax-band {
-    width: 100%;
-    height: 500px;
-    background-size: cover;
-    background-position: center;
-    background-attachment: scroll;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: none !important;
 }
 
 .parallax-band-1 {
-    background-image: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior.jpg');
+    display: none !important;
 }
 
 .parallax-band-2 {
-    background-image: url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior%202.webp');
-    background-position: center;
+    display: none !important;
 }
 
 .parallax-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(42, 42, 42, 0.4);
+    display: none !important;
 }
 
 /* NAVBAR GENERALE */
