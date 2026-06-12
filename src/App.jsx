@@ -16,41 +16,40 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 function App() {
   onMount(() => {
-  AOS.init({ duration: 800, once: true });
-  gsap.registerPlugin(ScrollTrigger);
+    AOS.init({ duration: 800, once: true });
+    gsap.registerPlugin(ScrollTrigger);
 
-  // Rotazione Instagram
-  gsap.to(".instagram-anim", {
-    rotation: 360,
-    duration: 2,
-    ease: "bounce.out",
-    repeat: -1,
-    repeatDelay: 1.5
+    // Rotazione a 360 gradi solo per l'icona Instagram in loop
+    gsap.to(".instagram-anim", {
+      rotation: 360,
+      duration: 2,
+      ease: "bounce.out",
+      repeat: -1,
+      repeatDelay: 1.5
+    });
+
+    // FIX PER CLOUDFLARE: Aspetta il caricamento completo della finestra e delle risorse
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        // Animazione Footer
+        gsap.from("footer", {
+          y: 60,
+          scaleY: 0.8,
+          opacity: 0,
+          duration: 1.5,
+          ease: "elastic.out(1, 0.5)",
+          scrollTrigger: {
+            trigger: "footer",
+            start: "top 95%",
+          }
+        });
+        
+        // Forza GSAP a ricalcolare tutte le altezze reali dopo che il layout è stabile
+        ScrollTrigger.refresh(); 
+      }, 500);
+    });
   });
 
-  // Aspetta che tutto sia caricato (immagini incluse) prima di inizializzare GSAP
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      gsap.from("footer", {
-        y: 60,
-        scaleY: 0.8,
-        opacity: 0,
-        duration: 1.5,
-        ease: "elastic.out(1, 0.5)",
-        scrollTrigger: {
-          trigger: "footer",
-          start: "top 95%",
-        }
-      });
-      
-      // Forza il ricalcolo di TUTTI i trigger
-      ScrollTrigger.refresh();
-    }, 300);
-  });
-});
-
-  
-  
   const [formSubmitted, setFormSubmitted] = createSignal(false);
   const [isSending, setIsSending] = createSignal(false);
 
