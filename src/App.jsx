@@ -28,26 +28,13 @@ function App() {
       repeatDelay: 1.5
     });
 
-    // PARALLAX JS PURO CON SCROLL LISTENER - funziona su Cloudflare
-    const parallaxBands = document.querySelectorAll('.parallax-band');
-    
-    window.addEventListener('scroll', () => {
-      parallaxBands.forEach((band) => {
-        const rect = band.getBoundingClientRect();
-        const scrollY = window.scrollY;
-        const bandTop = band.offsetTop;
-        
-        // Calcola offset basato su posizione dello scroll
-        const offset = (scrollY - bandTop + window.innerHeight) * 0.3;
-        band.style.backgroundPosition = `center ${offset}px`;
-      });
-    });
-
     // FIX CRUCIALE PER CLOUDFLARE OVERLAP
     window.addEventListener('load', () => {
       setTimeout(() => {
+        // Ricalcola TUTTE le altezze reali dopo che le immagini sono arrivate
         ScrollTrigger.refresh(); 
         
+        // Animazione Footer (mantenuta dal tuo codice originale)
         gsap.from("footer", {
           y: 60,
           scaleY: 0.8,
@@ -59,7 +46,7 @@ function App() {
             start: "top 95%",
           }
         });
-      }, 800);
+      }, 800); // Aumentato a 800ms per sicurezza su connessioni lente
     });
   });
 
