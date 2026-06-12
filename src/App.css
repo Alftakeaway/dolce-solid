@@ -15,7 +15,7 @@
   font-display: swap;
 }
 
-/* FIX SINTASSI: Aggiunto selettore universale mancante */
+/* FIX CRITICO: Aggiunto selettore universale mancante */
 * {
   margin: 0;
   padding: 0;
