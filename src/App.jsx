@@ -17,11 +17,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 function App() {
   onMount(() => {
     AOS.init({ duration: 800, once: true });
-    // Fix Cloudflare: ricalcola le altezze solo quando tutte le immagini lazy-load sono caricate
-    window.addEventListener("load", () => {
-      AOS.refresh();
-      ScrollTrigger.refresh();
-    });
     gsap.registerPlugin(ScrollTrigger);
     // Rotazione a 360 gradi solo per l'icona Instagram in loop
     gsap.to(".instagram-anim", {
@@ -135,7 +130,7 @@ function App() {
       </section>
 
       {/* PARALLAX BAND 2 */}
-      <div class="parallax-band-2" style={{ "margin-top": "0", "margin-bottom": "0" }}>
+      <div class="parallax-band parallax-band-2">
         <div class="parallax-overlay"></div>
       </div>
 
