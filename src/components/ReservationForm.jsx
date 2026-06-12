@@ -93,7 +93,7 @@ function ReservationForm(props) {
             <>
               <h3>Book a Table</h3>
               <p>Please select your preferred date and time slot. Please note we are closed on Mondays.<br />
-              <span style="color: var(--primary); font-weight: 600;">Note: Tables are held for a maximum of 15-20 minutes and each reservation has a 2.5-hour seating limit.</span></p>
+              <span style="color: var(--primary); font-weight: 600;">Note: Tables are held for a maximum of 15-20 minutes and each reservation has a 2.5-hour seating limit. Please note that dinner operates on a 1st and 2nd seating basis.</span></p>
               
               <form onSubmit={handleSubmit} class="booking-form">
                 <div>
@@ -183,21 +183,21 @@ function ReservationForm(props) {
                     {/* Se è un giorno standard ed è selezionato il Pranzo */}
                     {availableTimeSlots().allDay.length === 0 && bookingService() === "lunch" && (
                       <For each={availableTimeSlots().lunch}>{(slot) => (
-                        <option value={slot}>{slot}</option>
+                        <option value={slot}>{slot} {slot < "20:00" ? "(1st Seating)" : "(2nd Seating)"}</option>
                       )}</For>
                     )}
 
                     {/* Se è un giorno standard ed è selezionato la Cena */}
                     {availableTimeSlots().allDay.length === 0 && bookingService() === "dinner" && (
                       <For each={availableTimeSlots().dinner}>{(slot) => (
-                        <option value={slot}>{slot}</option>
+                        <option value={slot}>{slot} {slot < "20:00" ? "(1st Seating)" : "(2nd Seating)"}</option>
                       )}</For>
                     )}
 
                     {/* Se è domenica (Servizio Continuato) */}
                     {availableTimeSlots().allDay.length > 0 && (
                       <For each={availableTimeSlots().allDay}>{(slot) => (
-                        <option value={slot}>{slot}</option>
+                        <option value={slot}>{slot} {slot < "20:00" ? "(1st Seating)" : "(2nd Seating)"}</option>
                       )}</For>
                     )}
                   </select>
