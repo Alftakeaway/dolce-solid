@@ -64,8 +64,8 @@ body {
     height: 500px;
     background-size: cover;
     background-position: center;
+    /* removed: background-attachment for Rellax */
     position: relative;
-    z-index: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -262,7 +262,7 @@ body {
 .btn-secondary-custom:active { 
     transform: scale(0.97);
 }
-.section-padding { padding: 100px 0; position: relative; z-index: 1; }
+.section-padding { padding: 100px 0; }
 .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
 .content-card-panel {
@@ -510,7 +510,7 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
     
     .parallax-band {
         height: 150px;
-        background-attachment: scroll;
+        /* removed: background-attachment for Rellax */
     }
     
     /* Gestione Navbar su Mobile */
