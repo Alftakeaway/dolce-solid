@@ -19,17 +19,6 @@ function App() {
     AOS.init({ duration: 800, once: true });
     gsap.registerPlugin(ScrollTrigger);
 
-    // RELLAX PARALLAX - Sostituisce background-attachment
-    window.addEventListener('load', () => {
-      const rellax = new Rellax('.parallax-band', {
-        speed: -2,
-        center: false,
-        round: true,
-        vertical: true,
-        zindex: 0,
-      });
-    });
-
     // Rotazione Instagram
     gsap.to(".instagram-anim", {
       rotation: 360,
