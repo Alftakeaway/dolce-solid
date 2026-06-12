@@ -60,24 +60,21 @@ body {
 }
 /* PARALLAX BANDS */
 /* PARALLAX BANDS - Versione Robusta per Cloudflare */
+/* PARALLAX BANDS */
 .parallax-band {
   width: 100%;
   height: 500px;
   background-size: cover;
   background-position: center;
-  /* Usiamo fixed solo su desktop dove è supportato bene */
+  /* CAMBIATO DA scroll A fixed PER L'EFFETTO PARALLAX REALE */
   background-attachment: fixed; 
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Z-index basso ma definito */
+  /* AGGIUNTO: Margine per evitare sovrapposizioni visive con le sezioni bianche */
+  margin: 4rem 0; 
   z-index: 1;
-  /* Margine esplicito per evitare collassi */
-  margin: 40px 0;
-  /* Previene problemi di rendering su Cloudflare */
-  contain: layout style;
-  overflow: hidden;
 }
 
 .parallax-band-1 {
@@ -99,12 +96,12 @@ body {
   z-index: 2;
 }
 
-/* Su mobile, torniamo a scroll per performance */
+/* SU MOBILE: Fixed spesso dà problemi, torniamo a scroll ma con altezze diverse */
 @media (max-width: 768px) {
   .parallax-band {
     height: 200px;
     background-attachment: scroll !important;
-    margin: 20px 0;
+    margin: 2rem 0;
   }
 }
 
