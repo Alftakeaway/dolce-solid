@@ -135,17 +135,11 @@ function App() {
       </section>
 
       {/* PARALLAX BAND 2 */}
-
-      <div style={{ 
-        position: "relative", 
-        "z-index": 1,
-        backgroundImage: `url('https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior%202.webp')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'scroll'
-      }}>
-        <CateringPackages />
+      <div class="parallax-band parallax-band-2">
+        <div class="parallax-overlay"></div>
       </div>
+
+      <CateringPackages />
 
       <SpecialDish />
 
