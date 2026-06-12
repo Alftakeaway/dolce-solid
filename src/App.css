@@ -54,21 +54,22 @@ body {
   min-height: 100vh;
 }
 
-/* ✅ PARALLAX BANDS - FIX COMPLETO PER OVERLAP SU CLOUDFLARE */
+/* PARALLAX BANDS - FIX DEFINITIVO */
 .parallax-band {
   width: 100%;
   height: 500px;
   background-size: cover;
   background-position: center;
-  /* FIXED è più stabile su Cloudflare per evitare glitch di rendering */
+  /* FIXED crea la separazione ottica necessaria su Cloudflare */
   background-attachment: fixed; 
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* ✅ MARGINI ESPLICITI: Creano spazio fisico sopra/sotto evitando sovrapposizioni */
+  /* MARGINI ESPLICITI: Prevengono l'overlap fisico tra sezioni */
   margin: 60px 0; 
   z-index: 1;
+  /* Isola il rendering per evitare glitch su CDN */
   contain: layout style;
 }
 
