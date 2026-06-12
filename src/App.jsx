@@ -19,7 +19,7 @@ function App() {
     AOS.init({ duration: 800, once: true });
     gsap.registerPlugin(ScrollTrigger);
 
-    // Rotazione a 360 gradi solo per l'icona Instagram in loop
+    // Rotazione Instagram
     gsap.to(".instagram-anim", {
       rotation: 360,
       duration: 2,
@@ -28,10 +28,13 @@ function App() {
       repeatDelay: 1.5
     });
 
-    // FIX PER CLOUDFLARE: Aspetta il caricamento completo della finestra e delle risorse
+    // FIX CRUCIALE PER CLOUDFLARE OVERLAP
     window.addEventListener('load', () => {
       setTimeout(() => {
-        // Animazione Footer
+        // Ricalcola TUTTE le altezze reali dopo che le immagini sono arrivate
+        ScrollTrigger.refresh(); 
+        
+        // Animazione Footer (mantenuta dal tuo codice originale)
         gsap.from("footer", {
           y: 60,
           scaleY: 0.8,
@@ -43,14 +46,12 @@ function App() {
             start: "top 95%",
           }
         });
-        
-        // Forza GSAP a ricalcolare tutte le altezze reali dopo che il layout è stabile
-        ScrollTrigger.refresh(); 
-      }, 500);
+      }, 800); // Aumentato a 800ms per sicurezza su connessioni lente
     });
   });
 
   const [formSubmitted, setFormSubmitted] = createSignal(false);
+  // ... resto del codice
   const [isSending, setIsSending] = createSignal(false);
 
   // --- HERO DATA (passed to HeroSection component) ---
