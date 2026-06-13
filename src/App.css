@@ -480,7 +480,7 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
 
 .catering-serves { color: #888888; font-size: 0.9rem; font-weight: 600; margin-bottom: auto; padding-top: 0.5rem; border-top: 1px solid #f0f0f0; }
 
-/* MEDIA QUERIES PER RESPONSIVITÀ */
+/* MEDIA QUERIES PER RESPONSIVENESS */
 @media (max-width: 1024px) {
     /* Ottimizzazione navbar per schermi intermedi/14 pollici con zoom elevato */
     .nav-link {
