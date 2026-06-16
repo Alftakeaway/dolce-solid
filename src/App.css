@@ -4,7 +4,7 @@
     src: url('https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/LucidaUnicodeCalligraphy.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
-    font-display: swap;
+    font-display: block;
 }
 
 @font-face {
@@ -12,7 +12,7 @@
     src: url('https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/LucidaUnicodeCalligraphyBold.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
-    font-display: swap;
+    font-display: block;
 }
 
 * { 
