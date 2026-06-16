@@ -56,11 +56,11 @@ function App() {
 
   // --- HERO DATA (passed to HeroSection component) ---
   const heroImages = [
-    "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/hero_bg.jpg",
-    "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/margherita.jpg", 
-    "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gelato.jpg",
-    "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior%202.webp",
-    "https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/interior3.webp"
+    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/hero_bg.jpg",
+    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/margherita.jpg", 
+    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/gelato.jpg",
+    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/interior%202.webp",
+    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/interior3.webp"
   ];
   
 
@@ -78,7 +78,7 @@ function App() {
       <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="#home">
-            <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/dolce_vita_logo_no_bg1.png" alt="Dolce Vita" class="navbar-logo" />
+            <img src="https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/dolce_vita_logo_no_bg1.png" alt="Dolce Vita" class="navbar-logo" />
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -102,7 +102,7 @@ function App() {
       {/* HERO SECTION - EXTRACTED COMPONENT */}
       <HeroSection 
         heroImages={heroImages} 
-        menuLink="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/menu.pdf"
+        menuLink="https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/menu.pdf"
       />
 
      {/* ABOUT SECTION - EXTRACTED COMPONENT */}
@@ -121,15 +121,15 @@ function App() {
         <div class="container-custom">
           <h2 class="section-title" data-aos="fade-down" style={{ color: "#ffffff", "text-shadow": "1px 1px 10px rgba(0,0,0,0.5)" }}>Our Atmosphere</h2>
           <div class="gallery-grid animate-fade-up">
-          <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery1.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Pasta al Pomodoro</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery2.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Spaghetti al Basilico</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery3.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Lasagna Casalinga</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery4.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Antipasto Italiano</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery5.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Pasta Fresca</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery6.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Fresh Ingredients</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery7.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Pizza Margherita</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery8.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Dining Experience</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/gallery9.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Risotto alla Milanese</p></div></div>
+          <div class="gallery-item"><img class="gallery-image" src="https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/gallery1.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Pasta al Pomodoro</p></div></div>
+          <div class="gallery-item"><img class="gallery-image" src="https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/gallery2.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Spaghetti al Basilico</p></div></div>
+          <div class="gallery-item"><img class="gallery-image" src="https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/gallery3.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Lasagna Casalinga</p></div></div>
+          <div class="gallery-item"><img class="gallery-image" src="https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/gallery4.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Antipasto Italiano</p></div></div>
+          <div class="gallery-item"><img class="gallery-image" src="https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/gallery5.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Pasta Fresca</p></div></div>
+          <div class="gallery-item"><img class="gallery-image" src="https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/gallery6.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Fresh Ingredients</p></div></div>
+          <div class="gallery-item"><img class="gallery-image" src="https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/gallery7.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Pizza Margherita</p></div></div>
+          <div class="gallery-item"><img class="gallery-image" src="https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/gallery8.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Dining Experience</p></div></div>
+          <div class="gallery-item"><img class="gallery-image" src="https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/gallery9.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Risotto alla Milanese</p></div></div>
 </div>
         </div>
       </section>
@@ -186,7 +186,7 @@ function App() {
               {/* THE CORK WINE BAR */}
               <div class="venue-card" data-aos="fade-up" data-aos-delay="100">
                 <div class="venue-image-wrapper">
-                  <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/the-cork.webp" class="venue-image" alt="The Cork Wine Bar" />
+                  <img src="https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/the-cork.webp" class="venue-image" alt="The Cork Wine Bar" />
                   <span class="venue-badge">Wine & Cocktails</span>
                 </div>
                 <div class="venue-info">
@@ -208,7 +208,7 @@ function App() {
               {/* GREEN DELIGHT */}
               <div class="venue-card" data-aos="fade-up" data-aos-delay="200">
                 <div class="venue-image-wrapper">
-                  <img src="https://cdn.jsdelivr.net/gh/Alftakeaway/DolceVita@main/assets/green.jpg" class="venue-image" alt="Green Delight" />
+                  <img src="https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/green.jpg" class="venue-image" alt="Green Delight" />
                   <span class="venue-badge">Breakfast & Healthy Bar</span>
                 </div>
                 <div class="venue-info">
