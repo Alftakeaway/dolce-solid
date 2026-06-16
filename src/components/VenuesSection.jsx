@@ -42,9 +42,9 @@ function VenuesSection() {
 
   // Array segnaposto per le 3 foto di Green Delight
   const greenImages = [
-    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/g1.jpg",
-    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/g2.jpg",
-    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/g3.jpg"
+    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/g1.webp",
+    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/g2.webp",
+    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/g3.webp"
   ];
 
   return (
