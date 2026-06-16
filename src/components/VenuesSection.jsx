@@ -32,11 +32,19 @@ function VenueCarousel(props) {
 }
 
 function VenuesSection() {
+  // Array per il Cork Wine Bar
   const corkImages = [
     "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/c1.webp",
     "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/c3.webp",
     "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/c7.webp",
     "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/c10.webp"
+  ];
+
+  // Array segnaposto per le 3 foto di Green Delight
+  const greenImages = [
+    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/g1.jpg",
+    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/g2.jpg",
+    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/g3.jpg"
   ];
 
   return (
@@ -47,7 +55,7 @@ function VenuesSection() {
           <p class="section-subtitle-custom">Discover our other premium venues in Wooburn Green</p>
           
           <div class="venues-grid">
-            {/* THE CORK WINE BAR - CAROUSEL DINGHAM */}
+            {/* THE CORK WINE BAR - CAROUSEL */}
             <div class="venue-card" data-aos="fade-up" data-aos-delay="100">
               <VenueCarousel images={corkImages} badge="Wine & Cocktails" alt="The Cork Wine Bar" />
               <div class="venue-info">
@@ -66,12 +74,9 @@ function VenuesSection() {
               </div>
             </div>
 
-            {/* GREEN DELIGHT */}
+            {/* GREEN DELIGHT - CAROUSEL */}
             <div class="venue-card" data-aos="fade-up" data-aos-delay="200">
-              <div class="venue-image-wrapper">
-                <img src="https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/green.jpg" class="venue-image" alt="Green Delight" />
-                <span class="venue-badge">Breakfast & Healthy Bar</span>
-              </div>
+              <VenueCarousel images={greenImages} badge="Breakfast & Healthy Bar" alt="Green Delight" />
               <div class="venue-info">
                 <div>
                   <h3 class="venue-title">Green Delight</h3>
