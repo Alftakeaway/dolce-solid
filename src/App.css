@@ -1,18 +1,18 @@
-/* Lucida Unicode Calligraphy via jsDelivr CDN */
+/* Lucida Unicode Calligraphy via assets */
 @font-face {
     font-family: 'Lucida Calligraphy';
-    src: url('https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/LucidaUnicodeCalligraphy.ttf') format('truetype');
+    src: url('./assets/LucidaUnicodeCalligraphy.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
-    font-display: block;
+    font-display: block; /* Blocca il salto visivo del font vecchio */
 }
 
 @font-face {
     font-family: 'Lucida Calligraphy';
-    src: url('https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/LucidaUnicodeCalligraphyBold.ttf') format('truetype');
+    src: url('./assets/LucidaUnicodeCalligraphyBold.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
-    font-display: block;
+    font-display: block; /* Blocca il salto visivo del font vecchio */
 }
 
 * { 
