@@ -72,11 +72,11 @@ body {
 }
 
 .parallax-band-1 {
-    background-image: url('/assets/interior%202.webp');
+    background-image: url('assets/interior%202.webp');
 }
 
 .parallax-band-2 {
-    background-image: url('/assets/tavolini.webp');
+    background-image: url('assets/tavolini.webp');
     background-position: center;
 }
 
