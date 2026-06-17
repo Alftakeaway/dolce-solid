@@ -76,6 +76,7 @@ body {
 }
 
 .parallax-band-2 {
+    height: 500px; /* Cambia questo numero per aumentare o diminuire l'altezza */
     background-image: url('./assets/tavolini.webp');
     background-position: center;
 }
