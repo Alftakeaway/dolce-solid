@@ -1,6 +1,6 @@
 import { createSignal, createMemo, onMount, For } from "solid-js";
 import AOS from "aos";
-import emailjs from "@emailjs/browser"; 
+import emailjs from "@emailjs/browser";
 import SpecialDish from "./components/SpecialDish";
 import CateringPackages from "./components/CateringPackages";
 import HeroSection from "./components/HeroSection";
@@ -29,15 +29,15 @@ function App() {
       duration: 2,
       ease: "bounce.out",
       repeat: -1,
-      repeatDelay: 1.5
+      repeatDelay: 1.5,
     });
 
     // FIX CRUCIALE PER CLOUDFLARE OVERLAP
-    window.addEventListener('load', () => {
+    window.addEventListener("load", () => {
       setTimeout(() => {
         // Ricalcola TUTTE le altezze reali dopo che le immagini sono arrivate
-        ScrollTrigger.refresh(); 
-        
+        ScrollTrigger.refresh();
+
         // Animazione Footer (mantenuta dal tuo codice originale)
         gsap.from("footer", {
           y: 60,
@@ -48,7 +48,7 @@ function App() {
           scrollTrigger: {
             trigger: "footer",
             start: "top 95%",
-          }
+          },
         });
       }, 800); // Aumentato a 800ms per sicurezza su connessioni lente
     });
@@ -61,35 +61,23 @@ function App() {
   // --- HERO DATA (passed to HeroSection component) ---
   const heroImages = [
     "assets/hero_bg.jpg",
-    "assets/margherita.jpg", 
+    "assets/margherita.jpg",
     "assets/gelato.jpg",
     "assets/interior%202.webp",
-    "assets/interior3.webp"
+    "assets/interior3.webp",
   ];
-  
-
-  // --- ARRAY DI TUTTI I PIATTI DAL MENU REALE ---
-
-  
-
-
 
   return (
     <>
-      
-
       {/* NAVBAR */}
       <Navbar />
 
       {/* HERO SECTION */}
-       
-      {/* HERO SECTION - EXTRACTED COMPONENT */}
-      <HeroSection 
-        heroImages={heroImages} 
-        menuLink="/assets/menu.pdf"
-      />
 
-     {/* ABOUT SECTION - EXTRACTED COMPONENT */}
+      {/* HERO SECTION - EXTRACTED COMPONENT */}
+      <HeroSection heroImages={heroImages} menuLink="/assets/menu.pdf" />
+
+      {/* ABOUT SECTION - EXTRACTED COMPONENT */}
       <AboutSection />
 
       {/* MENU SECTION - EXTRACTED COMPONENT - DORMIENTE FINCHÉ NON ARRIVANO LE FOTO */}
@@ -100,7 +88,7 @@ function App() {
         <div class="parallax-overlay"></div>
       </div>
 
-     {/* ATMOSPHERE GALLERY */}
+      {/* ATMOSPHERE GALLERY */}
       <GallerySection />
 
       {/* PARALLAX BAND 2 */}
