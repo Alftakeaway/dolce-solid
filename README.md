@@ -207,7 +207,7 @@ npm run serve    # Preview production build locally
 
 - **EmailJS API Key:** Hardcoded in `ReservationForm.jsx` - visible in client code. EmailJS Public Key is safe to expose (access-control on EmailJS dashboard), but consider moving to `.env` file if concerned.
 - **No Backend:** All submissions handled client-side via EmailJS
-- **HTTPS:** Cloudflare Pages auto-HTTPS
+- **HTTPS:** Cloudflare Pages auto-HTTPS >Now with Vercel
 
 ---
 - **Protocol:** Incremental changes, one mod at a time, test immediately
