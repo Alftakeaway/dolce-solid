@@ -1,10 +1,8 @@
-import { createSignal, createMemo, For, Show } from "solid-js";
-
+import { createSignal, createMemo, createEffect, For, Show } from "solid-js";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+//Interruttore per il menu mobile 
 function MenuSection(props) {
-  // Interruttore generale della sezione
-  const [showMenu, setShowMenu] = createSignal(false);
-  
-  // Il menu parte leggero caricando subito solo gli antipasti
+  const [showMenu, setShowMenu] = createSignal(true);
   const [selectedCategory, setSelectedCategory] = createSignal("starters");
 
   const filteredMenu = createMemo(() => {
@@ -18,6 +16,17 @@ function MenuSection(props) {
   const specials = createMemo(() => {
     const items = props.menuItems || [];
     return items.filter(item => item.category === "specials");
+  });
+
+  // ⚡ ANCORA DI SALVEZZA REATTIVA: Ricalcola GSAP ogni volta che il menu cambia forma o dimensione
+  createEffect(() => {
+    // Tracciamo il cambio dei piatti filtrati
+    filteredMenu();
+    
+    # Rinfreschiamo ScrollTrigger dopo un micro-ritardo per dare tempo al DOM di sistemarsi
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 150);
   });
 
   const getCategoryIcon = (category) => {
@@ -37,7 +46,8 @@ function MenuSection(props) {
 
   return (
     <Show when={showMenu()}>
-      <section class="section-padding" id="menu">
+      {/* Abbiamo blindato la section con position relative e clear both via CSS per evitare invasioni di campo */}
+      <section class="section-padding" id="menu" style={{ position: "relative", "z-index": "5", "clear": "both" }}>
         <div class="container-custom">
           <h2 class="section-title" data-aos="fade-down">The Food Menu</h2>
           <p class="section-subtitle-custom" data-aos="fade-down">Explore our extensive and authentic Italian selections</p>
@@ -82,7 +92,7 @@ function MenuSection(props) {
                     </div>
                   }
                 >
-                  <img src={item.img} class="menu-card-image" alt={item.title} />
+                  <img src={item.img} class="menu-card-image" alt={item.title} onLoad={() => ScrollTrigger.refresh()} />
                 </Show>
 
                 <div class="menu-card-content">
