@@ -34,17 +34,17 @@ function VenueCarousel(props) {
 function VenuesSection() {
   // Array per il Cork Wine Bar
   const corkImages = [
-    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/c1.webp",
-    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/c3.webp",
-    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/c7.webp",
-    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/c10.webp"
+    "/assets/c1.webp",
+    "/assets/c3.webp",
+    "/assets/c7.webp",
+    "/assets/c10.webp"
   ];
 
   // Array segnaposto per le 3 foto di Green Delight
   const greenImages = [
-    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/g1.webp",
-    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/g2.webp",
-    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/g3.webp"
+    "/assets/g1.webp",
+    "/assets/g2.webp",
+    "/assets/g3.webp"
   ];
 
   return (

@@ -4,9 +4,9 @@ function AboutCarousel() {
   const [currentImageIndex, setCurrentImageIndex] = createSignal(0);
 
   const aboutImages = [
-    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/capi.jpeg",
-    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/vespa.webp",
-    "https://raw.githubusercontent.com/Alftakeaway/DolceVita/main/assets/pizzaa.webp"
+    "/assets/capi.jpeg",
+    "/assets/vespa.webp",
+    "/assets/pizzaa.webp"
   ];
 
   onMount(() => {
