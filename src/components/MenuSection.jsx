@@ -2,7 +2,7 @@ import { createSignal, createMemo, For, Show } from "solid-js";
 
 function MenuSection(props) {
   // Interruttore generale della sezione
-  const [showMenu, setShowMenu] = createSignal(true);
+  const [showMenu, setShowMenu] = createSignal(false);
   
   // Il menu parte leggero caricando subito solo gli antipasti
   const [selectedCategory, setSelectedCategory] = createSignal("starters");
