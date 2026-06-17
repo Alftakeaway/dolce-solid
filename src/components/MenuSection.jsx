@@ -1,6 +1,6 @@
 import { createSignal, createMemo, createEffect, For, Show } from "solid-js";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-//Interruttore per il menu mobile 
+
 function MenuSection(props) {
   const [showMenu, setShowMenu] = createSignal(true);
   const [selectedCategory, setSelectedCategory] = createSignal("starters");
@@ -18,12 +18,9 @@ function MenuSection(props) {
     return items.filter(item => item.category === "specials");
   });
 
-  // ⚡ ANCORA DI SALVEZZA REATTIVA: Ricalcola GSAP ogni volta che il menu cambia forma o dimensione
+  // Rinfreschiamo ScrollTrigger ogni volta che cambia la categoria del menu
   createEffect(() => {
-    // Tracciamo il cambio dei piatti filtrati
     filteredMenu();
-    
-    # Rinfreschiamo ScrollTrigger dopo un micro-ritardo per dare tempo al DOM di sistemarsi
     setTimeout(() => {
       ScrollTrigger.refresh();
     }, 150);
@@ -46,8 +43,7 @@ function MenuSection(props) {
 
   return (
     <Show when={showMenu()}>
-      {/* Abbiamo blindato la section con position relative e clear both via CSS per evitare invasioni di campo */}
-      <section class="section-padding" id="menu" style={{ position: "relative", "z-index": "5", "clear": "both" }}>
+      <section class="section-padding" id="menu" style="position: relative; z-index: 5; clear: both;">
         <div class="container-custom">
           <h2 class="section-title" data-aos="fade-down">The Food Menu</h2>
           <p class="section-subtitle-custom" data-aos="fade-down">Explore our extensive and authentic Italian selections</p>
@@ -75,7 +71,7 @@ function MenuSection(props) {
             <button class={`btn-filter dietary-filter ${selectedCategory() === 'vegan' ? 'active' : ''}`} onClick={() => setSelectedCategory('vegan')}><i class="fas fa-seedling me-1"></i> Vegan</button>
           </div>
 
-          <div class="menu-grid" style={{ display: "flex", "justify-content": "center", "flex-wrap": "wrap" }}>
+          <div class="menu-grid" style="display: flex; justify-content: center; flex-wrap: wrap;">
             <For each={filteredMenu()}>{(item) => (
               <div class="menu-card single-center" data-aos="fade-up">
                 <Show when={item.category === 'specials'}>
