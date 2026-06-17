@@ -144,7 +144,7 @@ src/
 
 ## Deployment
 
-**Host:** Cloudflare Pages  
+**Host:** Cloudflare Pages  > Now Vercel
 **Branch:** `main`  
 **Build Command:** `npm run build`  
 **Output:** `dist/`  
