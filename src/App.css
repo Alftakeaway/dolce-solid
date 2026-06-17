@@ -76,7 +76,7 @@ body {
 }
 
 .parallax-band-2 {
-    height: 300px;
+    height: 500px;
     background-image: url('./assets/tavolini.webp');
     background-position: center;
     background-size: cover;
