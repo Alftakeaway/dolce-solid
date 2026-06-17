@@ -1,8 +1,8 @@
 import { createSignal } from "solid-js";
 
 function Navbar() {
-  //  Interruttore true/false
-  const [isOpen, setIsOpen] = createSignal(true);
+  // Ecco il tuo famoso interruttore true/false ripristinato!
+  const [showMenu, setShowMenu] = createSignal(true);
 
   return (
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -11,26 +11,32 @@ function Navbar() {
           <img src="assets/dolce_vita_logo_no_bg1.png" alt="Dolce Vita" class="navbar-logo" />
         </a>
         
-        {/* Al click invertiamo il valore dell'interruttore */}
+        {/* Al click sul pulsante mobile, invertiamo lo stato dell'interruttore */}
         <button 
           class="navbar-toggler" 
           type="button" 
-          onClick={() => setIsOpen(!isOpen())}
+          onClick={() => setShowMenu(!showMenu())}
         >
           <span class="navbar-toggler-icon"></span>
         </button>
         
-        {/* Se isOpen è true, Solid aggiunge la classe 'show' che apre il menu */}
-        <div class={`collapse navbar-collapse ${isOpen() ? 'show' : ''}`} id="navbarNav">
+        {/* IL TRUCCO: Se showMenu() è true, forziamo il display su "block" tramite style.
+          Questo scavalca qualsiasi blocco o oscuramento precedente.
+        */}
+        <div 
+          class="collapse navbar-collapse" 
+          id="navbarNav"
+          style={{ display: showMenu() ? "block" : "" }}
+        >
           <ul class="navbar-nav ms-auto">
-            {/* Aggiungendo onClick={() => setIsOpen(false)} il menu si chiude appena clicchi la voce! */}
-            <li class="nav-item"><a class="nav-link" href="#home" onClick={() => setIsOpen(false)}>Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="#about" onClick={() => setIsOpen(false)}>Our Story</a></li>
-            <li class="nav-item"><a class="nav-link" href="#menu" onClick={() => setIsOpen(false)}>Menu</a></li>
-            <li class="nav-item"><a class="nav-link" href="#gallery" onClick={() => setIsOpen(false)}>Atmosphere</a></li>
-            <li class="nav-item"><a class="nav-link" href="#reviews" onClick={() => setIsOpen(false)}>Reviews</a></li>
-            <li class="nav-item"><a class="nav-link" href="#reservation" onClick={() => setIsOpen(false)}>Book a Table</a></li>
-            <li class="nav-item"><a class="nav-link" href="#contact" onClick={() => setIsOpen(false)}>Contact</a></li>
+            {/* Quando il cliente clicca su una voce, l'interruttore torna su false e il menu si chiude */}
+            <li class="nav-item"><a class="nav-link" href="#home" onClick={() => setShowMenu(false)}>Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about" onClick={() => setShowMenu(false)}>Our Story</a></li>
+            <li class="nav-item"><a class="nav-link" href="#menu" onClick={() => setShowMenu(false)}>Menu</a></li>
+            <li class="nav-item"><a class="nav-link" href="#gallery" onClick={() => setShowMenu(false)}>Atmosphere</a></li>
+            <li class="nav-item"><a class="nav-link" href="#reviews" onClick={() => setShowMenu(false)}>Reviews</a></li>
+            <li class="nav-item"><a class="nav-link" href="#reservation" onClick={() => setShowMenu(false)}>Book a Table</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact" onClick={() => setShowMenu(false)}>Contact</a></li>
           </ul>
         </div>
       </div>
