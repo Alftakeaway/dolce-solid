@@ -13,6 +13,10 @@ import "./App.css";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import VenuesSection from "./components/VenuesSection";
+import Navbar from "./components/Navbar";
+import GallerySection from "./components/GallerySection";
+import ReviewsSection from "./components/ReviewsSection";
+import Footer from "./components/Footer";
 
 function App() {
   onMount(() => {
@@ -75,27 +79,7 @@ function App() {
       
 
       {/* NAVBAR */}
-      <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#home">
-            <img src="assets/dolce_vita_logo_no_bg1.png" alt="Dolce Vita" class="navbar-logo" />
-          </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-              <li class="nav-item"><a class="nav-link" href="#about">Our Story</a></li>
-              <li class="nav-item"><a class="nav-link" href="#menu">Menu</a></li>
-              <li class="nav-item"><a class="nav-link" href="#gallery">Atmosphere</a></li>
-              <li class="nav-item"><a class="nav-link" href="#reviews">Reviews</a></li>
-              <li class="nav-item"><a class="nav-link" href="#reservation">Book a Table</a></li>
-              <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* HERO SECTION */}
        
@@ -116,23 +100,8 @@ function App() {
         <div class="parallax-overlay"></div>
       </div>
 
-      {/* ATMOSPHERE GALLERY */}
-      <section class="section-padding" id="gallery">
-        <div class="container-custom">
-          <h2 class="section-title" data-aos="fade-down" style={{ color: "#ffffff", "text-shadow": "1px 1px 10px rgba(0,0,0,0.5)" }}>Our Atmosphere</h2>
-          <div class="gallery-grid animate-fade-up">
-          <div class="gallery-item"><img class="gallery-image" src="assets/gallery1.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Pasta al Pomodoro</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="assets/gallery2.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Spaghetti al Basilico</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="assets/gallery3.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Lasagna Casalinga</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="assets/gallery4.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Antipasto Italiano</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="assets/gallery5.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Pasta Fresca</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="assets/gallery6.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Fresh Ingredients</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="assets/gallery7.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Pizza Margherita</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="assets/gallery8.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Dining Experience</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="assets/gallery9.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Risotto alla Milanese</p></div></div>
-</div>
-        </div>
-      </section>
+     {/* ATMOSPHERE GALLERY */}
+      <GallerySection />
 
       {/* PARALLAX BAND 2 */}
       <div class="parallax-band parallax-band-2">
@@ -144,33 +113,7 @@ function App() {
       <SpecialDish />
 
       {/* REVIEWS */}
-      <section class="section-padding" id="reviews">
-        <div class="container-custom">
-          <div class="content-card-panel" data-aos="fade-up">
-            <h2 class="section-title">What Our Guests Say</h2>
-            <div class="review-item">
-              <div class="stars">★★★★★</div>
-              <div class="review-author">James Thompson</div>
-              <p class="review-text">"Absolutely authentic Italian cooking. The pasta is hand-made fresh daily and the flavours are exactly as I remember from my time in Rome. Simply outstanding."</p>
-            </div>
-            <div class="review-item">
-              <div class="stars">★★★★★</div>
-              <div class="review-author">Sarah Mitchell</div>
-              <p class="review-text">"Beautiful atmosphere, exceptional service, and the risotto was absolutely divine. We'll definitely be returning for special occasions. Highly recommended!"</p>
-            </div>
-            <div class="review-item">
-              <div class="stars">★★★★★</div>
-              <div class="review-author">Emma & David Williams</div>
-              <p class="review-text">"Family dinner was wonderful. The children loved their meals and the staff were incredibly accommodating. A real gem in Wooburn! We can't wait to come back."</p>
-            </div>
-            <div class="review-item">
-            <div class="stars">★★★★★</div>
-              <div class="review-author">Marco Bianchi</div>
-              <p class="review-text">"As an Italian living abroad, I'm very picky about authentic cuisine. Dolce Vita exceeded all my expectations – the ingredients, the recipes, the warmth... it truly feels like home. Bravi!"</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ReviewsSection />
 
       {/* RESERVATION FORM - EXTRACTED COMPONENT */}
       <ReservationForm />
@@ -182,15 +125,7 @@ function App() {
       <ContactSection />
 
       {/* FOOTER */}
-      <footer>
-        <div class="container-custom">
-          <div class="social-links">
-            <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://www.instagram.com/dolcevita_wooburn_green/" target="_blank"><i class="fab fa-instagram instagram-anim" style={{ display: "inline-block" }}></i></a>
-          </div>
-          <p>© 2026 <strong>Dolce Vita by Alfredo Forte</strong> - Authentic Italian Cuisine</p>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }
