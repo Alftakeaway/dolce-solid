@@ -125,7 +125,7 @@ src/
 
 ### ✅ Resolved
 - ✅ Parallax overlap bug (fixed via Rellax.js)
-- ✅ Cloudflare Pages stacking context issue (CSS `background-attachment: fixed` causes problems)
+- ✅ Cloudflare Pages stacking context issue ,fixed with Vercel
 
 ### 🔄 In Progress
 - [ ] Mobile responsiveness testing (Bootstrap 5 grid, but needs validation)
