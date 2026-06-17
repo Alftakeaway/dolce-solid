@@ -1,7 +1,10 @@
 import { createSignal, createMemo, For, Show } from "solid-js";
 
 function MenuSection(props) {
+  // Interruttore generale della sezione
   const [showMenu, setShowMenu] = createSignal(true);
+  
+  // Il menu parte leggero caricando subito solo gli antipasti
   const [selectedCategory, setSelectedCategory] = createSignal("starters");
 
   const filteredMenu = createMemo(() => {
@@ -36,16 +39,6 @@ function MenuSection(props) {
     <Show when={showMenu()}>
       <section class="section-padding" id="menu">
         <div class="container-custom">
-          
-          {/* 🚨 BOX DI DEBUG DI EMERGENZA (Scomparirà appena abbiamo risolto) */}
-          <div style={{ background: "rgba(255, 0, 0, 0.2)", padding: "15px", "margin-bottom": "30px", "border-radius": "8px", border: "2px solid #ff4444", color: "#fff", "text-align": "center", "font-family": "sans-serif" }}>
-            <h4 style={{ color: "#ff4444", "margin-top": "0" }}>Rilevatore di Guasti Menu</h4>
-            <p>Sezione caricata: <strong>SÌ</strong></p>
-            <p>Categoria attiva: <strong>"{selectedCategory()}"</strong></p>
-            <p>Piatti totali che arrivano da App.jsx: <strong style={{ "font-size": "1.2em", color: props.menuItems ? "#44ff44" : "#ff4444" }}>{props.menuItems ? props.menuItems.length : "ZERO (I dati non arrivano!)"}</strong></p>
-            <p>Piatti filtrati pronti da mostrare: <strong>{filteredMenu().length}</strong></p>
-          </div>
-
           <h2 class="section-title" data-aos="fade-down">The Food Menu</h2>
           <p class="section-subtitle-custom" data-aos="fade-down">Explore our extensive and authentic Italian selections</p>
           
