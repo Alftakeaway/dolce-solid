@@ -91,12 +91,13 @@ function App() {
       {/* ATMOSPHERE GALLERY */}
       <GallerySection />
 
+      <CateringPackages />
       {/* PARALLAX BAND 2 */}
       <div class="parallax-band parallax-band-2">
         <div class="parallax-overlay"></div>
       </div>
 
-      <CateringPackages />
+      
 
       <SpecialDish />
 
