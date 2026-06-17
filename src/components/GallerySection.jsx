@@ -4,9 +4,12 @@ function GallerySection() {
       <div class="container-custom">
         <h2 class="section-title" data-aos="fade-down" style={{ color: "#ffffff", "text-shadow": "1px 1px 10px rgba(0,0,0,0.5)" }}>Our Atmosphere</h2>
         <div class="gallery-grid animate-fade-up">
-          <div class="gallery-item"><img class="gallery-image" src="assets/gallery1.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Pasta al Pomodoro</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="assets/gallery2.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Spaghetti al Basilico</p></div></div>
-          <div class="gallery-item"><img class="gallery-image" src="assets/gallery3.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Lasagna Casalinga</p></div></div>
+          {/* Primi 3 elementi: caricamento immediato per evitare lo scatto iniziale */}
+          <div class="gallery-item"><img class="gallery-image" src="assets/gallery1.webp" /><div class="gallery-overlay"><p class="gallery-text">Pasta al Pomodoro</p></div></div>
+          <div class="gallery-item"><img class="gallery-image" src="assets/gallery2.webp" /><div class="gallery-overlay"><p class="gallery-text">Spaghetti al Basilico</p></div></div>
+          <div class="gallery-item"><img class="gallery-image" src="assets/gallery3.webp" /><div class="gallery-overlay"><p class="gallery-text">Lasagna Casalinga</p></div></div>
+          
+          {/* Dal 4° in poi: mantengono il caricamento pigro così alleggeriscono il sito */}
           <div class="gallery-item"><img class="gallery-image" src="assets/gallery4.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Antipasto Italiano</p></div></div>
           <div class="gallery-item"><img class="gallery-image" src="assets/gallery5.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Pasta Fresca</p></div></div>
           <div class="gallery-item"><img class="gallery-image" src="assets/gallery6.webp" loading="lazy" /><div class="gallery-overlay"><p class="gallery-text">Fresh Ingredients</p></div></div>
