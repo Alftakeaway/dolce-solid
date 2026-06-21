@@ -1,31 +1,29 @@
-import { onMount } from "solid-js";
-import { Router, Route, Routes } from "@solidjs/router";
+import { createSignal, createMemo, onMount, For } from "solid-js";
 import AOS from "aos";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-import Navbar from "./components/Navbar";
-import HeroSection from "./components/HeroSection";
-import AboutSection from "./components/AboutSection";
-import MenuSection from "./components/MenuSection";
+import emailjs from "@emailjs/browser";
 import SpecialDish from "./components/SpecialDish";
 import CateringPackages from "./components/CateringPackages";
+import HeroSection from "./components/HeroSection";
+import ReservationForm from "./components/ReservationForm";
+import MenuSection from "./components/MenuSection";
+import ContactSection from "./components/ContactSection";
+import { menuItems } from "./menuData";
+import AboutSection from "./components/AboutSection";
+import "./App.css";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import VenuesSection from "./components/VenuesSection";
+import Navbar from "./components/Navbar";
 import GallerySection from "./components/GallerySection";
 import ReviewsSection from "./components/ReviewsSection";
-import ReservationForm from "./components/ReservationForm";
-import VenuesSection from "./components/VenuesSection";
-import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
-import Legal from "./Legal";
 
-import { menuItems } from "./menuData";
-import "./App.css";
-
-function Home() {
+function App() {
   onMount(() => {
     AOS.init({ duration: 800, once: true });
     gsap.registerPlugin(ScrollTrigger);
 
+    // Rotazione Instagram
     gsap.to(".instagram-anim", {
       rotation: 360,
       duration: 2,
@@ -34,13 +32,33 @@ function Home() {
       repeatDelay: 1.5,
     });
 
+    // FIX CRUCIALE PER VERCEL OVERLAP
     window.addEventListener("load", () => {
       setTimeout(() => {
+        // Ricalcola TUTTE le altezze reali dopo che le immagini sono arrivate
         ScrollTrigger.refresh();
-      }, 800);
+
+        // Animazione Footer (mantenuta dal tuo codice originale)
+        gsap.from("footer", {
+          y: 60,
+          scaleY: 0.8,
+          opacity: 0,
+          duration: 1.5,
+          ease: "elastic.out(1, 0.5)",
+          scrollTrigger: {
+            trigger: "footer",
+            start: "top 95%",
+          },
+        });
+      }, 800); // Aumentato a 800ms per sicurezza su connessioni lente
     });
   });
 
+  const [formSubmitted, setFormSubmitted] = createSignal(false);
+  // ... resto del codice
+  const [isSending, setIsSending] = createSignal(false);
+
+  // --- HERO DATA (passed to HeroSection component) ---
   const heroImages = [
     "assets/hero_bg.jpg",
     "assets/margherita.jpg",
@@ -51,36 +69,53 @@ function Home() {
 
   return (
     <>
+      {/* NAVBAR */}
       <Navbar />
+
+      {/* HERO SECTION */}
+
+      {/* HERO SECTION - EXTRACTED COMPONENT */}
       <HeroSection heroImages={heroImages} menuLink="/assets/menu.pdf" />
+
+      {/* ABOUT SECTION - EXTRACTED COMPONENT */}
       <AboutSection />
+
+      {/* MENU SECTION - EXTRACTED COMPONENT - DORMIENTE FINCHÉ NON ARRIVANO LE FOTO */}
       <MenuSection menuItems={menuItems} />
+
+      {/* PARALLAX BAND 1 */}
       <div class="parallax-band parallax-band-1">
         <div class="parallax-overlay"></div>
       </div>
+
+      {/* ATMOSPHERE GALLERY */}
       <GallerySection />
+
       <CateringPackages />
+      {/* PARALLAX BAND 2 */}
       <div class="parallax-band parallax-band-2">
         <div class="parallax-overlay"></div>
       </div>
+
+      
+
       <SpecialDish />
+
+      {/* REVIEWS */}
       <ReviewsSection />
+
+      {/* RESERVATION FORM - EXTRACTED COMPONENT */}
       <ReservationForm />
+
+      {/* OUR GROUP VENUES */}
       <VenuesSection />
+
+      {/* CONTACT SECTION - EXTRACTED COMPONENT */}
       <ContactSection />
+
+      {/* FOOTER */}
       <Footer />
     </>
-  );
-}
-
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" component={Home} />
-        <Route path="/legal" component={Legal} />
-      </Routes>
-    </Router>
   );
 }
 
