@@ -1,7 +1,6 @@
-import { createSignal, onMount } from "solid-js";
+import { onMount } from "solid-js";
 import { Router, Route, Routes } from "@solidjs/router";
 import AOS from "aos";
-import emailjs from "@emailjs/browser";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -20,22 +19,57 @@ import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 import Legal from "./Legal";
 
-// Data & Styles
+// Dati & Stili
 import { menuItems } from "./menuData";
 import "./App.css";
 
-// --- COMPONENTE HOME (Tutto il contenuto originale) ---
+// --- COMPONENTE HOME ---
+// Contiene tutto il layout principale del sito
 const HomeView = () => {
+  onMount(() => {
+    AOS.init({ duration: 800, once: true });
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.to(".instagram-anim", {
+      rotation: 360,
+      duration: 2,
+      ease: "bounce.out",
+      repeat: -1,
+      repeatDelay: 1.5,
+    });
+
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+        if (document.querySelector("footer")) {
+          gsap.from("footer", {
+            y: 60,
+            scaleY: 0.8,
+            opacity: 0,
+            duration: 1.5,
+            ease: "elastic.out(1, 0.5)",
+            scrollTrigger: {
+              trigger: "footer",
+              start: "top 95%",
+            },
+          });
+        }
+      }, 800);
+    });
+  });
+
+  const heroImages = [
+    "assets/hero_bg.jpg",
+    "assets/margherita.jpg",
+    "assets/gelato.jpg",
+    "assets/interior%202.webp",
+    "assets/interior3.webp",
+  ];
+
   return (
     <>
       <Navbar />
-      <HeroSection heroImages={[
-        "assets/hero_bg.jpg",
-        "assets/margherita.jpg",
-        "assets/gelato.jpg",
-        "assets/interior%202.webp",
-        "assets/interior3.webp",
-      ]} menuLink="/assets/menu.pdf" />
+      <HeroSection heroImages={heroImages} menuLink="/assets/menu.pdf" />
       <AboutSection />
       <MenuSection menuItems={menuItems} />
       
@@ -60,40 +94,9 @@ const HomeView = () => {
   );
 };
 
+// --- APP PRINCIPALE ---
+// Gestisce esclusivamente le rotte
 function App() {
-  onMount(() => {
-    AOS.init({ duration: 800, once: true });
-    gsap.registerPlugin(ScrollTrigger);
-
-    gsap.to(".instagram-anim", {
-      rotation: 360,
-      duration: 2,
-      ease: "bounce.out",
-      repeat: -1,
-      repeatDelay: 1.5,
-    });
-
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-        // Controllo esistenza footer prima di animare
-        if (document.querySelector("footer")) {
-          gsap.from("footer", {
-            y: 60,
-            scaleY: 0.8,
-            opacity: 0,
-            duration: 1.5,
-            ease: "elastic.out(1, 0.5)",
-            scrollTrigger: {
-              trigger: "footer",
-              start: "top 95%",
-            },
-          });
-        }
-      }, 800);
-    });
-  });
-
   return (
     <Router>
       <Routes>
