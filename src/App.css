@@ -73,10 +73,10 @@ body {
 }
 
 .parallax-band-1 {
-    height: 400px;
+    height: 350px;
     background-image: url('/assets/interior5.webp');
     background-size: cover;
-    background-position: center top;
+    background-position: center bottom;
     z-index: 5;
     position: relative;
 }
