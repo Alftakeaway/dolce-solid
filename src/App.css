@@ -69,6 +69,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-attachment: scroll;
 }
 
 .parallax-band-1 {
@@ -98,6 +99,18 @@ body {
     right: 0;
     bottom: 0;
     background: rgba(42, 42, 42, 0.4);
+}
+
+@media (max-width: 1024px) {
+    .parallax-band {
+        height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .parallax-band {
+        height: 150px;
+    }
 }
 
 /* NAVBAR GENERALE */
@@ -504,9 +517,6 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
         padding: 0.5rem 1rem 0.5rem 0.5rem !important;
     }
     
-    .parallax-band {
-        height: 200px;
-    }
 }
 
 @media (max-width: 768px) { 
@@ -518,12 +528,7 @@ footer { background: var(--dark); color: white; padding: 3rem 0; text-align: cen
     .gallery-grid { grid-template-columns: repeat(2, 1fr); }
     .booking-form { grid-template-columns: 1fr; }
     .form-group-full { grid-column: span 1; }
-    
-    .parallax-band {
-        height: 150px;
-        background-attachment: scroll;
-    }
-    
+        
     /* Gestione Navbar su Mobile */
     .navbar {
         flex-wrap: wrap !important;
