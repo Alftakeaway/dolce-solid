@@ -73,13 +73,13 @@ body {
 }
 
 .parallax-band-1 {
-    height: 500px;
+    height: 400px;
     background-image: url('/assets/interior3.webp');
     z-index: 5;
 }
 
 .parallax-band-2 {
-    height: 300px;
+    height: 500px;
     background-image: url('./assets/tavolini.webp');
     background-position: center;
     background-size: cover;
