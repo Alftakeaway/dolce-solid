@@ -17,6 +17,8 @@ import Navbar from "./components/Navbar";
 import GallerySection from "./components/GallerySection";
 import ReviewsSection from "./components/ReviewsSection";
 import Footer from "./components/Footer";
+import { Router, Route, Routes } from "@solidjs/router";
+import Legal from "./Legal";
 
 function App() {
   onMount(() => {
@@ -68,6 +70,9 @@ function App() {
   ];
 
   return (
+    <Router>
+      <Routes>
+        <Route path="/" component={() => (
     <>
       {/* NAVBAR */}
       <Navbar />
@@ -116,6 +121,10 @@ function App() {
       {/* FOOTER */}
       <Footer />
     </>
+        )} />
+        <Route path="/legal" component={Legal} />
+      </Routes>
+    </Router>
   );
 }
 
