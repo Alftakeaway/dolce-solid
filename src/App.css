@@ -76,7 +76,7 @@ body {
     height: 350px;
     background-image: url('/assets/interior5.webp');
     background-size: cover;
-    background-position: center top;  /* ← Cambia da "center" a "center top" */
+    background-position: center ;  /* ← Cambia da "center" a "center top" */
     z-index: 5;
 }
 
