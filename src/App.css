@@ -84,7 +84,7 @@ body {
 .parallax-band-2 {
     height: 500px;
     background-image: url('./assets/tavolini.webp');
-    background-position: center;
+    background-position: center bottom;
     background-size: cover;
     z-index: 10;
     position: relative;
