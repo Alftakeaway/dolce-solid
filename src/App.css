@@ -73,6 +73,7 @@ body {
 
 .parallax-band-1 {
     background-image: url('./assets/interior_2.webp');
+    z-index: 5;
 }
 
 .parallax-band-2 {
