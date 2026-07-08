@@ -9,7 +9,7 @@ function Navbar() {
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="#home">
-          <img src="assets/dolce_vita_logo_no_bg1.png" alt="Dolce Vita" class="navbar-logo" />
+          <img src="assets/Logobianco.png" alt="Dolce Vita" class="navbar-logo" />
         </a>
         
         {/* Tasto Hamburger: al click inverte lo stato del Signal */}
