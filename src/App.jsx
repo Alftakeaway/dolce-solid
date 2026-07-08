@@ -2,7 +2,6 @@ import { createSignal, createMemo, onMount, For } from "solid-js";
 import AOS from "aos";
 import emailjs from "@emailjs/browser";
 import SpecialDish from "./components/SpecialDish";
-import CateringPackages from "./components/CateringPackages";
 import HeroSection from "./components/HeroSection";
 import ReservationForm from "./components/ReservationForm";
 import MenuSection from "./components/MenuSection";
@@ -91,7 +90,7 @@ function App() {
       {/* ATMOSPHERE GALLERY */}
       <GallerySection />
 
-      <CateringPackages />
+      
       {/* PARALLAX BAND 2 */}
       <div class="parallax-band parallax-band-2">
         <div class="parallax-overlay"></div>
