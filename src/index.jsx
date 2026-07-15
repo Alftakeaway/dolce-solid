@@ -8,10 +8,12 @@ const AnimatedApp = withAnimations(App);
 const initParallax = () => {
   const parallaxBands = document.querySelectorAll('.parallax-band');
   parallaxBands.forEach(band => {
+    const rect = band.getBoundingClientRect();
+    const offset = rect.top * 0.3;
     if (band.classList.contains('parallax-band-1')) {
-      band.style.backgroundPosition = `center bottom ${window.scrollY * -0.5}px`;
+      band.style.backgroundPosition = `center calc(50% + ${offset}px)`;
     } else {
-      band.style.backgroundPosition = `center ${window.scrollY * 0.5}px`;
+      band.style.backgroundPosition = `center calc(50% + ${offset}px)`;
     }
   });
 };
