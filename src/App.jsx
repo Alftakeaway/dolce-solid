@@ -33,8 +33,11 @@ function App() {
 
     // FIX CRUCIALE PER VERCEL OVERLAP
     window.addEventListener("load", () => {
+      // Primo refresh immediato al momento del caricamento completo della pagina
+      ScrollTrigger.refresh();
+
+      // Secondo refresh ritardato per garantire il calcolo dopo eventuali animazioni o rendering tardivi
       setTimeout(() => {
-        // Ricalcola TUTTE le altezze reali dopo che le immagini sono arrivate
         ScrollTrigger.refresh();
 
         // Animazione Footer (mantenuta dal tuo codice originale)
