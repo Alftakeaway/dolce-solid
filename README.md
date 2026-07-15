@@ -2,7 +2,7 @@
 
 **Repo:** `Alftakeaway/dolce-solid`  
 **Framework:** SolidJS + Vite  
-**Deployed:** Cloudflare Pages  
+**Deployed:** Vercel
 **Status:** WIP (MenuSection hidden, mobile testing pending)
 
 ---
