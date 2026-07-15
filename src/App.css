@@ -71,9 +71,6 @@ body {
     justify-content: center;
     background-attachment: scroll;
     
-    /* FIX PER VERCEL */
-    content-visibility: auto;
-    contain-intrinsic-size: 500px;
 }
 
 .parallax-band-1 {
@@ -81,7 +78,7 @@ body {
     background-image: url('/assets/interior5.webp');
     background-size: cover;
     background-position: center bottom;
-    z-index: 5;
+    z-index: 1;
     position: relative;
 }
 
@@ -90,7 +87,7 @@ body {
     background-image: url('./assets/tavolini.webp');
     background-position: center ;
     background-size: cover;
-    z-index: 10;
+    z-index: 1;
     position: relative;
 }
 
