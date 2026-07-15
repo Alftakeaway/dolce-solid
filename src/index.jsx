@@ -7,14 +7,13 @@ const AnimatedApp = withAnimations(App);
 const root = document.getElementById('root');
 render(() => <AnimatedApp />, root);
 
+// Parallax - dopo render
 const initParallax = () => {
   const parallaxBands = document.querySelectorAll('.parallax-band');
   parallaxBands.forEach(band => {
-    if (band.classList.contains('parallax-band-1')) {
-      band.style.backgroundPosition = `center bottom ${window.scrollY * -0.5}px`;
-    } else {
-      band.style.backgroundPosition = `center ${window.scrollY * 0.5}px`;
-    }
+    const rect = band.getBoundingClientRect();
+    const offset = rect.top * 0.3;
+    band.style.backgroundPosition = `center calc(50% + ${offset}px)`;
   });
 };
 
