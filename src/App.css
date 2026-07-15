@@ -58,6 +58,12 @@ body {
     /* Assicuriamoci che il body occupi sempre tutta l'altezza */
     min-height: 100vh;
 }
+.section-padding {
+    padding: 100px 0;
+    position: relative;
+    z-index: 10;
+}
+
 /* PARALLAX BANDS */
 .parallax-band {
     width: 100%;
@@ -91,11 +97,7 @@ body {
     position: relative;
 }
 
-.section-padding {
-    padding: 100px 0;
-    position: relative;
-    z-index: 10;
-}
+
 
 .parallax-overlay {
     position: absolute;
