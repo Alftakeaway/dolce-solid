@@ -70,6 +70,10 @@ body {
     align-items: center;
     justify-content: center;
     background-attachment: scroll;
+    
+    /* FIX PER VERCEL */
+    content-visibility: auto;
+    contain-intrinsic-size: 500px;
 }
 
 .parallax-band-1 {
