@@ -31,13 +31,11 @@ function App() {
       repeatDelay: 1.5,
     });
 
-    // FIX ROBUSTO
+    // FIX CRUCIALE PER VERCEL OVERLAP
     window.addEventListener("load", () => {
-      // Aspettiamo un istante per far sì che il browser finisca il rendering
       setTimeout(() => {
-        ScrollTrigger.refresh(true); 
-      }, 1000); 
-    });
+        // Ricalcola TUTTE le altezze reali dopo che le immagini sono arrivate
+        ScrollTrigger.refresh();
 
         // Animazione Footer (mantenuta dal tuo codice originale)
         gsap.from("footer", {
