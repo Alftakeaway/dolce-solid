@@ -18,3 +18,4 @@ const initParallax = () => {
 };
 
 window.addEventListener('scroll', initParallax);
+initParallax();
