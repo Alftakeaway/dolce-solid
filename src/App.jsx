@@ -31,14 +31,13 @@ function App() {
       repeatDelay: 1.5,
     });
 
-    // FIX CRUCIALE PER VERCEL OVERLAP
+    // FIX ROBUSTO
     window.addEventListener("load", () => {
-      // Primo refresh immediato al momento del caricamento completo della pagina
-      ScrollTrigger.refresh();
-
-      // Secondo refresh ritardato per garantire il calcolo dopo eventuali animazioni o rendering tardivi
+      // Aspettiamo un istante per far sì che il browser finisca il rendering
       setTimeout(() => {
-        ScrollTrigger.refresh();
+        ScrollTrigger.refresh(true); 
+      }, 1000); 
+    });
 
         // Animazione Footer (mantenuta dal tuo codice originale)
         gsap.from("footer", {
